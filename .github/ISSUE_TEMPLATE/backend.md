@@ -1,7 +1,7 @@
 ---
 name: Backend Template
 about: This ticket is for front-end issues/features
-title: 'BACKEN: '
+title: 'BACKEND: '
 labels: backend
 assignees: ''
 ---
