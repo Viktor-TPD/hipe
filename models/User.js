@@ -7,6 +7,6 @@ const userSchema = new Schema({
 }, { timestamps: true });
 
 
-const User = model('Report', reportSchema);
+const User = model('User', userSchema);
 
 export default User;
