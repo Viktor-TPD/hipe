@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 const studentProfileSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
-  classId: { type: String, required: true },
+  courseId: { type: String, required: true },
   specialization: [String],
   software: [String], 
   stack: [String], 
