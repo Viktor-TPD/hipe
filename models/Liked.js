@@ -5,7 +5,7 @@ const likedSchema = new Schema({
   companyId: { type: Schema.Types.ObjectId, ref: 'CompanyProfile', required: true },
   isPoked: { type: Boolean, default: false },
   date: { type: Date, default: Date.now }
-}, { timestamps: true });
+}, { timestamps: true, collection: 'Liked'});
 
 const Liked = model('Liked', likedSchema);
 

@@ -9,7 +9,7 @@ const studentProfileSchema = new Schema({
   stack: [String], 
   languages: [String], 
   portfolio: { type: String }, 
-}, { timestamps: true });
+}, { timestamps: true , collection: 'StudentProfile' });
 
 const StudentProfile = model('StudentProfile', studentProfileSchema);
 

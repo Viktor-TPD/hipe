@@ -10,7 +10,7 @@ const companyProfileSchema = new Schema({
     email: { type: String, required: true }
   },
   internshipDetails: { type: String } // Internship (fritext)
-}, { timestamps: true });
+}, { timestamps: true, collection: 'CompanyProfile' });
 
 const CompanyProfile = model('CompanyProfile', companyProfileSchema);
 
