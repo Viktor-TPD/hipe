@@ -8,7 +8,7 @@ function App() {
   const handleSubmit = (data) => {
     console.log("Form data:", data);
     // TO BACKEND @JULIA, NOTE: make this dynamic?
-    fetch("http://localhost:4000/api/submit-form", {
+    fetch("http://localhost:4000/api/create-user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -17,16 +17,9 @@ function App() {
 
   return (
     <div className="app">
-      <h1>User Information</h1>
+      <h1>User Registration</h1>
       <Form
         fields={[
-          {
-            type: "text",
-            name: "name",
-            label: "Full Name",
-            required: true,
-            placeholder: "Enter your full name",
-          },
           {
             type: "email",
             name: "email",
@@ -35,39 +28,31 @@ function App() {
             placeholder: "Enter your email",
             autoComplete: "email",
           },
-          // @todo DELETE ME LATER, EXAMPLE OF A DROPDOWN MENU BELOW
-          // {
-          //   type: "select",
-          //   name: "course",
-          //   label: "Select Course",
-          //   required: true,
-          //   options: [
-          //     { value: "react", label: "React Fundamentals" },
-          //     { value: "node", label: "Node.js Basics" },
-          //     { value: "javascript", label: "Advanced JavaScript" },
-          //   ],
-          // },
+          {
+            type: "password",
+            name: "password",
+            label: "Password",
+            required: true,
+            placeholder: "Enter your password",
+          },
           {
             type: "radio",
-            name: "course",
-            label: "Select your course",
+            name: "userType",
+            label: "Are you a student or a company?",
             required: true,
             options: [
-              { value: "dd", label: "Digital Design" },
-              { value: "wu", label: "Webbutveckling" },
+              { value: "student", label: "Student" },
+              { value: "company", label: "Company" },
             ],
           },
-          //comment out for test /j
-          // {
-          //   type: "checkbox",
-          //   name: "gdpr",
-          //   label: "I agree with the terms & conditions",
-          // },
+
         ]}
         onSubmit={handleSubmit}
       />
     </div>
   );
+
+
 }
 
 export default App;
