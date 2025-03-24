@@ -7,7 +7,7 @@ import Form from "./components/Form";
 function App() {
   const handleSubmit = (data) => {
     console.log("Form data:", data);
-    // @JULIA sends to Node backend
+    // TO BACKEND @JULIA
     fetch("/api/submit-form", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,9 +20,48 @@ function App() {
       <h1>User Information</h1>
       <Form
         fields={[
-          { type: "name", name: "name", required: true },
-          { type: "email", name: "email", required: true },
-          { type: "checkbox", name: "Course", label: "Course:" },
+          {
+            type: "text",
+            name: "name",
+            label: "Full Name",
+            required: true,
+            placeholder: "Enter your full name",
+          },
+          {
+            type: "email",
+            name: "email",
+            label: "Email Address",
+            required: true,
+            placeholder: "Enter your email",
+            autoComplete: "email",
+          },
+          // @todo DELETE ME LATER, EXAMPLE OF A DROPDOWN MENU BELOW
+          // {
+          //   type: "select",
+          //   name: "course",
+          //   label: "Select Course",
+          //   required: true,
+          //   options: [
+          //     { value: "react", label: "React Fundamentals" },
+          //     { value: "node", label: "Node.js Basics" },
+          //     { value: "javascript", label: "Advanced JavaScript" },
+          //   ],
+          // },
+          {
+            type: "radio",
+            name: "course",
+            label: "Select your course",
+            required: true,
+            options: [
+              { value: "dd", label: "Digital Design" },
+              { value: "wu", label: "Webbutveckling" },
+            ],
+          },
+          {
+            type: "checkbox",
+            name: "gdpr",
+            label: "I agree with the terms & conditions",
+          },
         ]}
         onSubmit={handleSubmit}
       />
