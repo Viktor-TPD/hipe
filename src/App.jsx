@@ -7,8 +7,8 @@ import Form from "./components/Form";
 function App() {
   const handleSubmit = (data) => {
     console.log("Form data:", data);
-    // TO BACKEND @JULIA
-    fetch("/api/submit-form", {
+    // TO BACKEND @JULIA, NOTE: make this dynamic?
+    fetch("http://localhost:4000/api/submit-form", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -57,11 +57,12 @@ function App() {
               { value: "wu", label: "Webbutveckling" },
             ],
           },
-          {
-            type: "checkbox",
-            name: "gdpr",
-            label: "I agree with the terms & conditions",
-          },
+          //comment out for test /j
+          // {
+          //   type: "checkbox",
+          //   name: "gdpr",
+          //   label: "I agree with the terms & conditions",
+          // },
         ]}
         onSubmit={handleSubmit}
       />
