@@ -1,3 +1,12 @@
+// src/components/fields/RadioField.jsx
+import {
+  FieldContainer,
+  FieldLabel,
+  OptionsContainer,
+  OptionItem,
+  InputControl,
+} from "../../styles/formStyles";
+
 export default function RadioField({
   name,
   label,
@@ -7,12 +16,12 @@ export default function RadioField({
   required = false,
 }) {
   return (
-    <div className="form-field radio-field">
-      <label>{label}</label>
-      <div className="radio-options">
+    <FieldContainer>
+      <FieldLabel>{label}</FieldLabel>
+      <OptionsContainer>
         {options.map((option) => (
-          <div key={option.value} className="radio-option">
-            <input
+          <OptionItem key={option.value}>
+            <InputControl
               type="radio"
               id={`${name}-${option.value}`}
               name={name}
@@ -22,9 +31,9 @@ export default function RadioField({
               required={required && !value}
             />
             <label htmlFor={`${name}-${option.value}`}>{option.label}</label>
-          </div>
+          </OptionItem>
         ))}
-      </div>
-    </div>
+      </OptionsContainer>
+    </FieldContainer>
   );
 }

@@ -113,6 +113,19 @@ export default function Register() {
           </button>
         </p>
       </div>
+      {/* @todo Remove this when done testing vvv  */}
+      <div className="form-footer">
+        <p>
+          Trying out our buttons?{" "}
+          <button
+            className="link-button"
+            onClick={() => navigate("/input-test")}
+          >
+            Do it here
+          </button>
+        </p>
+      </div>
+      {/* @todo Remove this when done testing ^^^ */}
     </div>
   );
 }
