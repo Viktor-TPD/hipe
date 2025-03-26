@@ -1,19 +1,23 @@
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "./../AuthContext";
 
 function Dashboard() {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const userType = queryParams.get("userType");
+  const { currentUser, logout } = useAuth();
+  const userType = currentUser?.userType;
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const renderDashboardContent = () => {
     if (userType === "student") {
       return (
         <div className="student-dashboard">
           <h2>Student Dashboard</h2>
-          <p>Welcome to your student dashboard! Here you can:</p>
+          <p>Welcome to your student dashboard!</p>
           <ul>
-            <li>Set your preferences for tools, tech stacks etc.</li>
-            <li>See what companies connected with you :)</li>
+            <li>View and update your student profile</li>
+            <li>See what companies who've reached out :)</li>
           </ul>
         </div>
       );
@@ -21,7 +25,7 @@ function Dashboard() {
       return (
         <div className="company-dashboard">
           <h2>Company Dashboard</h2>
-          <p>Welcome to your company dashboard! Here you can:</p>
+          <p>Welcome to your company dashboard!</p>
           <ul>
             <li>Manage your company profile</li>
             <li>Post new internship opportunities</li>
@@ -33,11 +37,7 @@ function Dashboard() {
       return (
         <div className="error-dashboard">
           <h2>Error: User Type Not Found</h2>
-          <p>
-            We couldn't determine your user type. Please go back to the form and
-            try again.
-          </p>
-          <Link to="/">Back to Form</Link>
+          <p>We couldn't determine your user type.</p>
         </div>
       );
     }
@@ -47,12 +47,14 @@ function Dashboard() {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Dashboard</h1>
-        <p>Welcome to your personalized dashboard</p>
+        <div className="user-info">
+          <span>Logged in as: {currentUser.email}</span>
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        </div>
       </header>
       <main className="dashboard-content">{renderDashboardContent()}</main>
-      <footer className="dashboard-footer">
-        <Link to="/">Back to Home</Link>
-      </footer>
     </div>
   );
 }

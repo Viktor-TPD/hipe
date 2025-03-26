@@ -71,8 +71,8 @@ export default function Form({ fields, onSubmit }) {
 
         if (!FieldComponent) return null;
 
+        // Create props without the key
         const commonProps = {
-          key: field.name,
           name: field.name,
           label:
             field.label ||
@@ -91,6 +91,7 @@ export default function Form({ fields, onSubmit }) {
           case "number":
             return (
               <FieldComponent
+                key={field.name}
                 {...commonProps}
                 type={field.type}
                 placeholder={field.placeholder}
@@ -101,6 +102,7 @@ export default function Form({ fields, onSubmit }) {
           case "select":
             return (
               <FieldComponent
+                key={field.name}
                 {...commonProps}
                 options={field.options}
                 placeholder={field.placeholder}
@@ -108,7 +110,11 @@ export default function Form({ fields, onSubmit }) {
             );
           case "checkbox":
             return (
-              <FieldComponent {...commonProps} checked={formData[field.name]} />
+              <FieldComponent
+                key={field.name}
+                {...commonProps}
+                checked={formData[field.name]}
+              />
             );
           default:
             return null;
