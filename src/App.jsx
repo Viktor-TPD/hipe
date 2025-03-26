@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import InputBoxTest from "./components/InputBoxTest";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
@@ -88,6 +89,9 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+
+        {/* @todo TEST, REMOVE THIS LATER */}
+        <Route path="/input-test" element={<InputBoxTest />} />
 
         {/* Unauthorized access page */}
         <Route path="/unauthorized" element={<UnauthorizedPage />} />

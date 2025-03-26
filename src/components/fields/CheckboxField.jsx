@@ -1,14 +1,23 @@
+import {
+  FieldContainer,
+  FieldLabel,
+  OptionItem,
+  InputControl,
+} from "../../styles/formStyles";
+
 export default function CheckboxField({ name, label, checked, onChange }) {
   return (
-    <div className="form-field checkbox-field">
-      <label htmlFor={name}>{label}</label>
-      <input
-        type="checkbox"
-        id={name}
-        name={name}
-        checked={checked || false}
-        onChange={onChange}
-      />
-    </div>
+    <FieldContainer>
+      <OptionItem>
+        <InputControl
+          type="checkbox"
+          id={name}
+          name={name}
+          checked={checked || false}
+          onChange={onChange}
+        />
+        <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      </OptionItem>
+    </FieldContainer>
   );
 }
