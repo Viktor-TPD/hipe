@@ -7,7 +7,7 @@ import TestDev from "./models/TestDev.js";
 import StudentProfile from "./models/StudentProfile.js";
 import CompanyProfile from "./models/CompanyProfile.js";
 import Liked from "./models/Liked.js";
-import {clerkClient} from "@clerk/express";
+import { clerkClient } from "@clerk/express";
 
 const app = express();
 const port = 4000;
@@ -28,7 +28,6 @@ mongoose.connect(uri).then(
   })
 );
 
-
 app.post("/api/create-user", async (req, res) => {
   try {
     const { email, password, userType } = req.body;
@@ -37,15 +36,18 @@ app.post("/api/create-user", async (req, res) => {
       password,
       userType,
     });
-    
+
     await user.save();
-    
-    if (userType === 'student') {
-      res.redirect(`/api/create-studentProfile?id=${user._id}`);
-    } else {
-      res.redirect(`/create-companyProfile?id=${user._id}`);
-    }
+
+    const userJSON = {
+      _id: user._id,
+      email: user.email,
+      userType: user.userType,
+    };
+
     console.log("✅ User saved:", user);
+
+    res.send(JSON.stringify(userJSON));
   } catch (error) {
     console.error("❌ Error saving data:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -78,7 +80,7 @@ app.post("/api/create-studentProfile/:id", async (req, res) => {
       languages,
       portfolio,
     });
-    
+
     await student.save();
     console.log("✅ StudentProfile saved:", student);
   } catch (error) {
@@ -108,7 +110,7 @@ app.post("/api/create-companyProfile/:id", async (req, res) => {
       },
       internshipDetails,
     });
-    
+
     await company.save();
     console.log("✅ CompanyProfile saved:", company);
   } catch (error) {
@@ -121,12 +123,12 @@ app.post("/api/create-Liked", async (req, res) => {
   try {
     const { studentId, companyId, isPoked, date } = req.body;
     const liked = new Liked({
-      studentId, 
-      companyId, 
-      isPoked, 
-      date
+      studentId,
+      companyId,
+      isPoked,
+      date,
     });
-    
+
     await liked.save();
     console.log("✅ Liked saved:", liked);
   } catch (error) {
@@ -134,7 +136,6 @@ app.post("/api/create-Liked", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 // app.get("/", async (req, res) => {
 // const getUsers = await clerkClient.users.getUserList();
@@ -148,19 +149,14 @@ app.post("/api/create-Liked", async (req, res) => {
 
 // })
 
-
-
-
-
-
 //   const testDatabase = async () => {
-  //     try {
-    //       const user = new User({
-      //         email: 'viktor3@example.com',
-      //         password: 'hascsdhedpassword123',
-      //         userType: 'student',
-      //       });
-      //       await user.save();
+//     try {
+//       const user = new User({
+//         email: 'viktor3@example.com',
+//         password: 'hascsdhedpassword123',
+//         userType: 'student',
+//       });
+//       await user.save();
 //       console.log('✅ User created:', user);
 
 //       const studentProfile = new StudentProfile({

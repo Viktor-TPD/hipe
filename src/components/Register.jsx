@@ -44,6 +44,7 @@ export default function Register() {
       const userData = await response.json();
 
       // Log the user in
+      // @todo WE NEED TO HASH A PASSWORD DURING REGISTRATION
       login({
         userId: userData._id,
         email: userData.email,
@@ -53,6 +54,7 @@ export default function Register() {
       // Navigate to dashboard
       navigate("/dashboard");
     } catch (error) {
+      // @todo Better error handling for user?
       setError(error.message);
       console.error("Registration error:", error);
     }

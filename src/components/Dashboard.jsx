@@ -13,7 +13,7 @@ function Dashboard() {
     if (userType === "student") {
       return (
         <div className="student-dashboard">
-          <h2>Student Dashboard</h2>
+          <h2>{currentUser.userId}</h2>
           <p>Welcome to your student dashboard!</p>
           <ul>
             <li>View and update your student profile</li>
@@ -24,7 +24,7 @@ function Dashboard() {
     } else if (userType === "company") {
       return (
         <div className="company-dashboard">
-          <h2>Company Dashboard</h2>
+          <h2>{currentUser.userId}</h2>
           <p>Welcome to your company dashboard!</p>
           <ul>
             <li>Manage your company profile</li>
