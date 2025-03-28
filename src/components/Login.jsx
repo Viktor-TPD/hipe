@@ -7,12 +7,13 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (data) => {
     try {
       setError("");
+      setIsLoading(true);
 
-      // Call your MongoDB backend to authenticate the user
       const response = await fetch("http://localhost:4000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -22,32 +23,30 @@ export default function Login() {
         }),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Invalid email or password");
+        throw new Error(responseData.message || "Invalid email or password");
       }
 
-      // Get user data including MongoDB _id
-      const userData = await response.json();
-
-      // Store user data in context and localStorage
       login({
-        userId: userData._id,
-        email: userData.email,
-        userType: userData.userType,
+        userId: responseData._id,
+        email: responseData.email,
+        userType: responseData.userType,
       });
 
-      // Navigate to dashboard
       navigate("/dashboard");
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Failed to login. Please try again.");
       console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
+      <h2>Login to Your Account</h2>
 
       {error && <div className="error-message">{error}</div>}
 
@@ -71,7 +70,8 @@ export default function Login() {
           },
         ]}
         onSubmit={handleSubmit}
-        submitLabel="Login"
+        submitLabel={isLoading ? "Logging in..." : "Login"}
+        disabled={isLoading}
       />
 
       <div className="form-footer">
