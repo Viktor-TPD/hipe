@@ -26,7 +26,7 @@ function AppContent() {
           }
         />
 
-        {/* Login route */}
+        {/* Login route, eller homeroute */}
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/dashboard" /> : <Login />}
