@@ -6,6 +6,8 @@ import InputBoxTest from "./components/InputBoxTest";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
+import StudentProfile from "./components/StudentProfile";
+
 import "./App.css";
 
 function AppContent() {
@@ -50,11 +52,12 @@ function AppContent() {
 
         {/* Student-specific routes */}
         <Route
-          path="/student-profile"
+          path="create-studentProfile/"
           element={
             <ProtectedRoute requiredUserType="student">
-              <h1>Student Profile</h1>
-              {/* Student profile component would go here */}
+
+              <StudentProfile />
+             
             </ProtectedRoute>
           }
         />
@@ -63,7 +66,8 @@ function AppContent() {
           path="/browse-companies"
           element={
             <ProtectedRoute requiredUserType="student">
-              <h1>Browse Companies</h1>
+              <h1>Browse Companies page</h1>
+              <a href="">browse companies</a>
               {/* Browse companies component would go here */}
             </ProtectedRoute>
           }
@@ -71,7 +75,7 @@ function AppContent() {
 
         {/* Company-specific routes */}
         <Route
-          path="/company-profile"
+          path="/api/create-companyProfile"
           element={
             <ProtectedRoute requiredUserType="company">
               <h1>Company Profile</h1>
@@ -81,10 +85,20 @@ function AppContent() {
         />
 
         <Route
-          path="/post-internship"
+          path="browse-students"
           element={
             <ProtectedRoute requiredUserType="company">
-              <h1>Post Internship</h1>
+              <h1>Browse emong students here</h1>
+              {/* Post internship component would go here */}
+            </ProtectedRoute>
+          }
+          />
+
+        <Route
+          path="favourite-students"
+          element={
+            <ProtectedRoute requiredUserType="company">
+              <h1>Favourite students displayed here</h1>
               {/* Post internship component would go here */}
             </ProtectedRoute>
           }

@@ -15,6 +15,7 @@ function Dashboard() {
         <div className="student-dashboard">
           <h2>{currentUser.userId}</h2>
           <p>Welcome to your student dashboard!</p>
+          <a href="/create-studentProfile">create student</a>
           <ul>
             <li>View and update your student profile</li>
             <li>See what companies who've reached out :)</li>
