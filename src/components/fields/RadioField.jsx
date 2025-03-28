@@ -1,39 +1,43 @@
-// src/components/fields/RadioField.jsx
-import {
-  FieldContainer,
-  FieldLabel,
-  OptionsContainer,
-  OptionItem,
-  InputControl,
-} from "../../styles/formStyles";
-
 export default function RadioField({
   name,
   label,
   options = [],
   value,
   onChange,
+  onBlur,
   required = false,
+  error = null,
+  touched = false,
 }) {
+  const hasError = touched && error;
+
   return (
-    <FieldContainer>
-      <FieldLabel>{label}</FieldLabel>
-      <OptionsContainer>
+    <div className="field-container">
+      <label className="field-label">
+        {label}
+        {required && <span className="required-mark"> *</span>}
+      </label>
+      <div className="options-container">
         {options.map((option) => (
-          <OptionItem key={option.value}>
-            <InputControl
+          <div key={option.value} className="option-item">
+            <input
+              className="radio-input"
               type="radio"
               id={`${name}-${option.value}`}
               name={name}
               value={option.value}
               checked={value === option.value}
               onChange={onChange}
+              onBlur={onBlur}
               required={required && !value}
             />
-            <label htmlFor={`${name}-${option.value}`}>{option.label}</label>
-          </OptionItem>
+            <label className="option-label" htmlFor={`${name}-${option.value}`}>
+              {option.label}
+            </label>
+          </div>
         ))}
-      </OptionsContainer>
-    </FieldContainer>
+      </div>
+      {hasError && <div className="error-text">{error}</div>}
+    </div>
   );
 }

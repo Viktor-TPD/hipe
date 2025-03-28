@@ -63,9 +63,7 @@ export default function Register() {
   return (
     <div className="register-container">
       <h2>Create an Account</h2>
-
       {error && <div className="error-message">{error}</div>}
-
       <Form
         fields={[
           {
@@ -106,7 +104,6 @@ export default function Register() {
         onSubmit={handleSubmit}
         submitLabel="Register"
       />
-
       <div className="form-footer">
         <p>
           Already have an account?{" "}
@@ -115,7 +112,7 @@ export default function Register() {
           </button>
         </p>
       </div>
-      {/* @todo Remove this when done testing vvv  */}
+      {/* @todo Remove this when done testing vvv */}
       <div className="form-footer">
         <p>
           Trying out our buttons?{" "}
