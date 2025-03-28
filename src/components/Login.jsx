@@ -35,21 +35,18 @@ export default function Login() {
         userType: responseData.userType,
       });
 
-      console.log("this is my usertype " + responseData.userType)
+      console.log("this is my usertype " + responseData.userType);
 
       if (responseData.userType === "student") {
         console.log("hej");
-        navigate("/create-studentProfile");
-
+        navigate("/create-studentProfile/");
       } else if (responseData.userType === "company") {
-        navigate("/create-companyProfile") 
+        navigate("/create-companyProfile/");
       } else {
         console.log("wrong " + responseData);
       }
-      
-    // @TODO handle this error
-        
-      
+
+      // @TODO handle this error
     } catch (error) {
       setError(error.message || "Failed to login. Please try again.");
       console.error("Login error:", error);

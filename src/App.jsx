@@ -29,16 +29,10 @@ function AppContent() {
         />
 
         {/* Login route, eller homeroute */}
-        <Route
-          path="/login"
-          element={currentUser ? <Navigate to="/dashboard" /> : <Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
         {/* Register route */}
-        <Route
-          path="/register"
-          element={currentUser ? <Navigate to="/dashboard" /> : <Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected Dashboard route */}
         <Route
@@ -52,12 +46,10 @@ function AppContent() {
 
         {/* Student-specific routes */}
         <Route
-          path="create-studentProfile/"
+          path="/create-studentProfile"
           element={
             <ProtectedRoute requiredUserType="student">
-
               <StudentProfile />
-             
             </ProtectedRoute>
           }
         />
@@ -75,7 +67,7 @@ function AppContent() {
 
         {/* Company-specific routes */}
         <Route
-          path="/api/create-companyProfile"
+          path="/create-companyProfile"
           element={
             <ProtectedRoute requiredUserType="company">
               <h1>Company Profile</h1>
@@ -92,7 +84,7 @@ function AppContent() {
               {/* Post internship component would go here */}
             </ProtectedRoute>
           }
-          />
+        />
 
         <Route
           path="favourite-students"
