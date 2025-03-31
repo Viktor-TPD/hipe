@@ -10,6 +10,7 @@ const studentProfileSchema = new Schema({
   languages: [String], 
   portfolio: { type: String }, 
   linkedin: { type: String }, 
+  profilePicture:  { type: String, default: '' },
 }, { timestamps: true , collection: 'StudentProfile' });
 
 const StudentProfile = model('StudentProfile', studentProfileSchema);

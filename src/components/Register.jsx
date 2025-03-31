@@ -41,18 +41,25 @@ export default function Register() {
       }
 
       // Get the created user data with MongoDB _id
-      const userData = await response.json();
+      const responseData = await response.json();
 
       // Log the user in
-      // @todo WE NEED TO HASH A PASSWORD DURING REGISTRATION
       login({
-        userId: userData._id,
-        email: userData.email,
-        userType: userData.userType,
+        userId: responseData._id,
+        email: responseData.email,
+        userType: responseData.userType,
       });
 
-      // Navigate to dashboard
-      navigate("/dashboard");
+      console.log("this is my usertype " + responseData.userType);
+
+      if (responseData.userType === "student") {
+        console.log("hej");
+        navigate("/create-studentProfile/");
+      } else if (responseData.userType === "company") {
+        navigate("/create-companyProfile/");
+      } else {
+        console.log("wrong " + responseData);
+      }
     } catch (error) {
       // @todo Better error handling for user?
       setError(error.message);
