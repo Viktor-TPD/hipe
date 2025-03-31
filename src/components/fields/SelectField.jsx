@@ -14,6 +14,9 @@ export default function DropdownField({
   value, 
   onChange 
 }) {
+  const handleChange = (selectedOption) => {
+    onChange(selectedOption); // Skicka hela objektet vidare
+  };
   // Custom styles to match your existing form styling
   const customStyles = {
     control: (provided) => ({
@@ -45,7 +48,7 @@ export default function DropdownField({
         <Select
           name={name}
           options={options}
-          value={value}
+          value={options.find(option => option.value === value)}
           onChange={onChange}
           styles={customStyles}
           placeholder={`Select ${label}...`}

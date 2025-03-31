@@ -51,6 +51,8 @@ export default function Form({
   // };
 
   const handleChange = (e) => {
+    if (!e || !e.target) return;
+    
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,

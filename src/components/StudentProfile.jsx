@@ -14,6 +14,7 @@ export default function CreateStudentProfile() {
   const [courseId, setCourseId] = useState(""); 
 
   const handleRadioChange = (e) => {
+    
     setCourseId(e.target.value);
   };
 
@@ -25,8 +26,8 @@ export default function CreateStudentProfile() {
         body: JSON.stringify({
           name: data.name,
           courseId: data.courseId,
-          specialization: data.specialization,
-          software: data.software,
+          specialization: data.specialization1,
+          software: data.software1,
           portfolio: data.portfolio,
           linkedin: data.linkedin
         }),
@@ -81,20 +82,54 @@ export default function CreateStudentProfile() {
       ...fields,
       {
         type: "select",
-        name: "specialization",
+        name: "specialization1",
         label: "Inriktning 1",
         required: true,
         options: specializations,
         placeholder: "Välj från listan",
       },
+        {
+            type: "select",
+            name: "specialization2",
+            label: "Inriktning 2",
+            required: true,
+            options: specializations,
+            placeholder: "Välj från listan",
+            
+          },
+          {
+            type: "select",
+            name: "specialization3",
+            label: "Inriktning 3",
+            required: true,
+            options: specializations,
+            placeholder: "Välj från listan",
+            
+          },
       {
         type: "select",
-        name: "software",
+        name: "software1",
         label: "Designprogram 1",
         required: true,
         options: softwares,
         placeholder: "Välj från listan",
       },
+                {
+            type: "select",
+            name: "software2",
+            label: "Designprogram 2",
+            required: true,
+            options: softwares,
+            placeholder: "Välj från listan",
+          },
+          {
+            type: "select",
+            name: "software3",
+            label: "Designprogram 3",
+            required: true,
+            options: softwares,
+            placeholder: "Välj från listan",
+          },
     ];
   } else if (courseId === "wu") {
     fields = [
@@ -109,12 +144,28 @@ export default function CreateStudentProfile() {
       },
       {
         type: "select",
-        name: "languages",
+        name: "languages1",
         label: "Språk/Ramverk 1",
         required: true,
         options: languages,
         placeholder: "Välj från listan",
       },
+                {
+            type: "select",
+            name: "languages2",
+            label: "Språk/Ramverk 2",
+            required: true,
+            options: languages,
+            placeholder: "Välj från listan",
+          },
+          {
+            type: "select",
+            name: "languages3",
+            label: "Språk/Ramverk 3",
+            required: true,
+            options: languages,
+            placeholder: "Välj från listan",
+          },
     ];
   }
 
@@ -142,7 +193,6 @@ export default function CreateStudentProfile() {
       <h2>Redigera studentprofil</h2>
       {error && <div className="error-message">{error}</div>}
       <Form
-       
         fields={fields}
         onSubmit={handleSubmit}
         submitLabel="Register"
