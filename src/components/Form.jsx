@@ -4,7 +4,6 @@ import RadioField from "./fields/RadioField";
 import CheckboxField from "./fields/CheckboxField";
 import SelectField from "./fields/SelectField";
 
-
 const fieldComponents = {
   text: TextField,
   email: TextField,
