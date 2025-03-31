@@ -26,13 +26,37 @@ export default function Form({
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
+  // const handleChange = (e) => {
+  //   const { name, value, type, checked } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: type === "checkbox" ? checked : value,
+  //   });
+
+  //   // Mark field as touched
+  //   if (!touched[name]) {
+  //     setTouched({
+  //       ...touched,
+  //       [name]: true,
+  //     });
+  //   }
+
+  //   // Clear error when field is changed
+  //   if (errors[name]) {
+  //     setErrors({
+  //       ...errors,
+  //       [name]: null,
+  //     });
+  //   }
+  // };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
-
+  
     // Mark field as touched
     if (!touched[name]) {
       setTouched({
@@ -40,13 +64,19 @@ export default function Form({
         [name]: true,
       });
     }
-
+  
     // Clear error when field is changed
     if (errors[name]) {
       setErrors({
         ...errors,
         [name]: null,
       });
+    }
+  
+    // Call the field's custom onChange handler if provided
+    const field = fields.find(f => f.name === name);
+    if (field && field.onChange) {
+      field.onChange(e);
     }
   };
 
@@ -124,6 +154,8 @@ export default function Form({
 
     onSubmit(formData);
   };
+
+
 
   return (
     <form className="form" onSubmit={handleSubmit}>
