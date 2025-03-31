@@ -8,6 +8,7 @@ import TestDev from "./models/TestDev.js";
 import StudentProfile from "./models/StudentProfile.js";
 import CompanyProfile from "./models/CompanyProfile.js";
 import Liked from "./models/Liked.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 const app = express();
 const port = 4000;
@@ -199,9 +200,7 @@ app.post("/api/verify-session", async (req, res) => {
   }
 });
 
-// Optional: Add a logout endpoint (server-side)
 app.post("/api/logout", async (req, res) => {
-  // In a real app, you might invalidate tokens or sessions here
   res.status(200).json({ message: "Logged out successfully" });
 });
 
@@ -232,3 +231,6 @@ app.get("/api/user-profile/:userId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// Use the upload routes
+app.use(uploadRoutes);
