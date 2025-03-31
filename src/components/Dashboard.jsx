@@ -1,6 +1,6 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./../AuthContext";
-
 function Dashboard() {
   const { currentUser, logout } = useAuth();
   const userType = currentUser?.userType;
