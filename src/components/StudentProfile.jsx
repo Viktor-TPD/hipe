@@ -5,7 +5,6 @@ import Form from "./Form";
 import ProfileImageUpload from "./ProfilePictureUpload";
 
 // Import field data from a separate file (assuming they exist in FormData.js)
-// If not, you can define these arrays directly in this file
 import { specializations, softwares, languages, stacks } from "./FormData";
 
 export default function CreateStudentProfile() {
@@ -15,29 +14,51 @@ export default function CreateStudentProfile() {
   const [courseId, setCourseId] = useState("");
   const [profileImage, setProfileImage] = useState(null);
 
-  const handleSubmit = async (data) => {
+  const handleSubmitCreateStudentProfile = async (data) => {
     try {
+      console.log("handlesub 2");
+      // Create a base payload object
+      const payload = {
+        userId: currentUser._id,
+        name: data.name,
+        courseId: data.courseId,
+        portfolio: data.portfolio,
+        linkedin: data.linkedin,
+        profileImageUrl: profileImage,
+      };
+
+      // Add course-specific fields based on the selected course
+      if (data.courseId === "dd") {
+        payload.specialization = [
+          data.specialization1, 
+          data.specialization2, 
+          data.specialization3
+        ].filter(Boolean); // Filter out any undefined values
+        
+        payload.software = [
+          data.software1, 
+          data.software2, 
+          data.software3
+        ].filter(Boolean);
+      } else if (data.courseId === "wu") {
+        payload.stack = data.stack;
+        payload.languages = [
+          data.languages1, 
+          data.languages2, 
+          data.languages3
+        ].filter(Boolean);
+      }
+
+      console.log("Sending payload:", payload); // Debug log
+
       const response = await fetch(
-        `http://localhost:4000/api/create-studentProfile/${currentUser.userId}`,
+        `http://localhost:4000/api/create-studentProfile`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: data.name,
-            courseId: data.courseId,
-            specialization: data.specialization,
-            software: data.software,
-            stack: data.stack,
-            languages: data.languages,
-            portfolio: data.portfolio,
-            profileImageUrl: profileImage, // Add the image URL if it exists
-          }),
+          body: JSON.stringify(payload),
         }
       );
-
-      if (response.ok) {
-        const userData = response.status !== 204 ? await response.json() : null;
-      }
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -46,15 +67,18 @@ export default function CreateStudentProfile() {
         );
       }
 
-      // Get the created user data with MongoDB _id
-      const userData = await response.json();
+      // Parse the response data
+      let userData = null;
+      if (response.status !== 204) {
+        userData = await response.json();
+        console.log("Received response:", userData); // Debug log
+      }
 
       // Navigate to dashboard
       navigate("/dashboard");
     } catch (error) {
-      // @todo Better error handling for user?
       setError(error.message);
-      console.error("Registration error:", error);
+      console.error("Profile creation error:", error);
     }
   };
 
@@ -96,7 +120,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "specialization1",
         label: "Inriktning 1",
-        required: true,
+        required: false,
         options: specializations,
         placeholder: "Välj från listan",
       },
@@ -104,7 +128,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "specialization2",
         label: "Inriktning 2",
-        required: true,
+        required: false,
         options: specializations,
         placeholder: "Välj från listan",
       },
@@ -112,7 +136,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "specialization3",
         label: "Inriktning 3",
-        required: true,
+        required: false,
         options: specializations,
         placeholder: "Välj från listan",
       },
@@ -120,7 +144,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "software1",
         label: "Designprogram 1",
-        required: true,
+        required: false,
         options: softwares,
         placeholder: "Välj från listan",
       },
@@ -128,7 +152,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "software2",
         label: "Designprogram 2",
-        required: true,
+        required: false,
         options: softwares,
         placeholder: "Välj från listan",
       },
@@ -136,7 +160,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "software3",
         label: "Designprogram 3",
-        required: true,
+        required: false,
         options: softwares,
         placeholder: "Välj från listan",
       },
@@ -148,7 +172,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "stack",
         label: "Stack",
-        required: true,
+        required: false,
         options: stacks,
         placeholder: "Välj från listan",
       },
@@ -156,7 +180,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "languages1",
         label: "Språk/Ramverk 1",
-        required: true,
+        required: false,
         options: languages,
         placeholder: "Välj från listan",
       },
@@ -164,7 +188,7 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "languages2",
         label: "Språk/Ramverk 2",
-        required: true,
+        required: false,
         options: languages,
         placeholder: "Välj från listan",
       },
@@ -172,13 +196,14 @@ export default function CreateStudentProfile() {
         type: "select",
         name: "languages3",
         label: "Språk/Ramverk 3",
-        required: true,
+        required: false,
         options: languages,
         placeholder: "Välj från listan",
       },
     ];
   }
 
+  // Add common fields at the end
   fields = [
     ...fields,
     {
@@ -201,14 +226,13 @@ export default function CreateStudentProfile() {
     <div className="studentProfile-container">
       <h2>Redigera studentprofil</h2>
       {error && <div className="error-message">{error}</div>}
-      {/* Add the profile image upload component */}
       <ProfileImageUpload onImageUploaded={handleImageUploaded} />
       {profileImage && (
         <div className="success-message">
           Profile image uploaded successfully!
         </div>
       )}
-      <Form fields={fields} onSubmit={handleSubmit} submitLabel="Register" />
+      <Form fields={fields} onSubmit={handleSubmitCreateStudentProfile} submitLabel="Register" />
     </div>
   );
 }
