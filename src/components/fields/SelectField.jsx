@@ -13,27 +13,37 @@ export default function SelectField({
   touched = false,
   placeholder = "Select...",
 }) {
+  // Log incoming value to debug
+  console.log(`SelectField ${name} received value:`, value);
+
   const handleSelectChange = (selectedOption) => {
+    console.log(`${name} changed to:`, selectedOption);
+
     // Create a synthetic event object that matches what Form.jsx expects
     const changeEvent = {
       target: {
         name: name,
-        value: selectedOption ? selectedOption.value : "", // Extract just the value string
+        value: selectedOption, // Pass the entire object now, not just the value
         type: "select",
       },
     };
     onChange(changeEvent);
   };
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      minHeight: "30px",
+      minHeight: "36px",
       borderRadius: "4px",
-      border: "1px solid #ccc",
+      border: error ? "1px solid #e53e3e" : "1px solid #ccc",
+      boxShadow: error ? "0 0 0 1px #e53e3e" : provided.boxShadow,
+      "&:hover": {
+        border: error ? "1px solid #e53e3e" : "1px solid #a0aec0",
+      },
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: "0 6px",
+      padding: "0 8px",
     }),
     input: (provided) => ({
       ...provided,
@@ -44,11 +54,36 @@ export default function SelectField({
     }),
     indicatorsContainer: (provided) => ({
       ...provided,
-      height: "30px",
+      height: "36px",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#718096",
     }),
   };
-  // Find the current option object based on value
-  const currentValue = options.find((option) => option.value === value) || null;
+
+  // Handle different value formats
+  // If value is already a Select-compatible object with value and label properties
+  let currentValue = null;
+
+  if (
+    value &&
+    typeof value === "object" &&
+    "value" in value &&
+    "label" in value
+  ) {
+    currentValue = value;
+  }
+  // If value is a string, try to find the matching option
+  else if (value && typeof value === "string") {
+    currentValue = options.find((option) => option.value === value) || null;
+  }
+
+  const handleBlur = () => {
+    if (onBlur) {
+      onBlur({ target: { name } });
+    }
+  };
 
   const hasError = touched && error;
 
@@ -63,9 +98,11 @@ export default function SelectField({
         options={options}
         value={currentValue}
         onChange={handleSelectChange}
-        onBlur={onBlur ? () => onBlur({ target: { name } }) : undefined}
+        onBlur={handleBlur}
         placeholder={placeholder}
         className={hasError ? "select-error" : ""}
+        styles={customStyles}
+        isClearable={!required}
       />
       {hasError && <div className="error-text">{error}</div>}
     </div>

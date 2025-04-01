@@ -27,6 +27,7 @@ function Dashboard() {
         <div className="company-dashboard">
           <h2>{currentUser.userId}</h2>
           <p>Welcome to your company dashboard!</p>
+          <a href="/create-companyProfile">Edit Details :)))))</a>
           <ul>
             <li>Manage your company profile</li>
             <li>Post new internship opportunities</li>

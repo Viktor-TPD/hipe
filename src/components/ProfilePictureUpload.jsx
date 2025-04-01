@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 
-function ProfileImageUpload({ onImageUploaded }) {
+function ProfileImageUpload({ onImageUploaded, currentImage }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
-  const { currentUser } = useAuth();
+  const { currentUser, updateUserData } = useAuth();
+
+  // Initialize preview with currentImage if available
+  useEffect(() => {
+    if (currentImage) {
+      console.log("ProfileImageUpload received currentImage:", currentImage);
+      setPreview(currentImage);
+    }
+  }, [currentImage]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -50,6 +58,8 @@ function ProfileImageUpload({ onImageUploaded }) {
       const formData = new FormData();
       formData.append("profileImage", file);
 
+      console.log("Uploading image for user:", currentUser.userId);
+
       const response = await fetch(
         `http://localhost:4000/api/upload-profile-image/${currentUser.userId}`,
         {
@@ -65,6 +75,10 @@ function ProfileImageUpload({ onImageUploaded }) {
       }
 
       console.log("Profile image upload successful:", data.profileImageUrl);
+
+      updateUserData(data.profileImageUrl); // @todo Does this work?
+      // Set the preview with the new image URL
+      setPreview(data.profileImageUrl);
 
       // Call the callback with the image URL
       if (onImageUploaded) {
@@ -101,7 +115,7 @@ function ProfileImageUpload({ onImageUploaded }) {
 
         <div className="upload-actions">
           <label htmlFor="profileImage" className="select-button">
-            Select Image
+            {currentImage ? "Change Image" : "Select Image"}
           </label>
 
           <button

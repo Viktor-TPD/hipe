@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextField from "./fields/TextField";
 import RadioField from "./fields/RadioField";
 import CheckboxField from "./fields/CheckboxField";
@@ -20,34 +20,18 @@ export default function Form({
   onSubmit,
   submitLabel = "Submit",
   disabled = false,
+  initialValues = {},
 }) {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  // const handleChange = (e) => {
-  //   const { name, value, type, checked } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: type === "checkbox" ? checked : value,
-  //   });
-
-  //   // Mark field as touched
-  //   if (!touched[name]) {
-  //     setTouched({
-  //       ...touched,
-  //       [name]: true,
-  //     });
-  //   }
-
-  //   // Clear error when field is changed
-  //   if (errors[name]) {
-  //     setErrors({
-  //       ...errors,
-  //       [name]: null,
-  //     });
-  //   }
-  // };
+  // Initialize form data with initialValues when provided
+  useEffect(() => {
+    if (Object.keys(initialValues).length > 0) {
+      setFormData(initialValues);
+    }
+  }, [initialValues]);
 
   const handleChange = (e) => {
     // Return early if event or target is missing
@@ -55,11 +39,17 @@ export default function Form({
 
     const { name, value, type, checked } = e.target;
 
-    // Log the incoming data to debug
-    console.log(`Field ${name} changed:`, { value, type });
+    console.log(`Form handling change for ${name}:`, { value, type });
 
-    // Handle different input types appropriately
-    let processedValue = value;
+    // For select fields, we need to keep the entire object for react-select
+    let processedValue;
+    if (type === "select") {
+      // For react-select, keep the entire object
+      processedValue = value;
+    } else {
+      // For other field types
+      processedValue = value;
+    }
 
     // Update form data with the appropriate value based on input type
     setFormData({
@@ -89,6 +79,7 @@ export default function Form({
       field.onChange(e);
     }
   };
+
   const handleBlur = (e) => {
     const { name } = e.target;
 
@@ -112,7 +103,6 @@ export default function Form({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit handled");
 
     // Mark all fields as touched on submit
     const allTouched = fields.reduce((acc, field) => {
@@ -129,8 +119,11 @@ export default function Form({
         newErrors[field.name] = `${field.label || field.name} is required`;
       }
 
-      // Email validation
-      if (field.type === "email" && formData[field.name]) {
+      // Email validation for both regular and nested email fields
+      if (
+        (field.type === "email" || field.name.endsWith(".email")) &&
+        formData[field.name]
+      ) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData[field.name])) {
           newErrors[field.name] = "Please enter a valid email address";
@@ -162,7 +155,6 @@ export default function Form({
       return;
     }
 
-    console.log("almost there");
     onSubmit(formData);
   };
 

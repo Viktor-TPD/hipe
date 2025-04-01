@@ -6,11 +6,14 @@ import Footer from "./components/Footer";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
+
 import InputBoxTest from "./components/InputBoxTest";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
+
 import StudentProfile from "./components/StudentProfile";
+import CompanyProfile from "./components/CompanyProfile";
 
 import "./App.css";
 
@@ -71,13 +74,11 @@ function AppContent() {
             }
           />
 
-          {/* Company-specific routes */}
           <Route
             path="/create-companyProfile"
             element={
               <ProtectedRoute requiredUserType="company">
-                <h1>Company Profile</h1>
-                {/* Company profile component would go here */}
+                <CompanyProfile />
               </ProtectedRoute>
             }
           />

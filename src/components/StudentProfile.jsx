@@ -1,89 +1,212 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
 import ProfileImageUpload from "./ProfilePictureUpload";
 
-// Import field data from a separate file (assuming they exist in FormData.js)
+// Import field data from a separate file
 import { specializations, softwares, languages, stacks } from "./FormData";
 
-export default function CreateStudentProfile() {
+export default function StudentProfile() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [courseId, setCourseId] = useState("");
   const [profileImage, setProfileImage] = useState(null);
+  const [existingProfile, setExistingProfile] = useState(null);
+  const [initialFormData, setInitialFormData] = useState({});
 
-  const handleSubmitCreateStudentProfile = async (data) => {
+  // Fetch the user's existing profile when component mounts
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `http://localhost:4000/api/user-profile/${currentUser.userId}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const data = await response.json();
+
+        // If student profile exists, store it and set initial form values
+        if (data.profile && data.user.userType === "student") {
+          setExistingProfile(data.profile);
+
+          // Set courseId for conditional rendering
+          setCourseId(data.profile.courseId || "");
+
+          // Set profile image URL if it exists
+          if (data.profile.profileImageUrl) {
+            setProfileImage(data.profile.profileImageUrl);
+          }
+
+          // Create initial form data object from existing profile
+          const formData = {
+            name: data.profile.name || "",
+            courseId: data.profile.courseId || "",
+            portfolio: data.profile.portfolio || "",
+            linkedin: data.profile.linkedin || "",
+          };
+
+          console.log("Raw profile data:", data.profile);
+
+          // Add course-specific fields if courseId is set
+          if (data.profile.courseId === "dd") {
+            // Add specialization fields as objects for react-select
+            if (
+              data.profile.specialization &&
+              data.profile.specialization.length > 0
+            ) {
+              // Make sure we only use defined values and find matching option objects
+              data.profile.specialization
+                .filter(Boolean)
+                .forEach((spec, index) => {
+                  const option = specializations.find((s) => s.value === spec);
+                  if (option && index < 3) {
+                    formData[`specialization${index + 1}`] = option;
+                  }
+                });
+            }
+
+            // Add software fields as objects for react-select
+            if (data.profile.software && data.profile.software.length > 0) {
+              data.profile.software.filter(Boolean).forEach((sw, index) => {
+                const option = softwares.find((s) => s.value === sw);
+                if (option && index < 3) {
+                  formData[`software${index + 1}`] = option;
+                }
+              });
+            }
+          } else if (data.profile.courseId === "wu") {
+            // Add stack field as object for react-select
+            if (data.profile.stack) {
+              const stackOption = stacks.find(
+                (s) => s.value === data.profile.stack
+              );
+              if (stackOption) {
+                formData.stack = stackOption;
+              }
+            }
+
+            // Add languages fields as objects for react-select
+            if (data.profile.languages && data.profile.languages.length > 0) {
+              data.profile.languages.filter(Boolean).forEach((lang, index) => {
+                const option = languages.find((l) => l.value === lang);
+                if (option && index < 3) {
+                  formData[`languages${index + 1}`] = option;
+                }
+              });
+            }
+          }
+
+          console.log("Initialized form data:", formData);
+          setInitialFormData(formData);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        setError("Failed to load profile data. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (currentUser && currentUser.userId) {
+      fetchUserProfile();
+    } else {
+      setIsLoading(false);
+    }
+  }, [currentUser]);
+
+  const handleSubmitStudentProfile = async (data) => {
     try {
-      console.log("Raw form data:", JSON.stringify(data, null, 2));
-      console.log("Form data received:", data); // @debug - see what's in the data
+      setError("");
+      console.log(currentUser);
+      console.log("Form submission data:", data);
 
       // Create a base payload object
       const payload = {
         userId: currentUser.userId,
         name: data.name,
         courseId: data.courseId,
-        portfolio: data.portfolio,
-        linkedin: data.linkedin,
-        profileImageUrl: profileImage,
+        portfolio: data.portfolio || "",
+        linkedin: data.linkedin || "",
+        profileImageUrl: profileImage || "",
       };
-
-      console.log("Profile image URL:", profileImage); // @debug - check if profileImage has a value
 
       // Add course-specific fields based on the selected course
       if (data.courseId === "dd") {
         // Extract value property from select field objects
         payload.specialization = [
-          data.specialization1?.value || data.specialization1,
-          data.specialization2?.value || data.specialization2,
-          data.specialization3?.value || data.specialization3,
-        ].filter(Boolean); // Filter out any undefined values
+          // Handle both object format and string format
+          typeof data.specialization1 === "object"
+            ? data.specialization1?.value
+            : data.specialization1,
+          typeof data.specialization2 === "object"
+            ? data.specialization2?.value
+            : data.specialization2,
+          typeof data.specialization3 === "object"
+            ? data.specialization3?.value
+            : data.specialization3,
+        ].filter(Boolean); // Filter out any undefined or null values
 
         payload.software = [
-          data.software1?.value || data.software1,
-          data.software2?.value || data.software2,
-          data.software3?.value || data.software3,
+          typeof data.software1 === "object"
+            ? data.software1?.value
+            : data.software1,
+          typeof data.software2 === "object"
+            ? data.software2?.value
+            : data.software2,
+          typeof data.software3 === "object"
+            ? data.software3?.value
+            : data.software3,
         ].filter(Boolean);
       } else if (data.courseId === "wu") {
-        payload.stack = data.stack?.value || data.stack;
+        // Handle both object format and string format for stack
+        payload.stack =
+          typeof data.stack === "object" ? data.stack?.value : data.stack;
+
         payload.languages = [
-          data.languages1?.value || data.languages1,
-          data.languages2?.value || data.languages2,
-          data.languages3?.value || data.languages3,
+          typeof data.languages1 === "object"
+            ? data.languages1?.value
+            : data.languages1,
+          typeof data.languages2 === "object"
+            ? data.languages2?.value
+            : data.languages2,
+          typeof data.languages3 === "object"
+            ? data.languages3?.value
+            : data.languages3,
         ].filter(Boolean);
       }
 
-      console.log("Sending payload:", payload); // Debug log
+      console.log("Submitting payload:", payload);
 
-      const response = await fetch(
-        `http://localhost:4000/api/create-studentProfile/${currentUser.userId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      // Determine whether to create or update profile
+      const endpoint = existingProfile
+        ? `http://localhost:4000/api/update-studentProfile/${currentUser.userId}`
+        : `http://localhost:4000/api/create-studentProfile/${currentUser.userId}`;
+
+      const method = existingProfile ? "PUT" : "POST";
+
+      const response = await fetch(endpoint, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Failed to create student profile"
-        );
+        throw new Error(errorData.message || "Failed to save student profile");
       }
 
-      // Parse the response data
-      let userData = null;
-      if (response.status !== 204) {
-        userData = await response.json();
-        console.log("Received response:", userData); // Debug log
-      }
-
-      // Navigate to dashboard
+      // Navigate to dashboard on success
       navigate("/dashboard");
     } catch (error) {
       setError(error.message);
-      console.error("Profile creation error:", error);
+      console.error("Profile save error:", error);
     }
   };
 
@@ -227,20 +350,42 @@ export default function CreateStudentProfile() {
     },
   ];
 
+  if (isLoading) {
+    return <div className="loading">Loading profile data...</div>;
+  }
+
   return (
     <div className="studentProfile-container">
-      <h2>Redigera studentprofil</h2>
+      <h2>{existingProfile ? "Uppdatera din profil" : "Skapa din profil"}</h2>
+
       {error && <div className="error-message">{error}</div>}
-      <ProfileImageUpload onImageUploaded={handleImageUploaded} />
+
+      <ProfileImageUpload
+        onImageUploaded={handleImageUploaded}
+        currentImage={profileImage}
+      />
+
       {profileImage && (
-        <div className="success-message">
-          Profile image uploaded successfully!
+        <div className="profile-preview">
+          <h3>Din profilbild</h3>
+          <img
+            src={profileImage}
+            alt="Profile preview"
+            style={{
+              width: "150px",
+              height: "150px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
         </div>
       )}
+
       <Form
         fields={fields}
-        onSubmit={handleSubmitCreateStudentProfile}
-        submitLabel="Register"
+        onSubmit={handleSubmitStudentProfile}
+        submitLabel={existingProfile ? "Spara ändringar" : "Skapa profil"}
+        initialValues={initialFormData}
       />
     </div>
   );

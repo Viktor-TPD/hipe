@@ -3,15 +3,16 @@ import { Schema, model } from "mongoose";
 const companyProfileSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    companyName: { type: String, required: true }, //lägg till fält för hemsida
-    industry: { type: String, required: true }, // Bransch
-    description: { type: String }, // Nullable field maxtecken på 300?
+    companyName: { type: String, required: true },
+    industry: { type: String, required: true },
+    description: { type: String },
+    website: { type: String },
     contactPerson: {
       name: { type: String, required: true },
       email: { type: String, required: true },
     },
     profileImageUrl: { type: String, default: "" },
-    internshipDetails: { type: String }, // Internship (fritext)
+    internshipDetails: { type: String },
   },
   { timestamps: true, collection: "CompanyProfile" }
 );

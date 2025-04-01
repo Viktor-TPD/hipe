@@ -39,6 +39,7 @@ router.post(
         console.log("Found student profile:", studentProfile ? "Yes" : "No");
 
         if (!studentProfile) {
+          //@todo Delete this logic later, keep the url string sent to the user object
           // If profile doesn't exist, create a new one
           studentProfile = new StudentProfile({
             userId: userId,
@@ -47,12 +48,12 @@ router.post(
             profileImageUrl: profileImageUrl,
           });
 
-          await studentProfile.save();
-          console.log("Created new student profile with image");
+          // await studentProfile.save();
+          console.log("did not create a new student profile with image");
         } else {
           // Update existing profile
           studentProfile.profileImageUrl = profileImageUrl;
-          await studentProfile.save();
+          // await studentProfile.save();
           console.log("Updated existing student profile with image");
         }
       } else if (user.userType === "company") {
@@ -61,6 +62,7 @@ router.post(
         console.log("Found company profile:", companyProfile ? "Yes" : "No");
 
         if (!companyProfile) {
+          // @todo Delete this logic later, keep the url string sent to the user object
           // If profile doesn't exist, create a new one
           companyProfile = new CompanyProfile({
             userId: userId,
@@ -73,12 +75,12 @@ router.post(
             profileImageUrl: profileImageUrl,
           });
 
-          await companyProfile.save();
-          console.log("Created new company profile with image");
+          // await companyProfile.save();
+          console.log("did not create new company profile with image");
         } else {
           // Update existing profile
           companyProfile.profileImageUrl = profileImageUrl;
-          await companyProfile.save();
+          // await companyProfile.save();
           console.log("Updated existing company profile with image");
         }
       }
