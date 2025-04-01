@@ -108,6 +108,8 @@ app.post("/api/create-studentProfile/:id", async (req, res) => {
       stack,
       languages,
       portfolio,
+      linkedin,
+      profileImageUrl,
     } = req.body;
     const student = new StudentProfile({
       userId: id,
@@ -118,6 +120,8 @@ app.post("/api/create-studentProfile/:id", async (req, res) => {
       stack,
       languages,
       portfolio,
+      linkedin,
+      profileImageUrl,
     });
 
     await student.save();

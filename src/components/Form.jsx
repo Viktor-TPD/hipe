@@ -39,7 +39,7 @@ export default function Form({
 
     const { name, value, type, checked } = e.target;
 
-    console.log(`Form handling change for ${name}:`, { value, type });
+    // console.log(`Form handling change for ${name}:`, { value, type }); //@debug
 
     // For select fields, we need to keep the entire object for react-select
     let processedValue;

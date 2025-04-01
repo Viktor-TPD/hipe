@@ -6,7 +6,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
   const [preview, setPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
-  const { currentUser, updateUserData } = useAuth();
+  const { currentUser } = useAuth();
 
   // Initialize preview with currentImage if available
   useEffect(() => {
@@ -76,7 +76,6 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
 
       console.log("Profile image upload successful:", data.profileImageUrl);
 
-      updateUserData(data.profileImageUrl); // @todo Does this work?
       // Set the preview with the new image URL
       setPreview(data.profileImageUrl);
 

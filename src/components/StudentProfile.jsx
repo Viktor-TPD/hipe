@@ -124,8 +124,9 @@ export default function StudentProfile() {
   const handleSubmitStudentProfile = async (data) => {
     try {
       setError("");
-      console.log(currentUser);
       console.log("Form submission data:", data);
+      console.log("Current user:", currentUser);
+      console.log("Profile image URL:", profileImage);
 
       // Create a base payload object
       const payload = {
@@ -133,8 +134,8 @@ export default function StudentProfile() {
         name: data.name,
         courseId: data.courseId,
         portfolio: data.portfolio || "",
-        linkedin: data.linkedin || "",
-        profileImageUrl: profileImage || "",
+        linkedin: data.linkedin || "", // Ensure linkedin is always included
+        profileImageUrl: profileImage || "", // Ensure profileImageUrl is always included
       };
 
       // Add course-specific fields based on the selected course
@@ -201,6 +202,9 @@ export default function StudentProfile() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to save student profile");
       }
+
+      // Show success message
+      alert("Profile saved successfully!");
 
       // Navigate to dashboard on success
       navigate("/dashboard");
