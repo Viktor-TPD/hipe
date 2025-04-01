@@ -16,10 +16,12 @@ export default function CreateStudentProfile() {
 
   const handleSubmitCreateStudentProfile = async (data) => {
     try {
-      console.log("handlesub 2");
+      console.log("Raw form data:", JSON.stringify(data, null, 2));
+      console.log("Form data received:", data); // @debug - see what's in the data
+
       // Create a base payload object
       const payload = {
-        userId: currentUser._id,
+        userId: currentUser.userId,
         name: data.name,
         courseId: data.courseId,
         portfolio: data.portfolio,
@@ -27,32 +29,35 @@ export default function CreateStudentProfile() {
         profileImageUrl: profileImage,
       };
 
+      console.log("Profile image URL:", profileImage); // @debug - check if profileImage has a value
+
       // Add course-specific fields based on the selected course
       if (data.courseId === "dd") {
+        // Extract value property from select field objects
         payload.specialization = [
-          data.specialization1, 
-          data.specialization2, 
-          data.specialization3
+          data.specialization1?.value || data.specialization1,
+          data.specialization2?.value || data.specialization2,
+          data.specialization3?.value || data.specialization3,
         ].filter(Boolean); // Filter out any undefined values
-        
+
         payload.software = [
-          data.software1, 
-          data.software2, 
-          data.software3
+          data.software1?.value || data.software1,
+          data.software2?.value || data.software2,
+          data.software3?.value || data.software3,
         ].filter(Boolean);
       } else if (data.courseId === "wu") {
-        payload.stack = data.stack;
+        payload.stack = data.stack?.value || data.stack;
         payload.languages = [
-          data.languages1, 
-          data.languages2, 
-          data.languages3
+          data.languages1?.value || data.languages1,
+          data.languages2?.value || data.languages2,
+          data.languages3?.value || data.languages3,
         ].filter(Boolean);
       }
 
       console.log("Sending payload:", payload); // Debug log
 
       const response = await fetch(
-        `http://localhost:4000/api/create-studentProfile`,
+        `http://localhost:4000/api/create-studentProfile/${currentUser.userId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -232,7 +237,11 @@ export default function CreateStudentProfile() {
           Profile image uploaded successfully!
         </div>
       )}
-      <Form fields={fields} onSubmit={handleSubmitCreateStudentProfile} submitLabel="Register" />
+      <Form
+        fields={fields}
+        onSubmit={handleSubmitCreateStudentProfile}
+        submitLabel="Register"
+      />
     </div>
   );
 }

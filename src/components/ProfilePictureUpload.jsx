@@ -64,6 +64,8 @@ function ProfileImageUpload({ onImageUploaded }) {
         throw new Error(data.message || "Failed to upload image");
       }
 
+      console.log("Profile image upload successful:", data.profileImageUrl);
+
       // Call the callback with the image URL
       if (onImageUploaded) {
         onImageUploaded(data.profileImageUrl);

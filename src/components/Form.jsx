@@ -4,7 +4,6 @@ import RadioField from "./fields/RadioField";
 import CheckboxField from "./fields/CheckboxField";
 import SelectField from "./fields/SelectField";
 
-
 const fieldComponents = {
   text: TextField,
   email: TextField,
@@ -51,14 +50,23 @@ export default function Form({
   // };
 
   const handleChange = (e) => {
+    // Return early if event or target is missing
     if (!e || !e.target) return;
-    
+
     const { name, value, type, checked } = e.target;
+
+    // Log the incoming data to debug
+    console.log(`Field ${name} changed:`, { value, type });
+
+    // Handle different input types appropriately
+    let processedValue = value;
+
+    // Update form data with the appropriate value based on input type
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : processedValue,
     });
-  
+
     // Mark field as touched
     if (!touched[name]) {
       setTouched({
@@ -66,7 +74,7 @@ export default function Form({
         [name]: true,
       });
     }
-  
+
     // Clear error when field is changed
     if (errors[name]) {
       setErrors({
@@ -74,14 +82,13 @@ export default function Form({
         [name]: null,
       });
     }
-  
+
     // Call the field's custom onChange handler if provided
-    const field = fields.find(f => f.name === name);
+    const field = fields.find((f) => f.name === name);
     if (field && field.onChange) {
       field.onChange(e);
     }
   };
-
   const handleBlur = (e) => {
     const { name } = e.target;
 
@@ -105,7 +112,7 @@ export default function Form({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit handled")
+    console.log("submit handled");
 
     // Mark all fields as touched on submit
     const allTouched = fields.reduce((acc, field) => {
@@ -155,11 +162,9 @@ export default function Form({
       return;
     }
 
-    console.log("almost there")
+    console.log("almost there");
     onSubmit(formData);
   };
-
-
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -175,7 +180,6 @@ export default function Form({
           FieldComponent = fieldComponents.text;
         } else {
           FieldComponent = fieldComponents[field.type];
-          
         }
 
         if (!FieldComponent) return null;
