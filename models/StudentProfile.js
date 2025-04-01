@@ -7,7 +7,7 @@ const studentProfileSchema = new Schema(
     courseId: { type: String, required: true },
     specialization: [String],
     software: [String],
-    stack: [String],
+    stack: { type: String },
     languages: [String],
     portfolio: { type: String },
     linkedin: { type: String },

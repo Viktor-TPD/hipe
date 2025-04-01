@@ -4,6 +4,7 @@ import RadioField from "./fields/RadioField";
 import CheckboxField from "./fields/CheckboxField";
 import SelectField from "./fields/SelectField";
 
+
 const fieldComponents = {
   text: TextField,
   email: TextField,
@@ -104,6 +105,7 @@ export default function Form({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("submit handled")
 
     // Mark all fields as touched on submit
     const allTouched = fields.reduce((acc, field) => {
@@ -153,6 +155,7 @@ export default function Form({
       return;
     }
 
+    console.log("almost there")
     onSubmit(formData);
   };
 
@@ -172,6 +175,7 @@ export default function Form({
           FieldComponent = fieldComponents.text;
         } else {
           FieldComponent = fieldComponents[field.type];
+          
         }
 
         if (!FieldComponent) return null;
