@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
-import { NotificationProvider } from "./NotificationContext";
-import NotificationDisplay from "./components/NotificationDisplay";
+
 import { NotificationProvider } from "./NotificationContext";
 import NotificationDisplay from "./components/NotificationDisplay";
 
@@ -20,6 +19,7 @@ import StudentProfile from "./components/StudentProfile";
 import CompanyProfile from "./components/CompanyProfile";
 
 import BrowseStudents from "./components/BrowseStudents";
+import BrowseCompanies from "./components/BrowseCompanies";
 
 import "./App.css";
 
@@ -135,6 +135,7 @@ export default function App() {
     <AuthProvider>
       <NotificationProvider>
       <AppContent />
+      <NotificationDisplay /> 
       </NotificationProvider>
     </AuthProvider>
   );

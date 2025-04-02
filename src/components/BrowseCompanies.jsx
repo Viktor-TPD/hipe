@@ -8,7 +8,7 @@ export default function BrowseCompanies() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   
-  // Hämta alla studenter när komponenten laddas
+ 
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -49,8 +49,13 @@ export default function BrowseCompanies() {
       <h2>Bläddra bland Företag</h2>
         
       <div className="companies-grid">
-            <CompanyCard key={student._id} student={student} />
+
+      {companies.map((company) => (
+            <CompanyCard key={company._id} company={company} />
+          ))}
+
       </div>
     </div>
   );
+
 }

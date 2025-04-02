@@ -28,17 +28,17 @@ export default function CompanyCard({ company }) {
               <p>{company.desription}</p>
         </div>
       
-      <div className="student-links">
+      <div className="company-links">
       <h4>Bifogade Länkar</h4>
       
-        {student.linkedin && (
-            <a href={student.linkedin} target="_blank" rel="noopener noreferrer">
+        {company.linkedin && (
+            <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
         )}
 
-        {student.portfolio && (
-            <a href={student.portfolio} target="_blank" rel="noopener noreferrer">
+        {company.portfolio && (
+            <a href={company.portfolio} target="_blank" rel="noopener noreferrer">
             Portfolio
           </a>
         )}
