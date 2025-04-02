@@ -2,21 +2,22 @@ import React from "react";
 
 export default function CompanyCard({ company }) {
 
+    console.table(company);
   return (
-    <div className="company-card">
+      <div className="company-card">
       <div className="company-minimized">
         {company.profileImageUrl ? (
           <img 
             src={company.profileImageUrl} 
-            alt={`${company.name}`} 
+            alt={`${company.companyName}`} 
             className="company-image" 
           />
         ) : (
           <div className="company-image-placeholder">
-            {company.name.charAt(0)}
+            {company.companyName.charAt(0)}
           </div>
         )}
-        <h3>{company.name}</h3>
+        <h3>{company.companyName}</h3>
       
 
       </div>
