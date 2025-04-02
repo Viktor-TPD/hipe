@@ -184,11 +184,14 @@ export default function CompanyProfile() {
       placeholder: "https://example.com",
     },
     {
-      type: "text",
+      type: "textarea",
       name: "description",
       label: "Company Description",
       required: false,
       placeholder: "Briefly describe your company",
+      rows: 5,
+      maxLength: 200,
+      resizeable: false,
     },
     {
       type: "text",

@@ -3,6 +3,7 @@ import TextField from "./fields/TextField";
 import RadioField from "./fields/RadioField";
 import CheckboxField from "./fields/CheckboxField";
 import SelectField from "./fields/SelectField";
+import TextareaField from "./fields/TextAreaField";
 
 const fieldComponents = {
   text: TextField,
@@ -13,8 +14,8 @@ const fieldComponents = {
   radio: RadioField,
   checkbox: CheckboxField,
   select: SelectField,
+  textarea: TextareaField,
 };
-
 export default function Form({
   fields,
   onSubmit,
@@ -203,6 +204,17 @@ export default function Form({
                 type={field.type}
                 placeholder={field.placeholder}
                 autoComplete={field.autoComplete}
+              />
+            );
+          case "textarea":
+            return (
+              <FieldComponent
+                key={field.name}
+                {...commonProps}
+                placeholder={field.placeholder}
+                rows={field.rows || 4}
+                maxLength={field.maxLength}
+                resizable={field.resizable !== false}
               />
             );
           case "radio":
