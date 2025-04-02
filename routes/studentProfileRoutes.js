@@ -85,13 +85,6 @@ router.put("/update-studentProfile/:id", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-// Hämta alla studentprofiler
 router.get("/student-profiles", async (req, res) => {
   try {
     const studentProfiles = await StudentProfile.find().populate("userId", "email");
@@ -102,12 +95,11 @@ router.get("/student-profiles", async (req, res) => {
   }
 });
 
-// Hämta filtrerade studentprofiler
+
 router.get("/student-profiles/filter", async (req, res) => {
   try {
     const { courseId, specialization, software, languages, stack } = req.query;
     
-    // Bygg query-objekt baserat på filter
     let query = {};
     
     if (courseId) query.courseId = courseId;
@@ -139,10 +131,5 @@ router.get("/student-profiles/filter", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
-
-
 
 export default router;
