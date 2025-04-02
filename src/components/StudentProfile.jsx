@@ -47,6 +47,7 @@ export default function StudentProfile() {
           // Create initial form data object from existing profile
           const formData = {
             name: data.profile.name || "",
+            description: data.profile.description || "",
             courseId: data.profile.courseId || "",
             portfolio: data.profile.portfolio || "",
             linkedin: data.profile.linkedin || "",
@@ -132,6 +133,7 @@ export default function StudentProfile() {
       const payload = {
         userId: currentUser.userId,
         name: data.name,
+        description: data.description || "",
         courseId: data.courseId,
         portfolio: data.portfolio || "",
         linkedin: data.linkedin || "", // Ensure linkedin is always included
@@ -230,6 +232,15 @@ export default function StudentProfile() {
       label: "Fullständigt namn",
       required: true,
       placeholder: "Namn",
+    },
+    {
+      type: "textarea", // New description field
+      name: "description",
+      label: "Om mig",
+      required: false,
+      placeholder: "Berätta lite om dig själv...",
+      rows: 5,
+      maxLength: 200,
     },
     {
       type: "radio",

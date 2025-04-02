@@ -4,6 +4,7 @@ const studentProfileSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
+    description: { type: String },
     courseId: { type: String, required: true },
     specialization: [String],
     software: [String],

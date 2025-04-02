@@ -8,6 +8,7 @@ router.post("/create-studentProfile/:id", async (req, res) => {
     const { id } = req.params;
     const {
       name,
+      description,
       courseId,
       specialization,
       software,
@@ -20,6 +21,7 @@ router.post("/create-studentProfile/:id", async (req, res) => {
     const student = new StudentProfile({
       userId: id,
       name,
+      description,
       courseId,
       specialization,
       software,
@@ -44,6 +46,7 @@ router.put("/update-studentProfile/:id", async (req, res) => {
     const { id } = req.params;
     const {
       name,
+      description,
       courseId,
       specialization,
       software,
@@ -64,6 +67,8 @@ router.put("/update-studentProfile/:id", async (req, res) => {
     // Update the profile with new data
     existingProfile.name = name;
     existingProfile.courseId = courseId;
+
+    if (description !== undefined) existingProfile.description = description;
 
     // Only update these fields if they are provided in the request
     if (specialization) existingProfile.specialization = specialization;
@@ -87,7 +92,10 @@ router.put("/update-studentProfile/:id", async (req, res) => {
 
 router.get("/student-profiles", async (req, res) => {
   try {
-    const studentProfiles = await StudentProfile.find().populate("userId", "email");
+    const studentProfiles = await StudentProfile.find().populate(
+      "userId",
+      "email"
+    );
     res.status(200).json(studentProfiles);
   } catch (error) {
     console.error("❌ Error fetching student profiles:", error);
@@ -95,36 +103,36 @@ router.get("/student-profiles", async (req, res) => {
   }
 });
 
-
 router.get("/student-profiles/filter", async (req, res) => {
   try {
     const { courseId, specialization, software, languages, stack } = req.query;
-    
+
     let query = {};
-    
+
     if (courseId) query.courseId = courseId;
-    
+
     if (specialization) {
-      query.specialization = { $in: Array.isArray(specialization) 
-        ? specialization 
-        : [specialization] };
+      query.specialization = {
+        $in: Array.isArray(specialization) ? specialization : [specialization],
+      };
     }
-    
+
     if (software) {
-      query.software = { $in: Array.isArray(software) 
-        ? software 
-        : [software] };
+      query.software = { $in: Array.isArray(software) ? software : [software] };
     }
-    
+
     if (languages) {
-      query.languages = { $in: Array.isArray(languages) 
-        ? languages 
-        : [languages] };
+      query.languages = {
+        $in: Array.isArray(languages) ? languages : [languages],
+      };
     }
-    
+
     if (stack) query.stack = stack;
-    
-    const studentProfiles = await StudentProfile.find(query).populate("userId", "email");
+
+    const studentProfiles = await StudentProfile.find(query).populate(
+      "userId",
+      "email"
+    );
     res.status(200).json(studentProfiles);
   } catch (error) {
     console.error("❌ Error fetching filtered student profiles:", error);
