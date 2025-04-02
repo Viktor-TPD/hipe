@@ -52,7 +52,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       formData.append("profileImage", file);
 
       const response = await fetch(
-        `http://localhost:4000/api/upload-profile-image/${currentUser.userId}`,
+        `http://localhost:4000/api/v1/uploads/profile-image/${currentUser.userId}`,
         {
           method: "POST",
           body: formData,
@@ -65,9 +65,9 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
         throw new Error(data.message || "Failed to upload image");
       }
 
-      // Call the callback with the image URL
+      // Call the callback with the image URL (note the nested data structure)
       if (onImageUploaded) {
-        onImageUploaded(data.profileImageUrl);
+        onImageUploaded(data.data.profileImageUrl);
       }
 
       showNotification("Image uploaded successfully", "success");

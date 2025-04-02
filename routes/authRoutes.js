@@ -4,17 +4,18 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// User registration endpoint
-router.post("/create-user", async (req, res) => {
+// POST /api/v1/auth/register - Register a new user
+router.post("/register", async (req, res) => {
   try {
     const { email, password, userType } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User already exists with this email" });
+      return res.status(400).json({
+        success: false,
+        message: "User already exists with this email",
+      });
     }
 
     const saltRounds = 10;
@@ -34,15 +35,24 @@ router.post("/create-user", async (req, res) => {
       userType: user.userType,
     };
 
-    console.log("✅ User saved:", user);
+    console.log("✅ User registered:", user.email);
 
-    res.status(201).send(JSON.stringify(userJSON));
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      data: userJSON,
+    });
   } catch (error) {
-    console.error("❌ Error saving data:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("❌ Error registering user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 
+// POST /api/v1/auth/login - User login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,13 +60,19 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
     const userJSON = {
@@ -65,36 +81,62 @@ router.post("/login", async (req, res) => {
       userType: user.userType,
     };
 
-    res.status(200).json(userJSON);
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: userJSON,
+    });
   } catch (error) {
     console.error("❌ Login error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 
-router.post("/verify-session", async (req, res) => {
+// POST /api/v1/auth/verify - Verify user session
+router.post("/verify", async (req, res) => {
   try {
     const { userId } = req.body;
 
     if (!userId) {
-      return res.status(401).json({ message: "Invalid session" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid session",
+      });
     }
 
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    return res.status(200).json({ message: "Session valid" });
+    return res.status(200).json({
+      success: true,
+      message: "Session valid",
+    });
   } catch (error) {
     console.error("❌ Error verifying session:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 
+// POST /api/v1/auth/logout - User logout
 router.post("/logout", async (req, res) => {
-  res.status(200).json({ message: "Logged out successfully" });
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 });
 
 export default router;

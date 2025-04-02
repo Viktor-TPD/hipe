@@ -5,17 +5,16 @@ import likedRoutes from "./likedRoutes.js";
 import userProfileRoutes from "./userProfileRoutes.js";
 import uploadRoutes from "./uploadRoutes.js";
 
-
 const registerRoutes = (app) => {
-  const API_PREFIX = "/api";
+  const API_PREFIX = "/api/v1";
 
-  app.use(`${API_PREFIX}`, authRoutes);
-  app.use(`${API_PREFIX}`, studentProfileRoutes);
-  app.use(`${API_PREFIX}`, companyProfileRoutes);
-  app.use(`${API_PREFIX}`, likedRoutes);
-  app.use(`${API_PREFIX}`, userProfileRoutes);
-  app.use(uploadRoutes);
-  app.use('/api', studentProfileRoutes);
+  app.use(`${API_PREFIX}/auth`, authRoutes);
+
+  app.use(`${API_PREFIX}/students`, studentProfileRoutes);
+  app.use(`${API_PREFIX}/companies`, companyProfileRoutes);
+  app.use(`${API_PREFIX}/likes`, likedRoutes);
+  app.use(`${API_PREFIX}/users`, userProfileRoutes);
+  app.use(`${API_PREFIX}/uploads`, uploadRoutes);
 
   app.all(`${API_PREFIX}/*`, (req, res) => {
     res.status(404).json({
