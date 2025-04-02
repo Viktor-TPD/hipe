@@ -85,4 +85,64 @@ router.put("/update-studentProfile/:id", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+// Hämta alla studentprofiler
+router.get("/student-profiles", async (req, res) => {
+  try {
+    const studentProfiles = await StudentProfile.find().populate("userId", "email");
+    res.status(200).json(studentProfiles);
+  } catch (error) {
+    console.error("❌ Error fetching student profiles:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Hämta filtrerade studentprofiler
+router.get("/student-profiles/filter", async (req, res) => {
+  try {
+    const { courseId, specialization, software, languages, stack } = req.query;
+    
+    // Bygg query-objekt baserat på filter
+    let query = {};
+    
+    if (courseId) query.courseId = courseId;
+    
+    if (specialization) {
+      query.specialization = { $in: Array.isArray(specialization) 
+        ? specialization 
+        : [specialization] };
+    }
+    
+    if (software) {
+      query.software = { $in: Array.isArray(software) 
+        ? software 
+        : [software] };
+    }
+    
+    if (languages) {
+      query.languages = { $in: Array.isArray(languages) 
+        ? languages 
+        : [languages] };
+    }
+    
+    if (stack) query.stack = stack;
+    
+    const studentProfiles = await StudentProfile.find(query).populate("userId", "email");
+    res.status(200).json(studentProfiles);
+  } catch (error) {
+    console.error("❌ Error fetching filtered student profiles:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+
+
+
 export default router;

@@ -89,11 +89,11 @@ export default function StudentCard({ student }) {
           </a>
         )}
 
-        {User.email && (
+        {/* {User.email && (
             <a href={User.email} target="_blank" rel="noopener noreferrer">
             Mail
           </a>
-        )}
+        )} */}
 
         {/* ska vi bara skriva ut mailen? och isf behöver vi göra en query för att få tag i den i junktion table eller kan vi kalla på user.mail? */}
 

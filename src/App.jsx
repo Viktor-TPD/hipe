@@ -15,6 +15,8 @@ import UnauthorizedPage from "./UnauthorizedPage";
 import StudentProfile from "./components/StudentProfile";
 import CompanyProfile from "./components/CompanyProfile";
 
+import BrowseStudents from "./components/BrowseStudents";
+
 import "./App.css";
 
 function AppContent() {
@@ -84,11 +86,10 @@ function AppContent() {
           />
 
           <Route
-            path="browse-students"
+            path="/browse-students"
             element={
               <ProtectedRoute requiredUserType="company">
-                <h1>Browse emong students here</h1>
-                {/* Post internship component would go here */}
+                <BrowseStudents />
               </ProtectedRoute>
             }
           />
