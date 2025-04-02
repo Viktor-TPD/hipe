@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
+import Button from "./buttons/Button.jsx";
+
 function Header() {
   const { currentUser, logout } = useAuth();
 
@@ -30,6 +32,8 @@ function Header() {
                   <Link to="/favourite-students">Favorites</Link>
                 </>
               )}
+
+              <Button onClick={logout} variant="primary">Logga ut</Button>
 
               <button onClick={logout} className="logout-button">
                 Logout
