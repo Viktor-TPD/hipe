@@ -70,7 +70,11 @@ export default function StudentCard({ student }) {
 
       <div className="student-content">
 
-      
+      <div className="student-description">
+            <h4>Description</h4>
+              <p>{student.desription}</p>  
+        </div>
+
       {renderSpecificInfo()}
 
       

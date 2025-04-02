@@ -16,6 +16,8 @@ export default function BrowseStudents() {
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
+
+
   // Hämta alla studenter när komponenten laddas
   useEffect(() => {
     const fetchStudents = async () => {

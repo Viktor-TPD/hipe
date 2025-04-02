@@ -96,4 +96,20 @@ router.put("/update-companyProfile/:id", async (req, res) => {
   }
 });
 
+
+
+
+router.get("/company-profiles", async (req, res) => {
+  try {
+    const companyProfiles = await CompanyProfile.find().populate("userId", "email");
+    res.status(200).json(companyProfiles);
+  } catch (error) {
+    console.error("❌ Error fetching company profiles:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+
 export default router;

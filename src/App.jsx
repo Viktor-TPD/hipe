@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
+import { NotificationProvider } from "./NotificationContext";
+import NotificationDisplay from "./components/NotificationDisplay";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -69,9 +71,7 @@ function AppContent() {
             path="/browse-companies"
             element={
               <ProtectedRoute requiredUserType="student">
-                <h1>Browse Companies page</h1>
-                <a href="">browse companies</a>
-                {/* Browse companies component would go here */}
+                <BrowseCompanies />
               </ProtectedRoute>
             }
           />
@@ -131,7 +131,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
+      <NotificationProvider>
       <AppContent />
+      </NotificationProvider>
     </AuthProvider>
   );
 }
