@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
 import ProfileImageUpload from "./ProfilePictureUpload";
+import { useNotification } from "../NotificationContext";
 
 // Import field data from a separate file
 import { specializations, softwares, languages, stacks } from "./FormData";
@@ -16,6 +17,7 @@ export default function StudentProfile() {
   const [profileImage, setProfileImage] = useState(null);
   const [existingProfile, setExistingProfile] = useState(null);
   const [initialFormData, setInitialFormData] = useState({});
+  const { showNotification } = useNotification();
 
   // Fetch the user's existing profile when component mounts
   useEffect(() => {
@@ -136,8 +138,8 @@ export default function StudentProfile() {
         description: data.description || "",
         courseId: data.courseId,
         portfolio: data.portfolio || "",
-        linkedin: data.linkedin || "", // Ensure linkedin is always included
-        profileImageUrl: profileImage || "", // Ensure profileImageUrl is always included
+        linkedin: data.linkedin || "",
+        profileImageUrl: profileImage || "",
       };
 
       // Add course-specific fields based on the selected course
@@ -205,13 +207,18 @@ export default function StudentProfile() {
         throw new Error(errorData.message || "Failed to save student profile");
       }
 
-      // Show success message
-      alert("Profile saved successfully!");
+      // Show success message with the notification system
+      const successMessage = existingProfile
+        ? "Din profil har uppdaterats"
+        : "Din profil har skapats";
+
+      showNotification(successMessage, "success");
 
       // Navigate to dashboard on success
       navigate("/dashboard");
     } catch (error) {
       setError(error.message);
+      showNotification(error.message, "error");
       console.error("Profile save error:", error);
     }
   };

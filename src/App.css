@@ -260,3 +260,78 @@
   color: #718096;
   margin-top: 4px;
 }
+
+/* Notification Styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 280px;
+  max-width: 400px;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: white;
+  z-index: 1000;
+  animation: slide-in 0.3s ease-out;
+  transition: opacity 0.3s ease;
+}
+
+.notification-container.fade-out {
+  opacity: 0;
+}
+
+.notification-container.success {
+  background-color: #4caf50;
+}
+
+.notification-container.error {
+  background-color: #f44336;
+}
+
+.notification-container.info {
+  background-color: #2196f3;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+}
+
+.notification-icon {
+  margin-right: 12px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.notification-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
 import ProfileImageUpload from "./ProfilePictureUpload";
+import { useNotification } from "../NotificationContext";
 
 // Define industry options (you could move this to FormData.jsx)
 const industries = [
@@ -27,6 +28,7 @@ export default function CompanyProfile() {
   const [profileImage, setProfileImage] = useState(null);
   const [existingProfile, setExistingProfile] = useState(null);
   const [initialFormData, setInitialFormData] = useState({});
+  const { showNotification } = useNotification();
 
   // Extract the fetch function for reusability
   const fetchCompanyProfile = async () => {
@@ -144,13 +146,18 @@ export default function CompanyProfile() {
       // Refresh the profile data
       await fetchCompanyProfile();
 
-      // Show success message
-      alert("Company profile saved successfully!");
+      // Show success message with the notification system
+      const successMessage = existingProfile
+        ? "Company profile updated successfully"
+        : "Company profile created successfully";
+
+      showNotification(successMessage, "success");
 
       // Navigate to dashboard on success
       navigate("/dashboard");
     } catch (error) {
       setError(error.message);
+      showNotification(error.message, "error");
       console.error("Profile save error:", error);
     }
   };
