@@ -47,7 +47,7 @@ export default function StudentCard({ student }) {
 
   return (
     <div className="student-card">
-      <div className="student-header">
+      <div className="student-minimized">
         {student.profileImageUrl ? (
           <img 
             src={student.profileImageUrl} 
@@ -60,13 +60,16 @@ export default function StudentCard({ student }) {
           </div>
         )}
         <h3>{student.name}</h3>
-      </div>
       
       <div className="student-course">
         {student.courseId === "dd" ? "Digital Design" : "Webbutveckling"}
       </div>
 
       {/* Här ska finnas plas för like knapp */}
+      </div>
+
+      <div className="student-content">
+
       
       {renderSpecificInfo()}
 
@@ -81,19 +84,20 @@ export default function StudentCard({ student }) {
         )}
 
         {student.portfolio && (
-          <a href={student.portfolio} target="_blank" rel="noopener noreferrer">
+            <a href={student.portfolio} target="_blank" rel="noopener noreferrer">
             Portfolio
           </a>
         )}
 
         {User.email && (
-          <a href={User.email} target="_blank" rel="noopener noreferrer">
+            <a href={User.email} target="_blank" rel="noopener noreferrer">
             Mail
           </a>
         )}
 
         {/* ska vi bara skriva ut mailen? och isf behöver vi göra en query för att få tag i den i junktion table eller kan vi kalla på user.mail? */}
 
+        </div>
       </div>
     </div>
   );
