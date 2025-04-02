@@ -1,64 +1,55 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
+import { useNotification } from "../NotificationContext";
 
 function ProfileImageUpload({ onImageUploaded, currentImage }) {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState(null);
+  const [preview, setPreview] = useState(null);
   const { currentUser } = useAuth();
+  const { showNotification } = useNotification();
 
   // Initialize preview with currentImage if available
   useEffect(() => {
     if (currentImage) {
-      console.log("ProfileImageUpload received currentImage:", currentImage);
       setPreview(currentImage);
     }
   }, [currentImage]);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
-    setError(null);
 
     if (!selectedFile) return;
 
     // Check file type
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
     if (!allowedTypes.includes(selectedFile.type)) {
-      setError("Please select an image file (JPEG, PNG, or GIF)");
+      showNotification(
+        "Please select an image file (JPEG, PNG, or GIF)",
+        "error"
+      );
       return;
     }
 
-    // Check file size (max 2MB)
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setError("Image size should be less than 2MB");
+    // Check file size (max 5MB)
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      showNotification("Image size should be less than 5MB", "error");
       return;
     }
 
-    setFile(selectedFile);
+    // Create local preview immediately
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
 
-    // Create preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(selectedFile);
+    // Start upload process
+    uploadFile(selectedFile);
   };
 
-  const handleUpload = async () => {
-    if (!file) {
-      setError("Please select an image first");
-      return;
-    }
-
+  const uploadFile = async (file) => {
     setIsUploading(true);
-    setError(null);
 
     try {
       const formData = new FormData();
       formData.append("profileImage", file);
-
-      console.log("Uploading image for user:", currentUser.userId);
 
       const response = await fetch(
         `http://localhost:4000/api/upload-profile-image/${currentUser.userId}`,
@@ -74,18 +65,23 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
         throw new Error(data.message || "Failed to upload image");
       }
 
-      console.log("Profile image upload successful:", data.profileImageUrl);
-
-      // Set the preview with the new image URL
-      setPreview(data.profileImageUrl);
-
       // Call the callback with the image URL
       if (onImageUploaded) {
         onImageUploaded(data.profileImageUrl);
       }
+
+      showNotification("Image uploaded successfully", "success");
     } catch (error) {
       console.error("Error uploading image:", error);
-      setError(error.message || "Failed to upload image");
+      showNotification(error.message || "Failed to upload image", "error");
+
+      // If upload failed but we were updating an existing image, keep the old one
+      if (currentImage) {
+        setPreview(currentImage);
+      } else {
+        // If this was a new upload that failed, clear the preview
+        setPreview(null);
+      }
     } finally {
       setIsUploading(false);
     }
@@ -96,38 +92,32 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       <div className="upload-container">
         {preview ? (
           <div className="image-preview">
-            <img src={preview} alt="Preview" />
+            <img src={preview} alt="Profile preview" />
           </div>
         ) : (
           <div className="upload-placeholder">
-            <p>Select an image</p>
+            {isUploading ? <p>Uploading...</p> : <p>Select an image</p>}
           </div>
         )}
 
-        <input
-          type="file"
-          id="profileImage"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="file-input"
-        />
-
         <div className="upload-actions">
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="file-input"
+            disabled={isUploading}
+          />
           <label htmlFor="profileImage" className="select-button">
-            {currentImage ? "Change Image" : "Select Image"}
+            {isUploading
+              ? "Uploading..."
+              : currentImage
+              ? "Change Image"
+              : "Select Image"}
           </label>
-
-          <button
-            onClick={handleUpload}
-            disabled={!file || isUploading}
-            className="upload-button"
-          >
-            {isUploading ? "Uploading..." : "Upload"}
-          </button>
         </div>
       </div>
-
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }
