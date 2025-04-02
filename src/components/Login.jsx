@@ -14,7 +14,7 @@ export default function Login() {
       setError("");
       setIsLoading(true);
 
-      const response = await fetch("http://localhost:4000/api/login", {
+      const response = await fetch("http://localhost:4000/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -29,24 +29,25 @@ export default function Login() {
         throw new Error(responseData.message || "Invalid email or password");
       }
 
+      // Access user data from the data property
+      const userData = responseData.data;
+
       login({
-        userId: responseData._id,
-        email: responseData.email,
-        userType: responseData.userType,
+        userId: userData._id,
+        email: userData.email,
+        userType: userData.userType,
       });
 
-      console.log("this is my usertype " + responseData.userType);
+      console.log("this is my usertype " + userData.userType);
 
-      if (responseData.userType === "student") {
+      if (userData.userType === "student") {
         console.log("hej");
         navigate("/create-studentProfile/");
-      } else if (responseData.userType === "company") {
+      } else if (userData.userType === "company") {
         navigate("/create-companyProfile/");
       } else {
-        console.log("wrong " + responseData);
+        console.log("wrong user type: " + userData.userType);
       }
-
-      // @TODO handle this error
     } catch (error) {
       setError(error.message || "Failed to login. Please try again.");
       console.error("Login error:", error);

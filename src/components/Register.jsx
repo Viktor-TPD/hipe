@@ -7,10 +7,12 @@ export default function Register() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (data) => {
     try {
       setError("");
+      setIsLoading(true);
 
       // Validate password
       if (data.password.length < 6) {
@@ -24,53 +26,64 @@ export default function Register() {
         return;
       }
 
-      // Create new user in MongoDB
-      const response = await fetch("http://localhost:4000/api/create-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          userType: data.userType,
-        }),
-      });
+      // Create new user in MongoDB using the new RESTful endpoint
+      const response = await fetch(
+        "http://localhost:4000/api/v1/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+            userType: data.userType,
+          }),
+        }
+      );
+
+      const responseData = await response.json();
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
+        throw new Error(responseData.message || "Registration failed");
       }
 
-      // Get the created user data with MongoDB _id
-      const responseData = await response.json();
+      // Get the user data from the nested data property
+      const userData = responseData.data;
+
+      if (!userData) {
+        throw new Error("Invalid response format from server");
+      }
 
       // Log the user in
       login({
-        userId: responseData._id,
-        email: responseData.email,
-        userType: responseData.userType,
+        userId: userData._id,
+        email: userData.email,
+        userType: userData.userType,
       });
 
-      console.log("this is my usertype " + responseData.userType);
+      console.log("User type:", userData.userType);
 
-      if (responseData.userType === "student") {
-        console.log("hej");
+      // Navigate based on user type
+      if (userData.userType === "student") {
         navigate("/create-studentProfile/");
-      } else if (responseData.userType === "company") {
+      } else if (userData.userType === "company") {
         navigate("/create-companyProfile/");
       } else {
-        console.log("wrong " + responseData);
+        console.error("Unknown user type:", userData.userType);
       }
     } catch (error) {
-      // @todo Better error handling for user?
-      setError(error.message);
+      setError(error.message || "Registration failed. Please try again.");
       console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="register-container">
       <h2>Create an Account</h2>
+
       {error && <div className="error-message">{error}</div>}
+
       <Form
         fields={[
           {
@@ -109,8 +122,10 @@ export default function Register() {
           },
         ]}
         onSubmit={handleSubmit}
-        submitLabel="Register"
+        submitLabel={isLoading ? "Registering..." : "Register"}
+        disabled={isLoading}
       />
+
       <div className="form-footer">
         <p>
           Already have an account?{" "}
@@ -119,6 +134,7 @@ export default function Register() {
           </button>
         </p>
       </div>
+
       {/* @todo Remove this when done testing vvv */}
       <div className="form-footer">
         <p>

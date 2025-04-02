@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
 
     try {
       // Call your backend to verify the user session
-      const response = await fetch(`http://localhost:4000/api/verify-session`, {
+      const response = await fetch(`http://localhost:4000/api/v1/auth/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export function AuthProvider({ children }) {
       setAuthError(null);
 
       if (currentUser?.userId) {
-        await fetch(`http://localhost:4000/api/logout`, {
+        await fetch(`http://localhost:4000/api/v1/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

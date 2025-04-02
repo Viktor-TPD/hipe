@@ -8,7 +8,7 @@ export default function BrowseStudents() {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   // Filter states
   const [courseId, setCourseId] = useState("");
   const [selectedSpecializations, setSelectedSpecializations] = useState([]);
@@ -23,17 +23,24 @@ export default function BrowseStudents() {
     const fetchStudents = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:4000/api/student-profiles");
-        
-     
-        
+        const response = await fetch("http://localhost:4000/api/v1/students/");
+
         if (!response.ok) {
-            throw new Error("Failed to fetch student profiles");
+          throw new Error("Failed to fetch student profiles");
         }
-        
-        const data = await response.json();
-        setStudents(data);
-        setFilteredStudents(data);
+
+        const responseData = await response.json();
+
+        // Check if the response has the expected structure
+        if (!responseData.success || !responseData.data) {
+          throw new Error("Invalid response format from server");
+        }
+
+        // Extract student data from the response
+        const studentData = responseData.data;
+
+        setStudents(studentData);
+        setFilteredStudents(studentData);
       } catch (error) {
         console.error("Error fetching students:", error);
         setError("Failed to load student profiles. Please try again later.");
@@ -41,61 +48,77 @@ export default function BrowseStudents() {
         setIsLoading(false);
       }
     };
-    
+
     fetchStudents();
   }, []);
 
   // Uppdatera filtreringen när filter ändras
   useEffect(() => {
     applyFilters();
-  }, [courseId, selectedSpecializations, selectedSoftwares, selectedStack, selectedLanguages]);
+  }, [
+    courseId,
+    selectedSpecializations,
+    selectedSoftwares,
+    selectedStack,
+    selectedLanguages,
+  ]);
 
   // Funktion för att applicera filter
   const applyFilters = () => {
     let results = [...students];
-    
+
     // Filtrera på utbildning om vald
     if (courseId) {
-      results = results.filter(student => student.courseId === courseId);
+      results = results.filter((student) => student.courseId === courseId);
     }
-    
+
     // Filtrera på specialization om någon är vald och utbildningen är DD
-    if (selectedSpecializations.length > 0 && (courseId === "" || courseId === "dd")) {
-      results = results.filter(student => 
-        student.specialization && 
-        selectedSpecializations.some(spec => 
-          student.specialization.includes(spec.value)
-        )
+    if (
+      selectedSpecializations.length > 0 &&
+      (courseId === "" || courseId === "dd")
+    ) {
+      results = results.filter(
+        (student) =>
+          student.specialization &&
+          selectedSpecializations.some((spec) =>
+            student.specialization.includes(spec.value)
+          )
       );
     }
-    
+
     // Filtrera på software om någon är vald och utbildningen är DD
-    if (selectedSoftwares.length > 0 && (courseId === "" || courseId === "dd")) {
-      results = results.filter(student => 
-        student.software && 
-        selectedSoftwares.some(sw => 
-          student.software.includes(sw.value)
-        )
+    if (
+      selectedSoftwares.length > 0 &&
+      (courseId === "" || courseId === "dd")
+    ) {
+      results = results.filter(
+        (student) =>
+          student.software &&
+          selectedSoftwares.some((sw) => student.software.includes(sw.value))
       );
     }
-    
+
     // Filtrera på stack om vald och utbildningen är WU
     if (selectedStack && (courseId === "" || courseId === "wu")) {
-      results = results.filter(student => 
-        student.stack === selectedStack.value
+      results = results.filter(
+        (student) => student.stack === selectedStack.value
       );
     }
-    
+
     // Filtrera på languages om någon är vald och utbildningen är WU
-    if (selectedLanguages.length > 0 && (courseId === "" || courseId === "wu")) {
-      results = results.filter(student => 
-        student.languages && 
-        selectedLanguages.some(lang => 
-          student.languages.includes(lang.value)
-        )
+    if (
+      selectedLanguages.length > 0 &&
+      (courseId === "" || courseId === "wu")
+    ) {
+      results = results.filter(
+        (student) =>
+          student.languages &&
+          selectedLanguages.some((lang) =>
+            student.languages.includes(lang.value)
+          )
       );
     }
-    
+
     setFilteredStudents(results);
   };
 
@@ -112,7 +135,7 @@ export default function BrowseStudents() {
   const handleCourseChange = (e) => {
     const selectedCourse = e.target.value;
     setCourseId(selectedCourse);
-    
+
     // Återställ utbildningsspecifika filter när utbildning ändras
     if (selectedCourse === "dd") {
       setSelectedStack(null);
@@ -139,7 +162,7 @@ export default function BrowseStudents() {
               className="filter-select"
             />
           </div>
-          
+
           <div className="filter-group">
             <label>Designprogram</label>
             <Select
@@ -167,7 +190,7 @@ export default function BrowseStudents() {
               isClearable
             />
           </div>
-          
+
           <div className="filter-group">
             <label>Språk/Ramverk</label>
             <Select
@@ -196,10 +219,10 @@ export default function BrowseStudents() {
   return (
     <div className="browse-students-container">
       <h2>Bläddra bland studenter</h2>
-      
+
       <div className="filters-section">
         <h3>Filtrera studenter</h3>
-        
+
         <div className="filter-group">
           <label>Utbildning</label>
           <div className="radio-group">
@@ -235,18 +258,18 @@ export default function BrowseStudents() {
             </label>
           </div>
         </div>
-        
+
         {renderCourseSpecificFilters()}
-        
+
         <button className="reset-filters-button" onClick={resetFilters}>
           Återställ filter
         </button>
       </div>
-      
+
       <div className="students-count">
         Visar {filteredStudents.length} av {students.length} studenter
       </div>
-      
+
       <div className="students-grid">
         {filteredStudents.length > 0 ? (
           filteredStudents.map((student) => (
