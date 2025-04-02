@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
-
 import { NotificationProvider } from "./NotificationContext";
 import NotificationDisplay from "./components/NotificationDisplay";
 
@@ -134,8 +133,8 @@ export default function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
-      <AppContent />
-      <NotificationDisplay /> 
+        <AppContent />
+        <NotificationDisplay />
       </NotificationProvider>
     </AuthProvider>
   );
