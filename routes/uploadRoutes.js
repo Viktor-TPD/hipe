@@ -1,7 +1,5 @@
 import express from "express";
 import User from "../models/User.js";
-import StudentProfile from "../models/StudentProfile.js";
-import CompanyProfile from "../models/CompanyProfile.js";
 import upload, { uploadToS3 } from "../s3UploadImage.js";
 
 const router = express.Router();
