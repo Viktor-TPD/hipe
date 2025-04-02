@@ -134,7 +134,8 @@ export default function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
-      <AppContent />
+        <AppContent />
+        <NotificationDisplay />
       </NotificationProvider>
     </AuthProvider>
   );
