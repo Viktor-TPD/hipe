@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./../../AuthContext";
 import { useNotification } from "./../../NotificationContext";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "./../../config";
 
 /**
  * Custom hook for managing profile data (student or company)
@@ -29,13 +30,13 @@ export function useProfile({
 
   // Determine API endpoints based on profile type
   const endpoints = {
-    create: `http://localhost:4000/api/v1/${
+    create: `${API_BASE_URL}/api/v1/${
       profileType === "student" ? "students" : "companies"
     }`,
-    update: `http://localhost:4000/api/v1/${
+    update: `${API_BASE_URL}/api/v1/${
       profileType === "student" ? "students" : "companies"
     }/${currentUser?.userId}`,
-    fetch: `http://localhost:4000/api/v1/users/${currentUser?.userId}/profile`,
+    fetch: `${API_BASE_URL}/api/v1/users/${currentUser?.userId}/profile`,
   };
 
   // Fetch existing profile data
@@ -164,7 +165,7 @@ export function useProfile({
 
       // Upload image using new endpoint
       const response = await fetch(
-        `http://localhost:4000/api/v1/uploads/profile-image/${currentUser.userId}`,
+        `${API_BASE_URL}/api/v1/uploads/profile-image/${currentUser.userId}`,
         {
           method: "POST",
           body: formData,

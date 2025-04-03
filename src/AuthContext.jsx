@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { API_BASE_URL } from "./config";
 
 const AuthContext = createContext(null);
 
@@ -47,7 +48,7 @@ export function AuthProvider({ children }) {
 
     try {
       // Call your backend to verify the user session
-      const response = await fetch(`http://localhost:4000/api/v1/auth/verify`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +90,7 @@ export function AuthProvider({ children }) {
       setAuthError(null);
 
       if (currentUser?.userId) {
-        await fetch(`http://localhost:4000/api/v1/auth/logout`, {
+        await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

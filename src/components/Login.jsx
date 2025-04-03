@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
+import { API_BASE_URL } from "./../config";
 
 export default function Login() {
   const { login } = useAuth();
@@ -14,7 +15,7 @@ export default function Login() {
       setError("");
       setIsLoading(true);
 
-      const response = await fetch("http://localhost:4000/api/v1/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

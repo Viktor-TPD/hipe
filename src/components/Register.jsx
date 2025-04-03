@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
+import { API_BASE_URL } from "./../config";
 
 export default function Register() {
   const { login } = useAuth();
@@ -27,18 +28,15 @@ export default function Register() {
       }
 
       // Create new user in MongoDB using the new RESTful endpoint
-      const response = await fetch(
-        "http://localhost:4000/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-            userType: data.userType,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          userType: data.userType,
+        }),
+      });
 
       const responseData = await response.json();
 

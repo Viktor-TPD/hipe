@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNotification } from "../NotificationContext";
+import { API_BASE_URL } from "./../config";
 
 function ProfileImageUpload({ onImageUploaded, currentImage }) {
   const [isUploading, setIsUploading] = useState(false);
@@ -52,7 +53,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       formData.append("profileImage", file);
 
       const response = await fetch(
-        `http://localhost:4000/api/v1/uploads/profile-image/${currentUser.userId}`,
+        `${API_BASE_URL}/api/v1/uploads/profile-image/${currentUser.userId}`,
         {
           method: "POST",
           body: formData,

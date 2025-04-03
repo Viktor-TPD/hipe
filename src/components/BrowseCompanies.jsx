@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import CompanyCard from "./CompanyCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import Select from "react-select";
+import { API_BASE_URL } from "./../config";
 
 export default function BrowseCompanies() {
   const [companies, setCompanies] = useState([]);
@@ -12,7 +13,7 @@ export default function BrowseCompanies() {
     const fetchCompanies = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:4000/api/v1/companies");
+        const response = await fetch(`${API_BASE_URL}/api/v1/companies`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch company profiles");
