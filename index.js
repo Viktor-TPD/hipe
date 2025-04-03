@@ -14,10 +14,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8080; // Default to 8080 for Railway
 
-// Log startup information
-console.log(`Starting Express server...`);
-console.log(`Environment: ${process.env.NODE_ENV}`);
-console.log(`Port: ${port}`);
+// Detailed startup logging
+console.log(`
+╔══════════════════════════════════════════════════╗
+║             SERVER CONFIGURATION                 ║
+╚══════════════════════════════════════════════════╝
+Environment:      ${process.env.NODE_ENV || "Not set"}
+Port:             ${port}
+Current Directory: ${__dirname}
+Dist Directory:   ${path.join(__dirname, "dist")}
+`);
 
 // Request logger middleware - log all incoming requests
 app.use((req, res, next) => {
@@ -37,7 +43,7 @@ app.use(
 // Basic middleware
 app.use(express.json());
 
-// Define debugging routes BEFORE any other routes
+// Debug routes
 app.get("/debug-test", (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   res.setHeader("Content-Type", "application/json");
@@ -104,7 +110,12 @@ app.get("/db-check", (req, res) => {
 
 // Start server immediately - don't wait for DB
 const server = app.listen(port, "0.0.0.0", () => {
-  console.log(`✅ Server running on port ${port}`);
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║             SERVER STARTED SUCCESSFULLY        ║
+╚══════════════════════════════════════════════════╝
+✅ Server running on port ${port}
+`);
 });
 
 // Configure MongoDB connection
@@ -144,16 +155,41 @@ mongoose
       );
     });
 
-    // IMPORTANT: API routes come before static files
     console.log("⏳ Setting up static file serving...");
 
     // Serve static files AFTER registering API routes
-    app.use(express.static(path.join(__dirname, "../dist")));
+    app.use(express.static(path.join(__dirname, "dist")));
+
+    // Enhanced logging for static file serving
+    console.log(
+      `Static files will be served from: ${path.join(__dirname, "dist")}`
+    );
 
     // Catch-all route for React app - MUST be last
     app.get("*", (req, res) => {
       console.log(`Serving React app for path: ${req.path}`);
-      res.sendFile(path.join(__dirname, "../dist/index.html"));
+      const indexPath = path.join(__dirname, "dist", "index.html");
+      console.log(`Attempting to serve: ${indexPath}`);
+
+      // Add comprehensive error handling
+      res.sendFile(indexPath, (err) => {
+        if (err) {
+          console.error("Error serving index.html:", err);
+
+          // Log additional diagnostic information
+          const fileExists = require("fs").existsSync(indexPath);
+          console.log(`Index file exists: ${fileExists}`);
+
+          // More detailed error response
+          res.status(500).send(`
+            Error loading application. 
+            Possible causes:
+            - Build not completed
+            - Incorrect dist directory
+            - File permissions issue
+          `);
+        }
+      });
     });
   })
   .catch((error) => {
@@ -169,3 +205,5 @@ process.on("unhandledRejection", (error) => {
 process.on("uncaughtException", (error) => {
   console.error("❌ Uncaught Exception:", error);
 });
+
+export default app;
