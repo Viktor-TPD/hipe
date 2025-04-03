@@ -2,7 +2,13 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import registerRoutes from "./routes/index.js";
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -16,17 +22,24 @@ const envPassword = process.env.DB_PASSWORD;
 const envConnectionString = process.env.DB_CON;
 const uri = `mongodb+srv://${envUser}:${envPassword}${envConnectionString}`;
 
-console.log(uri);
-
 mongoose
   .connect(uri)
   .then(() => {
     console.log("✅ Connected to MongoDB successfully");
 
+    // Register API routes
     registerRoutes(app);
 
+    // Serve static files from the React app build directory
+    app.use(express.static(path.join(__dirname, "../dist")));
+
+    // For any request that doesn't match an API route, send the React app
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../dist/index.html"));
+    });
+
     app.listen(port, () => {
-      console.log(`✅ Perspiration API running on port ${port}`);
+      console.log(`✅ API running on port ${port}`);
     });
   })
   .catch((error) => {

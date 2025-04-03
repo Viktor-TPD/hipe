@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import StudentCard from "./StudentCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import Select from "react-select";
+import { API_BASE_URL } from "./config";
 
 export default function BrowseStudents() {
   const [students, setStudents] = useState([]);
@@ -16,14 +17,12 @@ export default function BrowseStudents() {
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-
-
   // Hämta alla studenter när komponenten laddas
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:4000/api/v1/students/");
+        const response = await fetch(`${API_BASE_URL}/api/v1/students/`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch student profiles");

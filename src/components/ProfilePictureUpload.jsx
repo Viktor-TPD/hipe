@@ -52,7 +52,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       formData.append("profileImage", file);
 
       const response = await fetch(
-        `http://localhost:4000/api/v1/uploads/profile-image/${currentUser.userId}`,
+        `${API_BASE_URL}/api/v1/uploads/profile-image/${currentUser.userId}`,
         {
           method: "POST",
           body: formData,

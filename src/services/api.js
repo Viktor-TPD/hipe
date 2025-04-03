@@ -2,7 +2,11 @@
  * API Service for interacting with the backend
  */
 
-const API_BASE_URL = "http://localhost:4000/api/v1";
+// Dynamic base URL that works in both development and production
+const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "/api/v1" // In production, use relative path (same origin)
+    : "http://localhost:4000/api/v1"; // In development, use localhost
 
 async function fetchApi(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -146,9 +150,13 @@ export const likesApi = {
 // Upload API endpoints
 export const uploadApi = {
   uploadProfileImage: (userId, formData) => {
-    return fetch(`${API_BASE_URL}/uploads/profile-image/${userId}`, {
+    // For file uploads, we need the full URL
+    const uploadUrl = `${API_BASE_URL}/uploads/profile-image/${userId}`;
+
+    return fetch(uploadUrl, {
       method: "POST",
       body: formData,
+      // No Content-Type header for FormData - browser sets it with boundary
     }).then((response) => {
       if (!response.ok) {
         return response.json().then((err) => {
