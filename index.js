@@ -10,23 +10,15 @@ import registerRoutes from "./routes/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Initialize Express app
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Configure middleware
-app.use(express.json());
+// Very first routes - health checks before any middleware
+app.get("/test", (req, res) => {
+  res.send("Test route works!");
+});
 
-// Configure CORS middleware
-app.use(
-  cors({
-    origin: "*", // Allow all origins temporarily for debugging
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// Health check endpoints that don't depend on database connectivity
 app.get("/health", (req, res) => {
   res.setHeader(
     "Cache-Control",
@@ -51,17 +43,21 @@ app.get("/api/v1/health", (req, res) => {
     environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
     message: "API is running",
-    path: req.path,
-    headers: req.headers,
   });
 });
 
-// Diagnostic endpoint for MongoDB connection status
+// Then configure middleware
+app.use(express.json());
+app.use(
+  cors({
+    origin: "*", // Allow all origins for debugging
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Database status endpoint
 app.get("/api/v1/db-status", (req, res) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
   const readyState = mongoose.connection.readyState;
   const stateMap = {
     0: "disconnected",
@@ -84,7 +80,12 @@ app.get("/api/v1/db-status", (req, res) => {
   });
 });
 
-// Database connection
+// Start the server before connecting to MongoDB
+const server = app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
+});
+
+// MongoDB connection
 const envUser = process.env.DB_USER;
 const envPassword = process.env.DB_PASSWORD;
 const envConnectionString = process.env.DB_CON;
@@ -92,46 +93,38 @@ const uri = `mongodb+srv://${envUser}:${envPassword}${envConnectionString}`;
 
 console.log("⏳ Connecting to MongoDB...");
 
-// Start server first, then connect to database
-const server = app.listen(port, () => {
-  console.log(`✅ API server running on port ${port}`);
-});
-
-// Connect to MongoDB
 mongoose
   .connect(uri)
   .then(() => {
     console.log("✅ Connected to MongoDB successfully");
 
-    // Register API routes
-    registerRoutes(app);
-
-    // Direct test route after route registration
+    // Direct test route
     app.get("/api/v1/direct-test", (req, res) => {
       res.json({ message: "Direct test successful" });
     });
 
-    // Serve static files from the React app build directory
+    // Register API routes
+    registerRoutes(app);
+
+    // After API routes, serve static files
     app.use(express.static(path.join(__dirname, "../dist")));
 
-    // For any request that doesn't match an API route, send the React app
+    // Last: catch-all route for the React app
     app.get("*", (req, res) => {
       res.sendFile(path.join(__dirname, "../dist/index.html"));
     });
   })
   .catch((error) => {
     console.error("❌ MongoDB connection error:", error);
-    console.error(
-      "Connection URI format (without credentials):",
-      uri.replace(envUser, "***").replace(envPassword, "***")
-    );
 
-    // Add a route to notify about the database being unavailable
+    // Create a special route to indicate DB error
     app.get("/api/v1/*", (req, res) => {
-      res.status(503).json({
-        error: "Database unavailable",
-        message: "The API is currently unable to connect to the database.",
-      });
+      if (!req.path.includes("health") && !req.path.includes("db-status")) {
+        res.status(503).json({
+          error: "Database unavailable",
+          message: "The API is currently unable to connect to the database.",
+        });
+      }
     });
   });
 
@@ -142,8 +135,8 @@ process.on("unhandledRejection", (error) => {
 
 process.on("uncaughtException", (error) => {
   console.error("❌ Uncaught Exception:", error);
-  // Avoid abrupt shutdown for non-critical errors
-  if (error.code === "ECONNREFUSED" || error.name === "MongoNetworkError") {
+  // For certain errors, we might want to keep the server running
+  if (error.name === "MongoNetworkError") {
     console.error(
       "Database connection issue detected - keeping server running"
     );
