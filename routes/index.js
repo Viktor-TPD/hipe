@@ -8,6 +8,14 @@ import uploadRoutes from "./uploadRoutes.js";
 const registerRoutes = (app) => {
   const API_PREFIX = "/api/v1";
 
+  app.get(`${API_PREFIX}/health`, (req, res) => {
+    res.status(200).json({
+      status: "ok",
+      environment: process.env.NODE_ENV,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   app.use(`${API_PREFIX}/auth`, authRoutes);
 
   app.use(`${API_PREFIX}/students`, studentProfileRoutes);
