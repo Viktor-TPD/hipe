@@ -7,6 +7,7 @@ import { useNotification } from "../NotificationContext";
 
 // Import field data from a separate file
 import { specializations, softwares, languages, stacks } from "./FormData";
+import RadioField from "./fields/RadioField";
 
 export default function StudentProfile() {
   const { currentUser } = useAuth();
@@ -228,11 +229,14 @@ export default function StudentProfile() {
   };
 
   const handleRadioChange = (e) => {
+    console.log(e)
     setCourseId(e.target.value);
+
   };
 
   // Start with the base fields that are always shown
   let fields = [
+    
     {
       type: "text",
       name: "name",
@@ -249,17 +253,17 @@ export default function StudentProfile() {
       rows: 5,
       maxLength: 200,
     },
-    {
-      type: "radio",
-      name: "courseId",
-      label: "Utbildning",
-      required: true,
-      options: [
-        { value: "wu", label: "WU" },
-        { value: "dd", label: "DD" },
-      ],
-      onChange: handleRadioChange, // Custom handler for radio changes
-    },
+    // {
+    //   type: "radio",
+    //   name: "courseId",
+    //   label: "Utbildning",
+    //   required: true,
+    //   options: [
+    //     { value: "wu", label: "WU" },
+    //     { value: "dd", label: "DD" },
+    //   ],
+    //   onChange: handleRadioChange, // Custom handler for radio changes
+    // },
   ];
 
   // Add course-specific fields based on courseId
@@ -381,6 +385,11 @@ export default function StudentProfile() {
       <h2>{existingProfile ? "Uppdatera din profil" : "Skapa din profil"}</h2>
 
       {error && <div className="error-message">{error}</div>}
+
+      <RadioField options={[
+        { value: "dd", label: "DD" },
+    { value: "wu", label: "WU" }
+  ]} onChange={handleRadioChange} name="courseId" className="courseId"></RadioField>
 
       <ProfileImageUpload
         onImageUploaded={handleImageUploaded}
