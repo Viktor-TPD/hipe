@@ -143,7 +143,6 @@ export default function StudentProfile() {
 
   };
 
-<<<<<<< HEAD
   // Define the form fields based on the selected course
   const getFormFields = () => {
     // Base fields that are always shown
@@ -176,39 +175,6 @@ export default function StudentProfile() {
         onChange: handleRadioChange,
       },
     ];
-=======
-  // Start with the base fields that are always shown
-  let fields = [
-    
-    {
-      type: "text",
-      name: "name",
-      label: "Fullständigt namn",
-      required: true,
-      placeholder: "Namn",
-    },
-    {
-      type: "textarea", // New description field
-      name: "description",
-      label: "Om mig",
-      required: false,
-      placeholder: "Berätta lite om dig själv...",
-      rows: 5,
-      maxLength: 200,
-    },
-    // {
-    //   type: "radio",
-    //   name: "courseId",
-    //   label: "Utbildning",
-    //   required: true,
-    //   options: [
-    //     { value: "wu", label: "WU" },
-    //     { value: "dd", label: "DD" },
-    //   ],
-    //   onChange: handleRadioChange, // Custom handler for radio changes
-    // },
-  ];
->>>>>>> julia-merge-dev
 
     // Add course-specific fields
     if (courseId === "dd") {
@@ -328,7 +294,6 @@ export default function StudentProfile() {
   }
 
   return (
-<<<<<<< HEAD
     <ProfileForm
       title={
         existingProfile ? "Update Student Profile" : "Create Student Profile"
@@ -342,45 +307,5 @@ export default function StudentProfile() {
       isUpdateMode={!!existingProfile}
       isLoading={isLoading}
     />
-=======
-    <div className="studentProfile-container">
-      <h2>{existingProfile ? "Uppdatera din profil" : "Skapa din profil"}</h2>
-
-      {error && <div className="error-message">{error}</div>}
-
-      <RadioField options={[
-        { value: "dd", label: "DD" },
-    { value: "wu", label: "WU" }
-  ]} onChange={handleRadioChange} name="courseId" className="courseId"></RadioField>
-
-      <ProfileImageUpload
-        onImageUploaded={handleImageUploaded}
-        currentImage={profileImage}
-      />
-
-      {profileImage && (
-        <div className="profile-preview">
-          <h3>Din profilbild</h3>
-          <img
-            src={profileImage}
-            alt="Profile preview"
-            style={{
-              width: "150px",
-              height: "150px",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
-        </div>
-      )}
-
-      <Form
-        fields={fields}
-        onSubmit={handleSubmitStudentProfile}
-        submitLabel={existingProfile ? "Spara ändringar" : "Skapa profil"}
-        initialValues={initialFormData}
-      />
-    </div>
->>>>>>> julia-merge-dev
   );
 }
