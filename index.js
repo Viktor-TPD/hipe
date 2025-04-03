@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import mongoose from "mongoose";
+import "dotenv/config";
 import registerRoutes from "./routes/index.js";
 
 // Get __dirname equivalent in ES modules
@@ -12,42 +12,20 @@ const __dirname = path.dirname(__filename);
 
 // Initialize Express app
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080; // Default to 8080 for Railway
 
-// Very first routes - health checks before any middleware
-app.get("/test", (req, res) => {
-  res.send("Test route works!");
+// Log startup information
+console.log(`Starting Express server...`);
+console.log(`Environment: ${process.env.NODE_ENV}`);
+console.log(`Port: ${port}`);
+
+// Request logger middleware - log all incoming requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
 });
 
-app.get("/health", (req, res) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.status(200).json({
-    status: "ok",
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-  });
-});
-
-app.get("/api/v1/health", (req, res) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.status(200).json({
-    status: "ok",
-    environment: process.env.NODE_ENV || "development",
-    timestamp: new Date().toISOString(),
-    message: "API is running",
-  });
-});
-
-// Then configure middleware
-app.use(express.json());
+// CORS configuration
 app.use(
   cors({
     origin: "*", // Allow all origins for debugging
@@ -56,76 +34,131 @@ app.use(
   })
 );
 
-// Database status endpoint
-app.get("/api/v1/db-status", (req, res) => {
+// Basic middleware
+app.use(express.json());
+
+// Define debugging routes BEFORE any other routes
+app.get("/debug-test", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Content-Type", "application/json");
+  res.send(
+    JSON.stringify(
+      {
+        message: "Debug endpoint working!",
+        timestamp: new Date().toISOString(),
+        headers: req.headers,
+        path: req.path,
+      },
+      null,
+      2
+    )
+  );
+});
+
+// Test route with parameterized URL to bypass caching
+app.get("/api-check/:random", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Content-Type", "application/json");
+  res.send(
+    JSON.stringify(
+      {
+        message: "API check successful",
+        random: req.params.random,
+        timestamp: new Date().toISOString(),
+      },
+      null,
+      2
+    )
+  );
+});
+
+// Check database connectivity
+app.get("/db-check", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Content-Type", "application/json");
+
   const readyState = mongoose.connection.readyState;
-  const stateMap = {
+  const statuses = {
     0: "disconnected",
     1: "connected",
     2: "connecting",
     3: "disconnecting",
-    99: "uninitialized",
   };
 
-  res.status(200).json({
-    mongoStatus: stateMap[readyState] || "unknown",
-    readyState: readyState,
-    env: {
-      NODE_ENV: process.env.NODE_ENV,
-      DB_USER_SET: !!process.env.DB_USER,
-      DB_PASSWORD_SET: !!process.env.DB_PASSWORD,
-      DB_CON_SET: !!process.env.DB_CON,
-      PORT: process.env.PORT || 4000,
-    },
-  });
+  res.send(
+    JSON.stringify(
+      {
+        dbStatus: statuses[readyState] || "unknown",
+        readyState: readyState,
+        dbConfig: {
+          userConfigured: !!process.env.DB_USER,
+          passwordConfigured: !!process.env.DB_PASSWORD,
+          connectionStringConfigured: !!process.env.DB_CON,
+        },
+      },
+      null,
+      2
+    )
+  );
 });
 
-// Start the server before connecting to MongoDB
-const server = app.listen(port, () => {
+// Start server immediately - don't wait for DB
+const server = app.listen(port, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${port}`);
 });
 
-// MongoDB connection
+// Configure MongoDB connection
 const envUser = process.env.DB_USER;
 const envPassword = process.env.DB_PASSWORD;
 const envConnectionString = process.env.DB_CON;
 const uri = `mongodb+srv://${envUser}:${envPassword}${envConnectionString}`;
 
-console.log("⏳ Connecting to MongoDB...");
+// Print a masked version of the connection string for debugging
+console.log(
+  `DB Connection String format: mongodb+srv://***:***${envConnectionString}`
+);
 
+// Connect to MongoDB
+console.log("⏳ Connecting to MongoDB...");
 mongoose
   .connect(uri)
   .then(() => {
     console.log("✅ Connected to MongoDB successfully");
 
-    // Direct test route
-    app.get("/api/v1/direct-test", (req, res) => {
-      res.json({ message: "Direct test successful" });
+    // Register API routes after DB connection
+    registerRoutes(app);
+    console.log("✅ API routes registered");
+
+    // Add API test endpoint
+    app.get("/api/v1/test", (req, res) => {
+      res.setHeader("Content-Type", "application/json");
+      res.send(
+        JSON.stringify(
+          {
+            message: "API routes registered successfully",
+            timestamp: new Date().toISOString(),
+          },
+          null,
+          2
+        )
+      );
     });
 
-    // Register API routes
-    registerRoutes(app);
+    // IMPORTANT: API routes come before static files
+    console.log("⏳ Setting up static file serving...");
 
-    // After API routes, serve static files
+    // Serve static files AFTER registering API routes
     app.use(express.static(path.join(__dirname, "../dist")));
 
-    // Last: catch-all route for the React app
+    // Catch-all route for React app - MUST be last
     app.get("*", (req, res) => {
+      console.log(`Serving React app for path: ${req.path}`);
       res.sendFile(path.join(__dirname, "../dist/index.html"));
     });
   })
   .catch((error) => {
-    console.error("❌ MongoDB connection error:", error);
-
-    // Create a special route to indicate DB error
-    app.get("/api/v1/*", (req, res) => {
-      if (!req.path.includes("health") && !req.path.includes("db-status")) {
-        res.status(503).json({
-          error: "Database unavailable",
-          message: "The API is currently unable to connect to the database.",
-        });
-      }
-    });
+    console.error("❌ MongoDB connection error:", error.message);
+    // Note: Keep server running despite DB connection failure
   });
 
 // Error handling
@@ -135,15 +168,4 @@ process.on("unhandledRejection", (error) => {
 
 process.on("uncaughtException", (error) => {
   console.error("❌ Uncaught Exception:", error);
-  // For certain errors, we might want to keep the server running
-  if (error.name === "MongoNetworkError") {
-    console.error(
-      "Database connection issue detected - keeping server running"
-    );
-  } else {
-    console.error("Critical error detected - shutting down");
-    server.close(() => {
-      process.exit(1);
-    });
-  }
 });
