@@ -112,7 +112,7 @@ app.get("/db-check", (req, res) => {
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(`
 ╔══════════════════════════════════════════════════╗
-║             SERVER STARTED SUCCESSFULLY        ║
+║             SERVER STARTED SUCCESSFULLY          ║
 ╚══════════════════════════════════════════════════╝
 ✅ Server running on port ${port}
 `);
