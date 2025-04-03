@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./../../AuthContext";
 import { useNotification } from "./../../NotificationContext";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL } from "./../../config";
 
 /**
  * Custom hook for managing profile data (student or company)

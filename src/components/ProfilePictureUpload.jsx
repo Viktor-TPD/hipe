@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNotification } from "../NotificationContext";
+import { API_BASE_URL } from "./../config";
 
 function ProfileImageUpload({ onImageUploaded, currentImage }) {
   const [isUploading, setIsUploading] = useState(false);

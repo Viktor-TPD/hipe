@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CompanyCard from "./CompanyCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import Select from "react-select";
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL } from "./../config";
 
 export default function BrowseCompanies() {
   const [companies, setCompanies] = useState([]);
