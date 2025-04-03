@@ -1,4 +1,6 @@
 import React from 'react';
+import './../../styles/button.css';
+import './../../styles/styles.css';
 
 const Button = ({ 
   children, 
@@ -6,7 +8,7 @@ const Button = ({
   type = 'button', 
   className = '', 
   disabled = false,
-  variant = 'primary' // primary, secondary, danger, outline
+  variant = 'primary' // primary, filter, linkNavbar
 }) => {
   return (
     <button
