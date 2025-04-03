@@ -35,9 +35,8 @@ function Header() {
 
               <Button onClick={logout} variant="primary">Logga ut</Button>
 
-              <button onClick={logout} className="logout-button">
-                Logout
-              </button>
+              <Button variant="filter">Filter</Button>
+              <Button variant="linkNavbar">Hem</Button>
             </>
           ) : (
             <>
