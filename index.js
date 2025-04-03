@@ -27,6 +27,24 @@ app.use(
   })
 );
 
+// Add a direct health check route before anything else
+app.get("/api/v1/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
+    message: "API is running",
+  });
+});
+
+// Add a root level endpoint to verify the server is running
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Server is running",
+  });
+});
+
 const envUser = process.env.DB_USER;
 const envPassword = process.env.DB_PASSWORD;
 const envConnectionString = process.env.DB_CON;
