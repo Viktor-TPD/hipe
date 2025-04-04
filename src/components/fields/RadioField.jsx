@@ -19,12 +19,7 @@ export default function RadioField({
 
   return (
     <div className="field-container">
-      {label && (
-        <label className="field-label">
-          {label}
-          {required && <span className="required-mark"> *</span>}
-        </label>
-      )}
+      
       <div className="options-container">
         {options.map((option) => (
           <div key={option.value} className="option-item">

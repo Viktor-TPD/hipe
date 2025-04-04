@@ -4,4 +4,11 @@
     --bg-white: #FFFFFF;
     --bg-black: #121212;
     --grey-800: #4F4F4F;
+
+    --button-gap-S: 0.5rem;
+    --spacing-padding-XL: 2rem;
+}
+
+body {
+
 }
