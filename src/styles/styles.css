@@ -1,7 +1,13 @@
 :root {
-    --yrgo-primary:#E51236;
-    --yrgo-secondary:#001A52;
-    --bg-white: #FFFFFF;
-    --bg-black: #121212;
-    --grey-800: #4F4F4F;
+  --yrgo-primary: #e51236;
+  --yrgo-secondary: #001a52;
+  --bg-white: #ffffff;
+  --bg-black: #121212;
+  --grey-800: #4f4f4f;
+
+  --button-gap-S: 0.5rem;
+  --spacing-padding-XL: 2rem;
+
+  /* VIKTORS GREJER */
+  --spacing-padding-4XL: 8rem;
 }

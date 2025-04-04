@@ -1,44 +1,8 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .profile-image-upload {
@@ -116,17 +80,25 @@
   text-align: center;
 }
 
-/* Header Styles */
+/**
+/* ~ HEADER ~
+**/
+
+.logo-item img {
+  width: 99px;
+  height: 24px;
+}
+
+.logo:hover {
+}
+
 .app-header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
+  background-color: var(--bg-white);
+  width: 100vw;
 }
 
 .header-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  padding: var(--spacing-padding-XL) var(--spacing-padding-4XL);
   display: flex;
   justify-content: space-between;
   align-items: center;

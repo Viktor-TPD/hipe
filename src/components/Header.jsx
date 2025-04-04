@@ -6,15 +6,27 @@ import Button from "./buttons/Button.jsx";
 function Header() {
   const { currentUser, logout } = useAuth();
 
+  function Logo() {
+    return (
+      <picture className="logo-item">
+        <source
+          media="(max-width: 768px)"
+          srcSet="./../../public/assets/images/yrgo-logo-mobile.svg"
+        />
+        <img
+          src="./../../public/assets/images/yrgo-logo-desktop.svg"
+          alt="Logo"
+        />
+      </picture>
+    );
+  }
+
   return (
     <header className="app-header">
       <div className="header-container">
         <div className="logo">
-          <Link to="/">
-            <h1>Hipe</h1>
-          </Link>
+          <Logo />
         </div>
-
         <nav className="main-nav">
           {currentUser ? (
             <>
@@ -33,15 +45,19 @@ function Header() {
                 </>
               )}
 
-              <Button onClick={logout} variant="primary">Logga ut</Button>
+              <Button onClick={logout} variant="primary">
+                Logga ut
+              </Button>
 
               <Button variant="filter">Filter</Button>
               <Button variant="linkNavbar">Hem</Button>
             </>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
+              <Link to="/register">Registrering</Link>
+              <Link to="/login">
+                <Button variant="primary">Logga In</Button>
+              </Link>
             </>
           )}
         </nav>
