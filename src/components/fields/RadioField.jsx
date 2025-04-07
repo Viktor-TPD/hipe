@@ -7,6 +7,7 @@ export default function RadioField({
   label,
   options = [],
   value = 'dd',
+  // defaultValue = 'dd',
   onChange,
   checked = true,
   onBlur,
@@ -16,7 +17,7 @@ export default function RadioField({
 
 }) {
   const hasError = touched && error;
-
+console.table(value)
   return (
     <div className="field-container">
       
@@ -28,7 +29,7 @@ export default function RadioField({
               type="radio"
               id={`${name}-${option.value}`}
               name={name}
-              value={option.value}
+              value={option.value || defaultValue}
               checked={value === option.value}
               onChange={onChange}
               onBlur={onBlur}

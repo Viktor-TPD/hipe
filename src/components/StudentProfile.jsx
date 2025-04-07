@@ -148,17 +148,6 @@ export default function StudentProfile() {
     // Base fields that are always shown
     let fields = [
       {
-        type: "radio",
-        name: "courseId",
-        label: "Course",
-        required: true,
-        options: [
-          { value: "dd", label: "DD" },
-          { value: "wu", label: "WU" },
-        ],
-        onChange: handleRadioChange,
-      },
-      {
         type: "text",
         name: "name",
         label: "Full Name",
@@ -173,6 +162,17 @@ export default function StudentProfile() {
         placeholder: "Tell us a bit about yourself...",
         rows: 5,
         maxLength: 200,
+      },
+      {
+        type: "radio",
+        name: "courseId",
+        label: "Course",
+        required: true,
+        options: [
+          { value: "dd", label: "DD" },
+          { value: "wu", label: "WU" },
+        ],
+        onChange: handleRadioChange,
       },
     ];
 
@@ -232,6 +232,7 @@ export default function StudentProfile() {
     } else if (courseId === "wu") {
       fields = [
         ...fields,
+        
         {
           type: "select",
           name: "stack",
