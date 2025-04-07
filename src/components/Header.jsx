@@ -27,30 +27,41 @@ function Header() {
         <div className="logo">
           <Logo />
         </div>
+
         <nav className="main-nav">
           {currentUser ? (
             <>
-              <Link to="/dashboard">Dashboard</Link>
-
+              <Link to="/">
+                <Button variant="linkNavbar">Event</Button>
+              </Link>
               {currentUser.userType === "student" && (
                 <>
-                  <Link to="/browse-companies">Browse Companies</Link>
+                  <Link to="/browse-companies">
+                    <Button variant="linkNavbar">Sök Företag</Button>
+                  </Link>
+                  {/* @todo This needs the correct link */}
+                  <Link to="/">
+                    <Button variant="linkNavbar">Matchningar</Button>
+                  </Link>
+                  <Link to="/create-studentProfile">
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </Link>
                 </>
               )}
 
               {currentUser.userType === "company" && (
                 <>
-                  <Link to="/browse-students">Browse Students</Link>
-                  <Link to="/favourite-students">Favorites</Link>
+                  <Link to="/browse-students">
+                    <Button variant="linkNavbar">Sök Kandidater</Button>
+                  </Link>
+                  <Link to="/favourite-students">
+                    <Button variant="linkNavbar">Sparade Kandidater</Button>
+                  </Link>
+                  <Link to="/create-companyProfile">
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </Link>
                 </>
               )}
-
-              <Button onClick={logout} variant="primary">
-                Logga ut
-              </Button>
-
-              <Button variant="filter">Filter</Button>
-              <Button variant="linkNavbar">Hem</Button>
             </>
           ) : (
             <>
@@ -61,6 +72,12 @@ function Header() {
             </>
           )}
         </nav>
+
+        {currentUser && (
+          <Button onClick={logout} variant="linkNavbar">
+            Logga ut
+          </Button>
+        )}
       </div>
     </header>
   );
