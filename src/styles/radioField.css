@@ -1,96 +1,80 @@
-/* radioButtonGroup.css */
-
 .field-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-    width: 100%;
-  }
-  
-  .field-label {
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-  
-  .required-mark {
-    color: #e53935;
-  }
-  
-  .options-container {
-    display: flex;
-    width: 100%;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .option-item {
-    flex: 1;
-    position: relative;
-  }
-  
-  /* Hide the actual radio input */
-  .radio-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* Style the label as a button */
-  .option-label {
-    display: block;
-    text-align: center;
-    padding: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    border-radius: 0;
-    color: #000;
-    background-color: #fff;
-  }
-  .option-label.wu:checked {
-    background-color: #dc3545;
-  }
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  width: 100%;
+  align-items: flex-start;
+}
 
-  .option-label.dd:checked {
-    background-color: #0a215a;
-  }
+.field-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
 
+.required-mark {
+  color: #e53935;
+}
+
+.options-container {
+  display: flex;
+  padding: var(--button-gap-S);
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 16px 16px 0px 0px;
+  gap: var(--button-gap-S);
+  width: 188px;
+  font-weight: 500;
+}
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.option-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--button-gap-S);
+  background: var(--bg-white);
+  border-radius: 8px;
+  width: 5.5rem;
+  height: 2.5rem;
+  margin:0px;
+  cursor: pointer;
+  color: var(--bg-white)
+
+}
+
+input[type="radio"]:checked + label.option-label {
+  color: var(--bg-white);
+  outline:none;
+}
+
+input[type="radio"]:checked + label.option-label.wu {
+  background-color: #0a215a;
   
-  /* Style for checked/active state - blue theme */
-  .radio-input:checked + .option-label.theme-blue {
-    background-color: #0a215a;
-    color: white;
-  }
+}
+
+input[type="radio"]:checked + label.option-label.dd {
+  background-color: #dc3545;
   
-  /* Style for checked/active state - red theme */
-  .radio-input:checked + .option-label.theme-red {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  /* Hover effect for all options */
-  .option-label:hover {
-    background-color: #f0f0f0;
-  }
-  
-  /* Hover effect for checked options */
-  .radio-input:checked + .option-label:hover {
-    opacity: 0.9;
-  }
-  
-  /* Focus styles for accessibility */
-  .radio-input:focus + .option-label {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.5);
-  }
-  
-  /* Error state */
-  .error-text {
-    color: #e53935;
-    font-size: 12px;
-    margin-top: 4px;
-  }
+}
+
+.error-text {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+label.option-label.dd,  label.option-label.wu {
+  background-color: var(--bg-white);
+  color: var(--bg-black);
+}
+
+

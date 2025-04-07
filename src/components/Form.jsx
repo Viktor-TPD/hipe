@@ -5,6 +5,8 @@ import CheckboxField from "./fields/CheckboxField";
 import SelectField from "./fields/SelectField";
 import TextareaField from "./fields/TextAreaField";
 
+
+
 const fieldComponents = {
   text: TextField,
   email: TextField,
@@ -191,6 +193,7 @@ export default function Form({
           touched: !!touched[field.name],
         };
 
+        if (field.type === "radio") console.log({ commonProps, formData });
         switch (field.type) {
           case "text":
           case "email":
@@ -222,6 +225,7 @@ export default function Form({
               <FieldComponent
                 key={field.name}
                 {...commonProps}
+               
                 options={field.options}
               />
             );

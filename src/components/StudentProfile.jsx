@@ -169,8 +169,8 @@ export default function StudentProfile() {
         label: "Course",
         required: true,
         options: [
-          { value: "wu", label: "Web Development" },
-          { value: "dd", label: "Digital Design" },
+          { value: "dd", label: "DD" },
+          { value: "wu", label: "WU" },
         ],
         onChange: handleRadioChange,
       },
@@ -232,6 +232,7 @@ export default function StudentProfile() {
     } else if (courseId === "wu") {
       fields = [
         ...fields,
+        
         {
           type: "select",
           name: "stack",
