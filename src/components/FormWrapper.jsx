@@ -7,10 +7,10 @@ export default function FormWrapper({
   description,
 }) {
   return (
-    <div className={`form-wrapper ${className}`}>
+    <section className={`form-wrapper ${className}`}>
       {title && <h2 className="form-wrapper-title">{title}</h2>}
       {description && <p className="form-wrapper-description">{description}</p>}
       {children}
-    </div>
+    </section>
   );
 }
