@@ -5,6 +5,8 @@ import Form from "./Form";
 import TextField from "./fields/TextField";
 import FormWrapper from "./FormWrapper";
 import { API_BASE_URL } from "../config";
+import Button from './buttons/Button.jsx';
+
 
 export default function Login() {
   const { login } = useAuth();
@@ -69,8 +71,9 @@ export default function Login() {
 
       <Form
         onSubmit={handleSubmit}
-        submitLabel={isLoading ? "Logging in..." : "Login"}
+        submitLabel={isLoading ? "Loggar in..." : "Logga in"}
         disabled={isLoading}
+        
       >
         <TextField
           type="email"
@@ -94,9 +97,11 @@ export default function Login() {
       <div className="form-footer">
         <p>
           Don't have an account?{" "}
-          <button className="link-button" onClick={navigateToRegister}>
+
+          <Button variant="primary" onClick={navigateToRegister}>Register</Button>
+          {/* <button className="link-button" onClick={navigateToRegister}>
             Register
-          </button>
+          </button> */}
         </p>
       </div>
     </FormWrapper>

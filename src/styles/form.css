@@ -1,3 +1,4 @@
-field-container {
+.nested-form {
     background-color: green;
+    border: 1px solid hotpink;
 }

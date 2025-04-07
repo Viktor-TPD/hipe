@@ -6,6 +6,7 @@ import React, {
   Children,
   cloneElement,
 } from "react";
+import Button from './buttons/Button.jsx';
 
 // Create a context for the form
 export const FormContext = createContext({
@@ -198,9 +199,9 @@ export default function Form({
           </div>
         )}
 
-        <button type="submit" className="submit-button" disabled={disabled}>
-          {submitLabel}
-        </button>
+{/* @todo if variant to be a propery, add it, for now this is good */}
+        <Button variant="primary" type="submit" >{submitLabel}</Button>
+
       </form>
     </FormContext.Provider>
   );
