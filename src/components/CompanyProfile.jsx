@@ -1,5 +1,11 @@
+import { useState } from "react";
 import { useProfile } from "./hooks/useProfile";
-import ProfileForm from "./ProfileForm";
+import Form from "./Form";
+import TextField from "./fields/TextField";
+import SelectField from "./fields/SelectField";
+import TextareaField from "./fields/TextAreaField";
+import ProfileImageUpload from "./ProfilePictureUpload";
+import FormWrapper from "./FormWrapper";
 
 // Define industry options
 const industries = [
@@ -17,6 +23,8 @@ const industries = [
 ];
 
 export default function CompanyProfile() {
+  const [error, setError] = useState("");
+
   // Transform API data to form format
   const transformInitialData = (profileData) => {
     return {
@@ -52,7 +60,6 @@ export default function CompanyProfile() {
   // Use our custom hook
   const {
     isLoading,
-    error,
     profileImage,
     existingProfile,
     initialFormData,
@@ -64,80 +71,89 @@ export default function CompanyProfile() {
     transformSubmitData,
   });
 
-  // Define form fields for company profile
-  const getFormFields = () => [
-    {
-      type: "text",
-      name: "companyName",
-      label: "Company Name",
-      required: true,
-      placeholder: "Enter your company name",
-    },
-    {
-      type: "select",
-      name: "industry",
-      label: "Industry",
-      required: true,
-      options: industries,
-      placeholder: "Select your industry",
-    },
-    {
-      type: "text",
-      name: "website",
-      label: "Company Website",
-      required: false,
-      placeholder: "https://example.com",
-    },
-    {
-      type: "textarea",
-      name: "description",
-      label: "Company Description",
-      required: false,
-      placeholder: "Briefly describe your company",
-      rows: 5,
-      maxLength: 200,
-      resizeable: false,
-    },
-    {
-      type: "text",
-      name: "contactPerson.name",
-      label: "Contact Person Name",
-      required: true,
-      placeholder: "Enter contact person's name",
-    },
-    {
-      type: "text",
-      name: "contactPerson.email",
-      label: "Contact Person Email",
-      required: true,
-      placeholder: "contact@example.com",
-    },
-    {
-      type: "text",
-      name: "internshipDetails",
-      label: "Internship Details",
-      required: false,
-      placeholder: "Briefly describe the internship opportunities",
-    },
-  ];
-
   if (isLoading) {
     return <div className="loading">Loading profile data...</div>;
   }
 
+  const title = existingProfile
+    ? "Update Company Profile"
+    : "Create Company Profile";
+
   return (
-    <ProfileForm
-      title={
-        existingProfile ? "Update Company Profile" : "Create Company Profile"
-      }
-      fields={getFormFields()}
-      onSubmit={handleSubmitProfile}
-      initialValues={initialFormData}
-      error={error}
-      profileImage={profileImage}
-      onImageUploaded={handleImageUploaded}
-      isUpdateMode={!!existingProfile}
-      isLoading={isLoading}
-    />
+    <FormWrapper title={title}>
+      {error && <div className="error-message">{error}</div>}
+
+      <ProfileImageUpload
+        onImageUploaded={handleImageUploaded}
+        currentImage={profileImage}
+      />
+
+      <Form
+        onSubmit={handleSubmitProfile}
+        initialValues={initialFormData}
+        submitLabel={existingProfile ? "Update Profile" : "Create Profile"}
+        disabled={isLoading}
+      >
+        <FormWrapper title="Company Information" className="nested-form">
+          <TextField
+            name="companyName"
+            label="Company Name"
+            required={true}
+            placeholder="Enter your company name"
+          />
+
+          <SelectField
+            name="industry"
+            label="Industry"
+            required={true}
+            options={industries}
+            placeholder="Select your industry"
+          />
+
+          <TextField
+            name="website"
+            label="Company Website"
+            placeholder="https://example.com"
+          />
+
+          <TextareaField
+            name="description"
+            label="Company Description"
+            placeholder="Briefly describe your company"
+            rows={5}
+            maxLength={200}
+            resizable={false}
+          />
+        </FormWrapper>
+
+        <FormWrapper title="Contact Information" className="nested-form">
+          <TextField
+            name="contactPerson.name"
+            label="Contact Person Name"
+            required={true}
+            placeholder="Enter contact person's name"
+          />
+
+          <TextField
+            name="contactPerson.email"
+            label="Contact Person Email"
+            required={true}
+            placeholder="contact@example.com"
+            type="email"
+          />
+        </FormWrapper>
+
+        <FormWrapper title="Internship Information" className="nested-form">
+          <TextareaField
+            name="internshipDetails"
+            label="Internship Details"
+            placeholder="Describe the internship opportunities"
+            rows={4}
+            maxLength={200}
+            resizable={false}
+          />
+        </FormWrapper>
+      </Form>
+    </FormWrapper>
   );
 }

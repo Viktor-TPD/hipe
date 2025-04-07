@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { useProfile } from "./hooks/useProfile";
-import ProfileForm from "./ProfileForm";
-import { specializations, softwares, languages, stacks } from "./FormData";
+import Form from "./Form";
+import TextField from "./fields/TextField";
 import RadioField from "./fields/RadioField";
+import SelectField from "./fields/SelectField";
+import TextareaField from "./fields/TextAreaField";
+import ProfileImageUpload from "./ProfilePictureUpload";
+import FormWrapper from "./FormWrapper";
+import { specializations, softwares, languages, stacks } from "./FormData";
 
 export default function StudentProfile() {
   const [courseId, setCourseId] = useState("");
+  const [error, setError] = useState("");
 
   // Transform API data to form format
   const transformInitialData = (profileData) => {
@@ -124,7 +130,6 @@ export default function StudentProfile() {
   // Use our custom hook
   const {
     isLoading,
-    error,
     profileImage,
     existingProfile,
     initialFormData,
@@ -136,177 +141,154 @@ export default function StudentProfile() {
     transformSubmitData,
   });
 
-  // Handle course selection change
-  const handleRadioChange = (e) => {
-    console.log(e)
+  const handleCourseSelection = (e) => {
     setCourseId(e.target.value);
-
-  };
-
-  // Define the form fields based on the selected course
-  const getFormFields = () => {
-    // Base fields that are always shown
-    let fields = [
-      {
-        type: "text",
-        name: "name",
-        label: "Full Name",
-        required: true,
-        placeholder: "Enter your full name",
-      },
-      {
-        type: "textarea",
-        name: "description",
-        label: "About Me",
-        required: false,
-        placeholder: "Tell us a bit about yourself...",
-        rows: 5,
-        maxLength: 200,
-      },
-      {
-        type: "radio",
-        name: "courseId",
-        label: "Course",
-        required: true,
-        options: [
-          { value: "dd", label: "DD" },
-          { value: "wu", label: "WU" },
-        ],
-        onChange: handleRadioChange,
-      },
-    ];
-
-    // Add course-specific fields
-    if (courseId === "dd") {
-      fields = [
-        ...fields,
-        {
-          type: "select",
-          name: "specialization1",
-          label: "Specialization 1",
-          required: false,
-          options: specializations,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "specialization2",
-          label: "Specialization 2",
-          required: false,
-          options: specializations,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "specialization3",
-          label: "Specialization 3",
-          required: false,
-          options: specializations,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "software1",
-          label: "Design Software 1",
-          required: false,
-          options: softwares,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "software2",
-          label: "Design Software 2",
-          required: false,
-          options: softwares,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "software3",
-          label: "Design Software 3",
-          required: false,
-          options: softwares,
-          placeholder: "Select from list",
-        },
-      ];
-    } else if (courseId === "wu") {
-      fields = [
-        ...fields,
-        
-        {
-          type: "select",
-          name: "stack",
-          label: "Stack",
-          required: false,
-          options: stacks,
-          placeholder: "Select your stack",
-        },
-        {
-          type: "select",
-          name: "languages1",
-          label: "Language/Framework 1",
-          required: false,
-          options: languages,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "languages2",
-          label: "Language/Framework 2",
-          required: false,
-          options: languages,
-          placeholder: "Select from list",
-        },
-        {
-          type: "select",
-          name: "languages3",
-          label: "Language/Framework 3",
-          required: false,
-          options: languages,
-          placeholder: "Select from list",
-        },
-      ];
-    }
-
-    // Add common fields at the end
-    fields = [
-      ...fields,
-      {
-        type: "text",
-        name: "portfolio",
-        label: "Portfolio/GitHub",
-        required: false,
-        placeholder: "URL to your portfolio or GitHub",
-      },
-      {
-        type: "text",
-        name: "linkedin",
-        label: "LinkedIn",
-        required: false,
-        placeholder: "URL to your LinkedIn profile",
-      },
-    ];
-
-    return fields;
   };
 
   if (isLoading) {
     return <div className="loading">Loading profile data...</div>;
   }
 
+  const title = existingProfile
+    ? "Update Student Profile"
+    : "Create Student Profile";
+
   return (
-    <ProfileForm
-      title={
-        existingProfile ? "Update Student Profile" : "Create Student Profile"
-      }
-      fields={getFormFields()}
-      onSubmit={handleSubmitProfile}
-      initialValues={initialFormData}
-      error={error}
-      profileImage={profileImage}
-      onImageUploaded={handleImageUploaded}
-      isUpdateMode={!!existingProfile}
-      isLoading={isLoading}
-    />
+    <FormWrapper title={title}>
+      {error && <div className="error-message">{error}</div>}
+
+      <ProfileImageUpload
+        onImageUploaded={handleImageUploaded}
+        currentImage={profileImage}
+      />
+
+      <Form
+        onSubmit={handleSubmitProfile}
+        initialValues={initialFormData}
+        submitLabel={existingProfile ? "Update Profile" : "Create Profile"}
+        disabled={isLoading}
+      >
+        <TextField
+          name="name"
+          label="Full Name"
+          required={true}
+          placeholder="Enter your full name"
+        />
+
+        <TextareaField
+          name="description"
+          label="About Me"
+          placeholder="Tell us a bit about yourself..."
+          rows={5}
+          maxLength={200}
+        />
+
+        <RadioField
+          name="courseId"
+          label="Course"
+          required={true}
+          options={[
+            { value: "dd", label: "DD" },
+            { value: "wu", label: "WU" },
+          ]}
+          onValueChange={handleCourseSelection}
+        />
+
+        {courseId === "dd" && (
+          <FormWrapper title="Digital Design Specifics" className="nested-form">
+            <SelectField
+              name="specialization1"
+              label="Specialization 1"
+              options={specializations}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="specialization2"
+              label="Specialization 2"
+              options={specializations}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="specialization3"
+              label="Specialization 3"
+              options={specializations}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="software1"
+              label="Design Software 1"
+              options={softwares}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="software2"
+              label="Design Software 2"
+              options={softwares}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="software3"
+              label="Design Software 3"
+              options={softwares}
+              placeholder="Select from list"
+            />
+          </FormWrapper>
+        )}
+
+        {courseId === "wu" && (
+          <FormWrapper
+            title="Web Development Specifics"
+            className="nested-form"
+          >
+            <SelectField
+              name="stack"
+              label="Stack"
+              options={stacks}
+              placeholder="Select your stack"
+            />
+
+            <SelectField
+              name="languages1"
+              label="Language/Framework 1"
+              options={languages}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="languages2"
+              label="Language/Framework 2"
+              options={languages}
+              placeholder="Select from list"
+            />
+
+            <SelectField
+              name="languages3"
+              label="Language/Framework 3"
+              options={languages}
+              placeholder="Select from list"
+            />
+          </FormWrapper>
+        )}
+
+        <FormWrapper title="Portfolio & Social" className="nested-form">
+          <TextField
+            name="portfolio"
+            label="Portfolio/GitHub"
+            placeholder="URL to your portfolio or GitHub"
+          />
+
+          <TextField
+            name="linkedin"
+            label="LinkedIn"
+            placeholder="URL to your LinkedIn profile"
+          />
+        </FormWrapper>
+      </Form>
+    </FormWrapper>
   );
 }

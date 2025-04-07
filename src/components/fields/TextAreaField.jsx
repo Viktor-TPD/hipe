@@ -1,18 +1,30 @@
+import { useFormContext } from "../Form";
+
 export default function TextareaField({
   name,
   label,
   value,
-  onChange,
-  onBlur,
+  error = null,
+  touched = false,
   required = false,
   placeholder = "",
   rows = 4,
   maxLength,
-  error = null,
-  touched = false,
   resizable = true,
 }) {
-  const hasError = touched && error;
+  const {
+    handleChange,
+    handleBlur,
+    formData,
+    errors,
+    touched: formTouched,
+  } = useFormContext();
+
+  // Use context values if not explicitly provided as props
+  const fieldValue = value || formData[name] || "";
+  const fieldError = error || errors[name];
+  const fieldTouched = touched || formTouched[name];
+  const hasError = fieldTouched && fieldError;
 
   return (
     <div className="field-container">
@@ -23,9 +35,9 @@ export default function TextareaField({
       <textarea
         id={name}
         name={name}
-        value={value || ""}
-        onChange={onChange}
-        onBlur={onBlur}
+        value={fieldValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
         required={required}
         placeholder={placeholder}
         rows={rows}
@@ -35,10 +47,10 @@ export default function TextareaField({
       />
       {maxLength && (
         <div className="character-count">
-          {value ? value.length : 0}/{maxLength}
+          {fieldValue ? fieldValue.length : 0}/{maxLength}
         </div>
       )}
-      {hasError && <div className="error-text">{error}</div>}
+      {hasError && <div className="error-text">{fieldError}</div>}
     </div>
   );
 }

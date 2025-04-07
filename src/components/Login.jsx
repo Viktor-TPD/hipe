@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Form from "./Form";
-import { API_BASE_URL } from "./../config";
+import TextField from "./fields/TextField";
+import FormWrapper from "./FormWrapper";
+import { API_BASE_URL } from "../config";
 
 export default function Login() {
   const { login } = useAuth();
@@ -57,44 +59,46 @@ export default function Login() {
     }
   };
 
-  return (
-    <div className="login-container">
-      <h2>Login to Your Account</h2>
+  const navigateToRegister = () => {
+    navigate("/register");
+  };
 
+  return (
+    <FormWrapper title="Login to Your Account" className="login-container">
       {error && <div className="error-message">{error}</div>}
 
       <Form
-        fields={[
-          {
-            type: "email",
-            name: "email",
-            label: "Email",
-            required: true,
-            placeholder: "Enter your email",
-            autoComplete: "email",
-          },
-          {
-            type: "password",
-            name: "password",
-            label: "Password",
-            required: true,
-            placeholder: "Enter your password",
-            autoComplete: "current-password",
-          },
-        ]}
         onSubmit={handleSubmit}
         submitLabel={isLoading ? "Logging in..." : "Login"}
         disabled={isLoading}
-      />
+      >
+        <TextField
+          type="email"
+          name="email"
+          label="Email"
+          required={true}
+          placeholder="Enter your email"
+          autoComplete="email"
+        />
+
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          required={true}
+          placeholder="Enter your password"
+          autoComplete="current-password"
+        />
+      </Form>
 
       <div className="form-footer">
         <p>
           Don't have an account?{" "}
-          <button className="link-button" onClick={() => navigate("/register")}>
+          <button className="link-button" onClick={navigateToRegister}>
             Register
           </button>
         </p>
       </div>
-    </div>
+    </FormWrapper>
   );
 }

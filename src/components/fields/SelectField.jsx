@@ -1,33 +1,39 @@
 import React from "react";
 import Select from "react-select";
+import { useFormContext } from "../Form";
 
 export default function SelectField({
   name,
   label,
   options,
   value,
-  onChange,
-  onBlur,
-  required = false,
   error = null,
   touched = false,
+  required = false,
   placeholder = "Select...",
 }) {
-  // Log incoming value to debug
-  console.log(`SelectField ${name} received value:`, value);
+  const {
+    handleChange,
+    handleBlur,
+    formData,
+    errors,
+    touched: formTouched,
+  } = useFormContext();
+
+  const fieldValue = value || formData[name] || "";
+  const fieldError = error || errors[name];
+  const fieldTouched = touched || formTouched[name];
+  const hasError = fieldTouched && fieldError;
 
   const handleSelectChange = (selectedOption) => {
-    console.log(`${name} changed to:`, selectedOption);
-
-    // Create a synthetic event object that matches what Form.jsx expects
     const changeEvent = {
       target: {
         name: name,
-        value: selectedOption, // Pass the entire object now, not just the value
+        value: selectedOption,
         type: "select",
       },
     };
-    onChange(changeEvent);
+    handleChange(changeEvent);
   };
 
   const customStyles = {
@@ -35,10 +41,10 @@ export default function SelectField({
       ...provided,
       minHeight: "36px",
       borderRadius: "4px",
-      border: error ? "1px solid #e53e3e" : "1px solid #ccc",
-      boxShadow: error ? "0 0 0 1px #e53e3e" : provided.boxShadow,
+      border: hasError ? "1px solid #e53e3e" : "1px solid #ccc",
+      boxShadow: hasError ? "0 0 0 1px #e53e3e" : provided.boxShadow,
       "&:hover": {
-        border: error ? "1px solid #e53e3e" : "1px solid #a0aec0",
+        border: hasError ? "1px solid #e53e3e" : "1px solid #a0aec0",
       },
     }),
     valueContainer: (provided) => ({
@@ -62,30 +68,26 @@ export default function SelectField({
     }),
   };
 
-  // Handle different value formats
-  // If value is already a Select-compatible object with value and label properties
   let currentValue = null;
 
   if (
-    value &&
-    typeof value === "object" &&
-    "value" in value &&
-    "label" in value
+    fieldValue &&
+    typeof fieldValue === "object" &&
+    "value" in fieldValue &&
+    "label" in fieldValue
   ) {
-    currentValue = value;
-  }
-  // If value is a string, try to find the matching option
-  else if (value && typeof value === "string") {
-    currentValue = options.find((option) => option.value === value) || null;
+    currentValue = fieldValue;
+  } else if (fieldValue && typeof fieldValue === "string") {
+    currentValue =
+      options.find((option) => option.value === fieldValue) || null;
   }
 
-  const handleBlur = () => {
-    if (onBlur) {
-      onBlur({ target: { name } });
-    }
+  const handleSelectBlur = () => {
+    const blurEvent = {
+      target: { name },
+    };
+    handleBlur(blurEvent);
   };
-
-  const hasError = touched && error;
 
   return (
     <div className="field-container">
@@ -98,13 +100,13 @@ export default function SelectField({
         options={options}
         value={currentValue}
         onChange={handleSelectChange}
-        onBlur={handleBlur}
+        onBlur={handleSelectBlur}
         placeholder={placeholder}
         className={hasError ? "select-error" : ""}
         styles={customStyles}
         isClearable={!required}
       />
-      {hasError && <div className="error-text">{error}</div>}
+      {hasError && <div className="error-text">{fieldError}</div>}
     </div>
   );
 }
