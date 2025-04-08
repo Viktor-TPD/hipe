@@ -5,8 +5,7 @@ import Form from "./Form";
 import TextField from "./fields/TextField";
 import FormWrapper from "./FormWrapper";
 import { API_BASE_URL } from "../config";
-import Button from './buttons/Button.jsx';
-
+import Button from "./buttons/Button.jsx";
 
 export default function Login() {
   const { login } = useAuth();
@@ -45,14 +44,8 @@ export default function Login() {
 
       console.log("this is my usertype " + userData.userType);
 
-      if (userData.userType === "student") {
-        console.log("hej");
-        navigate("/create-studentProfile/");
-      } else if (userData.userType === "company") {
-        navigate("/create-companyProfile/");
-      } else {
-        console.log("wrong user type: " + userData.userType);
-      }
+      // Updated navigation logic - navigate to /profile for both user types
+      navigate("/profile");
     } catch (error) {
       setError(error.message || "Failed to login. Please try again.");
       console.error("Login error:", error);
@@ -73,7 +66,6 @@ export default function Login() {
         onSubmit={handleSubmit}
         submitLabel={isLoading ? "Loggar in..." : "Logga in"}
         disabled={isLoading}
-        
       >
         <TextField
           type="email"
@@ -97,11 +89,9 @@ export default function Login() {
       <div className="form-footer">
         <p>
           Don't have an account?{" "}
-
-          <Button variant="primary" onClick={navigateToRegister}>Register</Button>
-          {/* <button className="link-button" onClick={navigateToRegister}>
+          <Button variant="primary" onClick={navigateToRegister}>
             Register
-          </button> */}
+          </Button>
         </p>
       </div>
     </FormWrapper>

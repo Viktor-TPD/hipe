@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 import Button from "./buttons/Button.jsx";
@@ -31,44 +31,44 @@ function Header() {
         <nav className="main-nav">
           {currentUser ? (
             <>
-              <Link to="/">
+              <NavLink to="/">
                 <Button variant="linkNavbar">Event</Button>
-              </Link>
+              </NavLink>
               {currentUser.userType === "student" && (
                 <>
-                  <Link to="/browse-companies">
+                  <NavLink to="/browse">
                     <Button variant="linkNavbar">Sök Företag</Button>
-                  </Link>
+                  </NavLink>
                   {/* @todo This needs the correct link */}
-                  <Link to="/">
+                  <NavLink to="/">
                     <Button variant="linkNavbar">Matchningar</Button>
-                  </Link>
-                  <Link to="/create-studentProfile">
+                  </NavLink>
+                  <NavLink to="/profile">
                     <Button variant="linkNavbar">Min Profil</Button>
-                  </Link>
+                  </NavLink>
                 </>
               )}
 
               {currentUser.userType === "company" && (
                 <>
-                  <Link to="/browse-students">
+                  <NavLink to="/browse">
                     <Button variant="linkNavbar">Sök Kandidater</Button>
-                  </Link>
-                  <Link to="/favourite-students">
+                  </NavLink>
+                  <NavLink to="/favorites">
                     <Button variant="linkNavbar">Sparade Kandidater</Button>
-                  </Link>
-                  <Link to="/create-companyProfile">
+                  </NavLink>
+                  <NavLink to="/profile">
                     <Button variant="linkNavbar">Min Profil</Button>
-                  </Link>
+                  </NavLink>
                 </>
               )}
             </>
           ) : (
             <>
-              <Link to="/register">Registrering</Link>
-              <Link to="/login">
+              <NavLink to="/register">Registrering</NavLink>
+              <NavLink to="/login">
                 <Button variant="primary">Logga In</Button>
-              </Link>
+              </NavLink>
             </>
           )}
         </nav>

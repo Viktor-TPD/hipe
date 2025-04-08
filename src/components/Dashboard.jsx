@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./../AuthContext";
+
 function Dashboard() {
   const { currentUser, logout } = useAuth();
   const userType = currentUser?.userType;
@@ -15,7 +16,7 @@ function Dashboard() {
         <div className="student-dashboard">
           <h2>{currentUser.userId}</h2>
           <p>Welcome to your student dashboard!</p>
-          <a href="/create-studentProfile">create student</a>
+          <Link to="/profile">Create/Edit Profile</Link>
           <ul>
             <li>View and update your student profile</li>
             <li>See what companies who've reached out :)</li>
@@ -27,7 +28,7 @@ function Dashboard() {
         <div className="company-dashboard">
           <h2>{currentUser.userId}</h2>
           <p>Welcome to your company dashboard!</p>
-          <a href="/create-companyProfile">Edit Details :)))))</a>
+          <Link to="/profile">Edit Company Profile</Link>
           <ul>
             <li>Manage your company profile</li>
             <li>Post new internship opportunities</li>

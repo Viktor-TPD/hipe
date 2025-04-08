@@ -65,14 +65,8 @@ export default function Register() {
 
       console.log("User type:", userData.userType);
 
-      // Navigate based on user type
-      if (userData.userType === "student") {
-        navigate("/create-studentProfile/");
-      } else if (userData.userType === "company") {
-        navigate("/create-companyProfile/");
-      } else {
-        console.error("Unknown user type:", userData.userType);
-      }
+      // Updated navigation logic - navigate to /profile for both user types
+      navigate("/profile");
     } catch (error) {
       setError(error.message || "Registration failed. Please try again.");
       console.error("Registration error:", error);
@@ -83,10 +77,6 @@ export default function Register() {
 
   const navigateToLogin = () => {
     navigate("/login");
-  };
-
-  const navigateToInputTest = () => {
-    navigate("/input-test");
   };
 
   return (
