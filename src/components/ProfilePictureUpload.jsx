@@ -101,7 +101,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
           </div>
         )}
 
-        <div className="upload-actions">
+        <button className="upload-actions">
           <input
             type="file"
             id="profileImage"
@@ -112,12 +112,11 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
           />
           <label htmlFor="profileImage" className="select-button">
             {isUploading
-              ? "Uploading..."
-              : currentImage
-              ? "Change Image"
-              : "Select Image"}
+              ? "Laddar upp..."
+              : "Ladda upp bild"}
+          <img src="../public/assets/images/upload.svg" alt="" />
           </label>
-        </div>
+        </button>
       </div>
     </div>
   );

@@ -1,13 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 :root {
   --yrgo-primary: #e51236;
   --yrgo-secondary: #001a52;
   --bg-white: #ffffff;
   --bg-black: #121212;
+  --grey-100: #f3f3f3;
+  --grey-500: #bdbdbd;
   --grey-800: #4f4f4f;
+  --stroke-weak: #bdbdbd;
+  --stroke-medium:#828282;
+  
 
   --button-gap-S: 0.5rem;
+  --spacing-padding-M: 1rem;
   --spacing-padding-XL: 2rem;
 
   /* VIKTORS GREJER */
   --spacing-padding-4XL: 8rem;
+}
+
+
+
+body {
+    font-family: 'Inter';
+    background-color: var(--bg-white);
+    color: var(--bg-black);
 }
