@@ -8,6 +8,7 @@ import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
 import "./../styles/styles.css";
 import "./../styles/form.css";
+import "./../styles/button.css";
 import "./../styles/imageUpload.css";
 
 
@@ -107,20 +108,24 @@ export default function CompanyProfile() {
 
           <TextareaField
             name="description"
-            label="Company Description"
+            label="Beskrivning"
             placeholder="Beskrivning"
             rows={5}
             maxLength={200}
             resizable={false}
             />
+          </FormWrapper>
+
+          <FormWrapper>
+
           <h3>LIA</h3>
             <TextField
               name="internshipDetails"
               label="LIA-platser tillgängliga"
               placeholder="Platser"
               />
+          </FormWrapper>
 
-        </FormWrapper>
 
         <FormWrapper className="nested-form">
           <h3>Kontaktperson</h3>
@@ -143,11 +148,12 @@ export default function CompanyProfile() {
         <FormWrapper className="nested-form">
           <TextField
             name="website"
-            label="Company Website"
+            label="Hemsida"
             placeholder="Länk"
             />
         </FormWrapper>
       </Form>
+      <p>Vill du att vi tar bort dina användaruppgifter? Kontakta oss på jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se</p>
     </FormWrapper>
     <FormWrapper className="visited-company-wrapper">
 

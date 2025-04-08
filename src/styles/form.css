@@ -24,6 +24,14 @@ label .field-label {
   letter-spacing: 0.00625rem;
 }
 
+#internshipDetails {
+    margin-bottom: 2rem;
+}
+
+#email {
+    margin-bottom: 0;
+}
+
 .css-b62m3t-container {
   margin-bottom: 1rem;
 }
