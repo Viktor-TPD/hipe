@@ -12,7 +12,7 @@ h3 {
   letter-spacing: 0.00938rem;
 }
 
-label {
+label .field-label{
   font-size: 14px;
   font-weight: 400;
   line-height: 1rem;
