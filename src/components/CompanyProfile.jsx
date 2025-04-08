@@ -6,21 +6,10 @@ import SelectField from "./fields/SelectField";
 import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
+import "./../styles/styles.css";
+import "./../styles/form.css";
+import "./../styles/imageUpload.css";
 
-// Define industry options
-const industries = [
-  { value: "tech", label: "Technology" },
-  { value: "design", label: "Design" },
-  { value: "marketing", label: "Marketing" },
-  { value: "finance", label: "Finance" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "education", label: "Education" },
-  { value: "consulting", label: "Consulting" },
-  { value: "ecommerce", label: "E-commerce" },
-  { value: "media", label: "Media & Entertainment" },
-  { value: "manufacturing", label: "Manufacturing" },
-  { value: "other", label: "Other" },
-];
 
 export default function CompanyProfile() {
   const [error, setError] = useState("");
@@ -76,84 +65,94 @@ export default function CompanyProfile() {
   }
 
   const title = existingProfile
-    ? "Update Company Profile"
-    : "Create Company Profile";
+    ? "Uppadtera Företagsprofil"
+    : "Skapa Företagsprofil";
 
   return (
-    <FormWrapper title={title}>
+    <>
+    <h1>{title}</h1>
+    <article>
       {error && <div className="error-message">{error}</div>}
+
+    <FormWrapper className="image-form-wrapper">
 
       <ProfileImageUpload
         onImageUploaded={handleImageUploaded}
         currentImage={profileImage}
-      />
+        />
+    </FormWrapper>
 
+    <FormWrapper className="about-me-form-wrapper">
+      <h3>Allmänt om företaget</h3>
       <Form
         onSubmit={handleSubmitProfile}
         initialValues={initialFormData}
-        submitLabel={existingProfile ? "Update Profile" : "Create Profile"}
+        submitLabel={"Spara"}
         disabled={isLoading}
-      >
-        <FormWrapper title="Company Information" className="nested-form">
+        >
+        <FormWrapper  className="nested-form">
           <TextField
             name="companyName"
-            label="Company Name"
+            label="Företagsnamn"
             required={true}
-            placeholder="Enter your company name"
-          />
-
-          <SelectField
-            name="industry"
-            label="Industry"
-            required={true}
-            options={industries}
-            placeholder="Select your industry"
-          />
+            placeholder="Namn"
+            />
 
           <TextField
-            name="website"
-            label="Company Website"
-            placeholder="https://example.com"
-          />
+            name="industry"
+            label="Företagsinriktning"
+            required={true}
+            placeholder="Webbyrå"
+            />
 
           <TextareaField
             name="description"
             label="Company Description"
-            placeholder="Briefly describe your company"
+            placeholder="Beskrivning"
             rows={5}
             maxLength={200}
             resizable={false}
-          />
+            />
+          <h3>LIA</h3>
+            <TextField
+              name="internshipDetails"
+              label="LIA-platser tillgängliga"
+              placeholder="Platser"
+              />
+
         </FormWrapper>
 
-        <FormWrapper title="Contact Information" className="nested-form">
+        <FormWrapper className="nested-form">
+          <h3>Kontaktperson</h3>
           <TextField
             name="contactPerson.name"
-            label="Contact Person Name"
+            label="Namn"
             required={true}
-            placeholder="Enter contact person's name"
-          />
+            placeholder="Namn"
+            />
 
           <TextField
             name="contactPerson.email"
-            label="Contact Person Email"
+            label="Email"
             required={true}
-            placeholder="contact@example.com"
+            placeholder="Email"
             type="email"
-          />
+            />
         </FormWrapper>
 
-        <FormWrapper title="Internship Information" className="nested-form">
-          <TextareaField
-            name="internshipDetails"
-            label="Internship Details"
-            placeholder="Describe the internship opportunities"
-            rows={4}
-            maxLength={200}
-            resizable={false}
-          />
+        <FormWrapper className="nested-form">
+          <TextField
+            name="website"
+            label="Company Website"
+            placeholder="Länk"
+            />
         </FormWrapper>
       </Form>
     </FormWrapper>
+    <FormWrapper className="visited-company-wrapper">
+
+      </FormWrapper>
+            </article>
+            </>
   );
 }

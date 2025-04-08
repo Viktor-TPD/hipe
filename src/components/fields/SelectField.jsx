@@ -54,6 +54,7 @@ export default function SelectField({
     input: (provided) => ({
       ...provided,
       margin: "0px",
+      width: "21.9rem",
     }),
     indicatorSeparator: () => ({
       display: "none",

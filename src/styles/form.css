@@ -1,6 +1,5 @@
 h1 {
   text-align: center;
-  font-feature-settings: "liga" off, "clig" off;
   font-size: 2rem;
   font-weight: 400;
 }
@@ -10,13 +9,23 @@ h3 {
   font-weight: 400;
   line-height: 1.375rem;
   letter-spacing: 0.00938rem;
+  margin: 0;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+p {
+    margin: 1.5rem 0rem;
 }
 
-label {
+label .field-label {
   font-size: 14px;
   font-weight: 400;
   line-height: 1rem;
   letter-spacing: 0.00625rem;
+}
+
+.css-b62m3t-container {
+  margin-bottom: 1rem;
 }
 
 input {
@@ -29,6 +38,7 @@ input {
   border: 1px solid var(--grey-500);
   background: var(--grey-100);
   color: var(--bg-black);
+  font-size: 14px;
 }
 
 .form-field {
@@ -36,6 +46,35 @@ input {
   flex-direction: column;
   gap: 4px;
   margin-bottom: 1rem;
+}
+
+.form-field input:disabled {
+ margin-bottom:1rem;
+  background: var(--background-gray-Gray-500, #bdbdbd);
+}
+
+textarea {
+  display: flex;
+  height: 6.25rem;
+  padding: 0.5rem 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 0.5rem;
+  border: 1px solid var(--grey-500);
+  background: var(--grey-100);
+  color: var(--bg-black);
+  font-size: 14px;
+  font-family: Inter;
+}
+
+.character-count {
+  text-align: end;
+  font-size: 0.75rem;
+  color: var(--stroke-medium);
+  margin-top: 4px;
+  margin-bottom: 2rem;
 }
 article {
   display: flex;
@@ -54,16 +93,15 @@ article {
 
 .course-specific-wrapper {
   display: flex;
-  padding: var(--spacing-padding-XL) var(--spacing-padding-M);
+  padding: 1rem var(--spacing-padding-M);
   flex-direction: column;
   align-items: flex-start;
-
   align-self: stretch;
-
   border-radius: 0rem 1rem 1rem 1rem;
   border: 1px solid var(--stroke-weak);
   background: var(--bg-white);
   color: var(--bg-black);
+  margin-bottom: 2rem;
 }
 
 .form-wrapper.visited-company-wrapper {

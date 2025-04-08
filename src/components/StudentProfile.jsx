@@ -8,13 +8,18 @@ import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
 import { specializations, softwares, languages, stacks } from "./FormData";
+import { useAuth } from './../AuthContext.jsx'
 import "./../styles/styles.css";
 import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 
+
+
 export default function StudentProfile() {
+  
   const [courseId, setCourseId] = useState("");
   const [error, setError] = useState("");
+  const {currentUser} = useAuth();
 
   // Transform API data to form format
   const transformInitialData = (profileData) => {
@@ -159,7 +164,7 @@ export default function StudentProfile() {
   return (
     <>
 
-      <h1>{title}</h1>
+    <h1>{title}</h1>
     <article>
       {error && <div className="error-message">{error}</div>}
 
@@ -196,8 +201,6 @@ export default function StudentProfile() {
 
           <RadioField
             name="courseId"
-            label="Course"
-            required={true}
             options={[
               { value: "dd", label: "DD" },
               { value: "wu", label: "WU" },
@@ -207,46 +210,47 @@ export default function StudentProfile() {
 
           {courseId === "dd" && (
             <FormWrapper className="course-specific-wrapper">
+              <h3>Inriktning</h3>
               <SelectField
                 name="specialization1"
-                label="Specialization 1"
+                label="Inriktning 1"
                 options={specializations}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="specialization2"
-                label="Specialization 2"
+                label="Inriktning 2"
                 options={specializations}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="specialization3"
-                label="Specialization 3"
+                label="Inriktning 3"
                 options={specializations}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
-
+              <h3>Designprogram</h3>
               <SelectField
                 name="software1"
-                label="Design Software 1"
+                label="Designprogram 1"
                 options={softwares}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="software2"
-                label="Design Software 2"
+                label="Designprogram 2"
                 options={softwares}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="software3"
-                label="Design Software 3"
+                label="Designprogram 3"
                 options={softwares}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
             </FormWrapper>
           )}
@@ -256,36 +260,37 @@ export default function StudentProfile() {
               <h3>Techstack</h3>
               <SelectField
                 name="stack"
-                label="Stack"
+                label="Techstack"
                 options={stacks}
-                placeholder="Select your stack"
+                placeholder="Välj från listan"
                 />
 
               <h3>Språk/ramverk</h3>
               <SelectField
                 name="languages1"
-                label="Language/Framework 1"
+                label="Språk/Ramverk 1"
                 options={languages}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="languages2"
-                label="Language/Framework 2"
+                label="Språk/Ramverk 2"
                 options={languages}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
 
               <SelectField
                 name="languages3"
-                label="Language/Framework 3"
+                label="Språk/Ramverk 3"
                 options={languages}
-                placeholder="Select from list"
+                placeholder="Välj från listan"
                 />
             </FormWrapper>
           )}
 
           <FormWrapper className="social-wrapper">
+            <h3>Bifogade Länkar</h3>
             <TextField
               name="portfolio"
               label="Portfolio/GitHub"
@@ -297,8 +302,17 @@ export default function StudentProfile() {
               label="LinkedIn"
               placeholder="URL to your LinkedIn profile"
               />
+            <TextField
+              name="email"
+              label="Email"
+              placeholder={currentUser.email}
+              disabled={true}
+
+              />
           </FormWrapper>
         </Form>
+             
+      <p>Vill du att vi tar bort dina användaruppgifter? Kontakta oss på jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se</p>
       </FormWrapper>
       <FormWrapper className="visited-company-wrapper">
 

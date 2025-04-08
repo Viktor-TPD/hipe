@@ -25,17 +25,7 @@
   margin: 0 auto;
 }
 
-.textarea-field {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.5;
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
-}
+
 
 .textarea-field:focus {
   outline: none;
@@ -51,12 +41,7 @@
   box-shadow: 0 0 0 1px rgba(229, 62, 62, 0.3);
 }
 
-.character-count {
-  text-align: right;
-  font-size: 0.8rem;
-  color: #718096;
-  margin-top: 4px;
-}
+
 
 /* Notification Styles */
 .notification-container {
