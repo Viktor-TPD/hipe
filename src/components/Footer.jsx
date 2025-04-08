@@ -19,7 +19,7 @@ function Footer() {
           </div>
         </section>
 
-        <section className="footer-section footer-socials">
+        <section className="footer-section">
           <div className="footer-item">
             <img src="./../../public/assets/images/fb.svg" alt="" />
           </div>
