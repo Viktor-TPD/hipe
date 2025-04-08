@@ -11,6 +11,7 @@ import Register from "./components/Register";
 
 // @todo remove Dashboard when Home is done
 import Dashboard from "./components/Dashboard";
+import Home from "./components/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
 
@@ -33,14 +34,11 @@ function AppContent() {
       <main className="app-content">
         <Routes>
           {/* Home route - redirect to dashboard if logged in, otherwise login */}
+          {/* When all the logic is added, we won't need conditional login anymore. @todo */}
           <Route
             path="/"
             element={
-              currentUser ? (
-                <Navigate to="/dashboard" />
-              ) : (
-                <Navigate to="/login" />
-              )
+              currentUser ? <Navigate to="/" /> : <Navigate to="/login" />
             }
           />
 
@@ -54,6 +52,15 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          {/* Protected Home route */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
               </ProtectedRoute>
             }
           />

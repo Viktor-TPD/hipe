@@ -40,7 +40,7 @@ function Header() {
                     <Button variant="linkNavbar">Sök Företag</Button>
                   </NavLink>
                   {/* @todo This needs the correct link */}
-                  <NavLink to="/">
+                  <NavLink to="/dashboard">
                     <Button variant="linkNavbar">Matchningar</Button>
                   </NavLink>
                   <NavLink to="/profile">
