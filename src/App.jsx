@@ -37,14 +37,22 @@ function AppContent() {
           {/* When all the logic is added, we won't need conditional login anymore. @todo */}
           <Route
             path="/"
-            element={
-              currentUser ? <Navigate to="/" /> : <Navigate to="/login" />
-            }
+            element={currentUser ? <Home /> : <Navigate to="/login" />}
           />
 
           {/* Auth routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Protected Home route */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Protected Dashboard route */}
           <Route
@@ -52,15 +60,6 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          {/* Protected Home route */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
               </ProtectedRoute>
             }
           />
