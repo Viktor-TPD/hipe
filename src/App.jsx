@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
+// @todo remove Dashboard when Home is done
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
@@ -21,6 +22,7 @@ import BrowseCompanies from "./components/BrowseCompanies";
 
 import "./App.css";
 import "./styles/footer.css";
+import "./styles/header.css";
 
 function AppContent() {
   const { currentUser } = useAuth();

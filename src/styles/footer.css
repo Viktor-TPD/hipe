@@ -6,6 +6,7 @@
   padding: var(--Spacing-Padding-3XL, 64px) var(--Spacing-Padding-4XL, 128px);
   align-items: center;
   gap: var(--Spacing-Padding-3XL, 64px);
+  border-top: 1px solid var(--grey-200);
 }
 
 .footer-container {
