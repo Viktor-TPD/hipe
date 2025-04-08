@@ -1,4 +1,3 @@
-
 .button {
   display: inline-flex;
   padding: var(--Button-Padding-M, 12px)
@@ -66,21 +65,41 @@
 }
 
 .button-linkNavbar {
-    border:none;
-    background-color: var(--bg-white);
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
-    color: var(--grey-800);
-    border-radius: 0;
-    padding:0
+  border: none;
+  background-color: var(--bg-white);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  color: var(--grey-800);
+  border-radius: 0;
+  padding: 0;
 }
 
 .button-linkNavbar:active {
-  color: var(--bg-black); 
+  color: var(--bg-black);
   border-bottom: 2px solid var(--yrgo-primary);
 }
 
+.upload-actions {
+  padding: 0;
+  display: flex;
+  border: none;
+}
 
+.select-button {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: var(--bg-white);
+  color: var(--bg-black);
+  font-size: 1rem;
+}
+
+label img {
+    width: 1.5rem;
+    height: 1.5rem;
+}

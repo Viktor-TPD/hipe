@@ -8,7 +8,9 @@ import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
 import { specializations, softwares, languages, stacks } from "./FormData";
-import './../styles/form.css';
+import "./../styles/styles.css";
+import "./../styles/form.css";
+import "./../styles/imageUpload.css";
 
 export default function StudentProfile() {
   const [courseId, setCourseId] = useState("");
@@ -156,151 +158,152 @@ export default function StudentProfile() {
 
   return (
     <>
+
       <h1>{title}</h1>
+    <article>
       {error && <div className="error-message">{error}</div>}
 
-    <FormWrapper className="image-form-wrapper" >
-      
-      <ProfileImageUpload
-        onImageUploaded={handleImageUploaded}
-        currentImage={profileImage}
-        />
-
-    </FormWrapper>
-
-    <FormWrapper className="about-me-form-wrapper">
-      <Form
-        onSubmit={handleSubmitProfile}
-        initialValues={initialFormData}
-        submitLabel={"Spara"}
-        disabled={isLoading}
-        >
-      <h3>Om mig</h3>
-        <TextField
-          name="name"
-          label="För- och efternamn"
-          required={true}
-          placeholder="Namn"
+      <FormWrapper className="image-form-wrapper">
+        <ProfileImageUpload
+          onImageUploaded={handleImageUploaded}
+          currentImage={profileImage}
           />
+      </FormWrapper>
 
-        <TextareaField
-          name="description"
-          label="Beskrivning"
-          placeholder="Beskrivning"
-          rows={5}
-          maxLength={200}
-          />
-    <FormWrapper/>
-
-        <RadioField
-          name="courseId"
-          label="Course"
-          required={true}
-          options={[
-            { value: "dd", label: "DD" },
-            { value: "wu", label: "WU" },
-          ]}
-          onValueChange={handleCourseSelection}
-          />
-   
-        {courseId === "dd" && (
-          <FormWrapper className="nested-form">
-            <SelectField
-              name="specialization1"
-              label="Specialization 1"
-              options={specializations}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="specialization2"
-              label="Specialization 2"
-              options={specializations}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="specialization3"
-              label="Specialization 3"
-              options={specializations}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="software1"
-              label="Design Software 1"
-              options={softwares}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="software2"
-              label="Design Software 2"
-              options={softwares}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="software3"
-              label="Design Software 3"
-              options={softwares}
-              placeholder="Select from list"
-              />
-          </FormWrapper>
-        )}
-
-        {courseId === "wu" && (
-          <FormWrapper
-          className="nested-form"
+      <FormWrapper className="about-me-form-wrapper">
+        <Form
+          onSubmit={handleSubmitProfile}
+          initialValues={initialFormData}
+          submitLabel={"Spara"}
+          disabled={isLoading}
           >
-            <h3>Techstack</h3>
-            <SelectField
-              name="stack"
-              label="Stack"
-              options={stacks}
-              placeholder="Select your stack"
+          <h3>Om mig</h3>
+          <TextField
+            name="name"
+            label="För- och efternamn"
+            required={true}
+            placeholder="Namn"
+            />
+
+          <TextareaField
+            name="description"
+            label="Beskrivning"
+            placeholder="Beskrivning"
+            rows={5}
+            maxLength={200}
+            />
+          <FormWrapper />
+
+          <RadioField
+            name="courseId"
+            label="Course"
+            required={true}
+            options={[
+              { value: "dd", label: "DD" },
+              { value: "wu", label: "WU" },
+            ]}
+            onValueChange={handleCourseSelection}
+            />
+
+          {courseId === "dd" && (
+            <FormWrapper className="course-specific-wrapper">
+              <SelectField
+                name="specialization1"
+                label="Specialization 1"
+                options={specializations}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="specialization2"
+                label="Specialization 2"
+                options={specializations}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="specialization3"
+                label="Specialization 3"
+                options={specializations}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="software1"
+                label="Design Software 1"
+                options={softwares}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="software2"
+                label="Design Software 2"
+                options={softwares}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="software3"
+                label="Design Software 3"
+                options={softwares}
+                placeholder="Select from list"
+                />
+            </FormWrapper>
+          )}
+          
+          {courseId === "wu" && (
+            <FormWrapper className="course-specific-wrapper">
+              <h3>Techstack</h3>
+              <SelectField
+                name="stack"
+                label="Stack"
+                options={stacks}
+                placeholder="Select your stack"
+                />
+
+              <h3>Språk/ramverk</h3>
+              <SelectField
+                name="languages1"
+                label="Language/Framework 1"
+                options={languages}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="languages2"
+                label="Language/Framework 2"
+                options={languages}
+                placeholder="Select from list"
+                />
+
+              <SelectField
+                name="languages3"
+                label="Language/Framework 3"
+                options={languages}
+                placeholder="Select from list"
+                />
+            </FormWrapper>
+          )}
+
+          <FormWrapper className="social-wrapper">
+            <TextField
+              name="portfolio"
+              label="Portfolio/GitHub"
+              placeholder="URL to your portfolio or GitHub"
               />
 
-<h3>Språk/ramverk</h3>
-            <SelectField
-              name="languages1"
-              label="Language/Framework 1"
-              options={languages}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="languages2"
-              label="Language/Framework 2"
-              options={languages}
-              placeholder="Select from list"
-              />
-
-            <SelectField
-              name="languages3"
-              label="Language/Framework 3"
-              options={languages}
-              placeholder="Select from list"
+            <TextField
+              name="linkedin"
+              label="LinkedIn"
+              placeholder="URL to your LinkedIn profile"
               />
           </FormWrapper>
-        )}
+        </Form>
+      </FormWrapper>
+      <FormWrapper className="visited-company-wrapper">
 
-        <FormWrapper  className="nested-form">
-          <TextField
-            name="portfolio"
-            label="Portfolio/GitHub"
-            placeholder="URL to your portfolio or GitHub"
-            />
-
-          <TextField
-            name="linkedin"
-            label="LinkedIn"
-            placeholder="URL to your LinkedIn profile"
-            />
-        </FormWrapper>
-
-      </Form>
-    </FormWrapper>
-            </>
+      </FormWrapper>
+              </article>
+    </>
   );
 }

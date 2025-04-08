@@ -8,7 +8,7 @@ const Button = ({
   type = 'button', 
   className = '', 
   disabled = false,
-  variant = 'primary' // primary, filter, linkNavbar
+  variant = 'primary' // primary, filter, linkNavbar, upload
 }) => {
   return (
     <button

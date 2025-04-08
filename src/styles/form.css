@@ -1,4 +1,71 @@
-.nested-form {
-    background-color: green;
-    border: 1px solid hotpink;
+h1 {
+  text-align: center;
+  font-feature-settings: "liga" off, "clig" off;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.375rem;
+  letter-spacing: 0.00938rem;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.00625rem;
+}
+
+input {
+  display: flex;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 0.5rem;
+  border: 1px solid var(--grey-500);
+  background: var(--grey-100);
+  color: var(--bg-black);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+article {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.field-container {
+  margin: 0px;
+}
+
+.about-me-form-wrapper {
+  width: 24.9rem;
+}
+
+.course-specific-wrapper {
+  display: flex;
+  padding: var(--spacing-padding-XL) var(--spacing-padding-M);
+  flex-direction: column;
+  align-items: flex-start;
+
+  align-self: stretch;
+
+  border-radius: 0rem 1rem 1rem 1rem;
+  border: 1px solid var(--stroke-weak);
+  background: var(--bg-white);
+  color: var(--bg-black);
+}
+
+.form-wrapper.visited-company-wrapper {
+  width: 182px;
 }
