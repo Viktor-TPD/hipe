@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./../AuthContext";
 
-function Dashboard() {
+function Home() {
   const { currentUser, logout } = useAuth();
   const userType = currentUser?.userType;
 
@@ -10,7 +10,7 @@ function Dashboard() {
     logout();
   };
 
-  const renderDashboardContent = () => {
+  const renderHomeContent = () => {
     if (userType === "student") {
       return (
         <div className="student-dashboard">
@@ -48,18 +48,9 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Dashboard</h1>
-        <div className="user-info">
-          <span>Logged in as: {currentUser.email}</span>
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
-        </div>
-      </header>
-      <main className="dashboard-content">{renderDashboardContent()}</main>
+      <main className="dashboard-content">{renderHomeContent}</main>
     </div>
   );
 }
 
-export default Dashboard;
+export default Home;

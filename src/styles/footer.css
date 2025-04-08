@@ -1,0 +1,40 @@
+.app-footer {
+  background-color: var(--bg-white);
+  color: var(--bg-black);
+  display: flex;
+  width: 100vw;
+  padding: var(--Spacing-Padding-3XL, 64px) var(--Spacing-Padding-4XL, 128px);
+  align-items: center;
+  gap: var(--Spacing-Padding-3XL, 64px);
+  border-top: 1px solid var(--grey-200);
+}
+
+.footer-container {
+  width: calc(100% - 128px - 8rem);
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-section:nth-child(1) {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+
+  .footer-item {
+    gap: 1rem;
+  }
+}
+
+.footer-section:nth-child(2) {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  flex: 1 0 0;
+}
+
+.footer-item {
+  display: flex;
+}

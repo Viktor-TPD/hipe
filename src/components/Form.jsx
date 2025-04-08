@@ -200,7 +200,10 @@ export default function Form({
         )}
 
 {/* @todo if variant to be a propery, add it, for now this is good */}
+        <div className="button-container">
         <Button variant="primary" type="submit" >{submitLabel}</Button>
+        <Button variant="select">Rensa Formulär X</Button>
+        </div>
 
       </form>
     </FormContext.Provider>

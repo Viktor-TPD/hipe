@@ -15,110 +15,7 @@
 /* ~ HEADER ~
 */
 
-.logo-item img {
-  width: 99px;
-  height: 24px;
-}
-
-.app-header {
-  background-color: var(--bg-white);
-  width: 100vw;
-}
-
-.header-container {
-  padding: var(--spacing-padding-XL) var(--spacing-padding-4XL);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo h1 {
-  font-size: 1.8rem;
-  margin: 0;
-  color: #646cff;
-}
-
-.main-nav {
-  display: flex;
-  gap: var(--spacing-padding-XL);
-  align-items: center;
-}
-
-.main-nav a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.main-nav a:hover {
-  color: #646cff;
-}
-
-.logout-button {
-  background-color: #f0f0f0;
-  color: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.logout-button:hover {
-  background-color: #e0e0e0;
-}
-
 /* Footer Styles */
-.app-footer {
-  background-color: #f8f8f8;
-  padding: 2rem 0;
-  margin-top: 2rem;
-}
-
-.footer-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.footer-section h3 {
-  color: #646cff;
-  margin-top: 0;
-}
-
-.footer-section h4 {
-  margin-top: 0;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-section ul li {
-  margin-bottom: 0.5rem;
-}
-
-.footer-section a {
-  color: #555;
-  text-decoration: none;
-}
-
-.footer-section a:hover {
-  color: #646cff;
-}
-
-.footer-copyright {
-  grid-column: 1 / -1;
-  margin-top: 1.5rem;
-  border-top: 1px solid #eaeaea;
-  padding-top: 1.5rem;
-  text-align: center;
-  color: #777;
-}
 
 /* App Layout */
 .app-content {
@@ -128,17 +25,7 @@
   margin: 0 auto;
 }
 
-.textarea-field {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.5;
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
-}
+
 
 .textarea-field:focus {
   outline: none;
@@ -154,12 +41,7 @@
   box-shadow: 0 0 0 1px rgba(229, 62, 62, 0.3);
 }
 
-.character-count {
-  text-align: right;
-  font-size: 0.8rem;
-  color: #718096;
-  margin-top: 4px;
-}
+
 
 /* Notification Styles */
 .notification-container {
@@ -234,4 +116,4 @@
     transform: translateX(0);
     opacity: 1;
   }
-} */
+}

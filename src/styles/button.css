@@ -4,6 +4,12 @@
     var(--Margin-Primaries-Buttons-B-XL, 32px);
   justify-content: center;
   align-items: center;
+  display: inline-block;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
 }
 
 .button:disabled {
@@ -12,6 +18,7 @@
 
 .button:focus {
   outline: none;
+  
 }
 
 .button:hover {
@@ -75,9 +82,19 @@
   color: var(--grey-800);
   border-radius: 0;
   padding: 0;
+  border: none;
+  background-color: var(--bg-white);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  color: var(--grey-800);
+  border-radius: 0;
+  padding: 0;
 }
 
-.button-linkNavbar:active {
+.active .button-linkNavbar {
   color: var(--bg-black);
   border-bottom: 2px solid var(--yrgo-primary);
 }
@@ -88,7 +105,7 @@
   border: none;
 }
 
-.select-button {
+.button-select {
   display: flex;
   gap: 0.5rem;
   align-items: flex-end;
@@ -97,9 +114,10 @@
   background-color: var(--bg-white);
   color: var(--bg-black);
   font-size: 1rem;
+  
 }
 
 label img {
-    width: 1.5rem;
-    height: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }

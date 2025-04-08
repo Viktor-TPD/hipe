@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
+// @todo remove Dashboard when Home is done
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
@@ -20,6 +21,8 @@ import BrowseStudents from "./components/BrowseStudents";
 import BrowseCompanies from "./components/BrowseCompanies";
 
 import "./App.css";
+import "./styles/footer.css";
+import "./styles/header.css";
 
 function AppContent() {
   const { currentUser } = useAuth();
@@ -41,10 +44,8 @@ function AppContent() {
             }
           />
 
-          {/* Login route, eller homeroute */}
+          {/* Auth routes */}
           <Route path="/login" element={<Login />} />
-
-          {/* Register route */}
           <Route path="/register" element={<Register />} />
 
           {/* Protected Dashboard route */}
@@ -59,43 +60,33 @@ function AppContent() {
 
           {/* Student-specific routes */}
           <Route
-            path="/create-studentProfile"
+            path="/profile"
             element={
-              <ProtectedRoute requiredUserType="student">
-                <StudentProfile />
+              <ProtectedRoute>
+                {currentUser?.userType === "student" ? (
+                  <StudentProfile />
+                ) : (
+                  <CompanyProfile />
+                )}
               </ProtectedRoute>
             }
           />
 
           <Route
-            path="/browse-companies"
+            path="/browse"
             element={
-              <ProtectedRoute requiredUserType="student">
-                <BrowseCompanies />
+              <ProtectedRoute>
+                {currentUser?.userType === "student" ? (
+                  <BrowseCompanies />
+                ) : (
+                  <BrowseStudents />
+                )}
               </ProtectedRoute>
             }
           />
 
           <Route
-            path="/create-companyProfile"
-            element={
-              <ProtectedRoute requiredUserType="company">
-                <CompanyProfile />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/browse-students"
-            element={
-              <ProtectedRoute requiredUserType="company">
-                <BrowseStudents />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="favourite-students"
+            path="/favorites"
             element={
               <ProtectedRoute requiredUserType="company">
                 <h1>Favourite students displayed here</h1>

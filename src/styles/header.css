@@ -1,0 +1,52 @@
+.logo-item img {
+  width: 99px;
+  height: 24px;
+}
+
+.app-header {
+  background-color: var(--bg-white);
+  width: 100vw;
+}
+
+.header-container {
+  padding: var(--spacing-padding-XL) var(--spacing-padding-4XL);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.logo h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #646cff;
+}
+
+.main-nav {
+  display: flex;
+  gap: var(--spacing-padding-XL);
+  align-items: center;
+}
+
+.main-nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.main-nav a:hover {
+  color: #646cff;
+}
+
+.logout-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.logout-button:hover {
+  background-color: #e0e0e0;
+}

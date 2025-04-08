@@ -80,27 +80,33 @@ export default function CompanyProfile() {
     : "Create Company Profile";
 
   return (
-    <FormWrapper title={title}>
+    <>
+    <h1>{title}</h1>
+    <article>
       {error && <div className="error-message">{error}</div>}
+
+    <FormWrapper className="image-form-wrapper">
 
       <ProfileImageUpload
         onImageUploaded={handleImageUploaded}
         currentImage={profileImage}
-      />
+        />
+    </FormWrapper>
 
+    <FormWrapper className="about-me-form-wrapper">
       <Form
         onSubmit={handleSubmitProfile}
         initialValues={initialFormData}
         submitLabel={existingProfile ? "Update Profile" : "Create Profile"}
         disabled={isLoading}
-      >
-        <FormWrapper title="Company Information" className="nested-form">
+        >
+        <FormWrapper  className="nested-form">
           <TextField
             name="companyName"
             label="Company Name"
             required={true}
             placeholder="Enter your company name"
-          />
+            />
 
           <SelectField
             name="industry"
@@ -108,13 +114,13 @@ export default function CompanyProfile() {
             required={true}
             options={industries}
             placeholder="Select your industry"
-          />
+            />
 
           <TextField
             name="website"
             label="Company Website"
             placeholder="https://example.com"
-          />
+            />
 
           <TextareaField
             name="description"
@@ -123,16 +129,16 @@ export default function CompanyProfile() {
             rows={5}
             maxLength={200}
             resizable={false}
-          />
+            />
         </FormWrapper>
 
-        <FormWrapper title="Contact Information" className="nested-form">
+        <FormWrapper className="nested-form">
           <TextField
             name="contactPerson.name"
             label="Contact Person Name"
             required={true}
             placeholder="Enter contact person's name"
-          />
+            />
 
           <TextField
             name="contactPerson.email"
@@ -140,7 +146,7 @@ export default function CompanyProfile() {
             required={true}
             placeholder="contact@example.com"
             type="email"
-          />
+            />
         </FormWrapper>
 
         <FormWrapper title="Internship Information" className="nested-form">
@@ -151,9 +157,14 @@ export default function CompanyProfile() {
             rows={4}
             maxLength={200}
             resizable={false}
-          />
+            />
         </FormWrapper>
       </Form>
     </FormWrapper>
+    <FormWrapper className="visited-company-wrapper">
+
+      </FormWrapper>
+            </article>
+            </>
   );
 }

@@ -10,6 +10,7 @@ export default function TextField({
   required = false,
   placeholder = "",
   autoComplete = "off",
+  disabled = false,
 }) {
   const {
     handleChange,
@@ -41,6 +42,7 @@ export default function TextField({
         placeholder={placeholder}
         autoComplete={autoComplete}
         className={hasError ? "input-error" : ""}
+        disabled={disabled}
       />
       {hasError && <div className="error-text">{fieldError}</div>}
     </div>

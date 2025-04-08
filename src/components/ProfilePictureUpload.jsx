@@ -110,7 +110,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
             className="file-input"
             disabled={isUploading}
           />
-          <label htmlFor="profileImage" className="select-button">
+          <label htmlFor="profileImage" className="button-select">
             {isUploading
               ? "Laddar upp..."
               : "Ladda upp bild"}
