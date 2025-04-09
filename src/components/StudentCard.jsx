@@ -1,21 +1,46 @@
-import React from "react";
+import React, { useState } from 'react';
+import '../styles/studentCard.css';
 
-export default function StudentCard({ student }) {
-  // Visa olika innehåll beroende på studentens utbildning
-  const renderSpecificInfo = () => {
+export default function StudentCard({ student, onClose }) {
+  // State for minimize/maximize
+  const [minimized, setMinimized] = useState(false);
+  
+  // Determine course name from courseId
+  const getCourseName = (courseId) => {
+    return courseId === "dd" ? "Digital Designer" : courseId === "wu" ? "Webbutvecklare" : "Unknown";
+  };
+
+  // Handle save/like button click
+  const handleSaveClick = () => {
+    // Add your save functionality here
+    console.log(`Saved student: ${student.name}`);
+  };
+  
+  // Handle minimize button click
+  const handleMinimizeClick = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      setMinimized(!minimized);
+      console.log(`${minimized ? 'Maximized' : 'Minimized'} student card: ${student.name}`);
+    }
+  };
+
+  // Render course-specific information based on student's course
+  const renderCourseSpecificInfo = () => {
     if (student.courseId === "dd") {
       return (
         <>
-          <div className="student-specializations">
-            <h4>Inriktningar</h4>
+          <div className="student-section student-specializations">
+            <h4>Inriktning</h4>
             <div className="tags">
               {student.specialization && student.specialization.map((spec, index) => (
                 <span key={index} className="tag">{spec}</span>
               ))}
             </div>
           </div>
-          <div className="student-software">
-            <h4>Designprogram</h4>
+          <div className="student-section student-software">
+            <h4>Design Program</h4>
             <div className="tags">
               {student.software && student.software.map((sw, index) => (
                 <span key={index} className="tag">{sw}</span>
@@ -27,11 +52,13 @@ export default function StudentCard({ student }) {
     } else if (student.courseId === "wu") {
       return (
         <>
-          <div className="student-stack">
+          <div className="student-section student-stack">
             <h4>Stack</h4>
-            <span className="tag">{student.stack}</span>
+            <div className="tags">
+              <span className="tag">{student.stack}</span>
+            </div>
           </div>
-          <div className="student-languages">
+          <div className="student-section student-languages">
             <h4>Språk/Ramverk</h4>
             <div className="tags">
               {student.languages && student.languages.map((lang, index) => (
@@ -46,63 +73,81 @@ export default function StudentCard({ student }) {
   };
 
   return (
-    <div className="student-card">
-      <div className="student-minimized">
-        {student.profileImageUrl ? (
-          <img 
-            src={student.profileImageUrl} 
-            alt={`${student.name}`} 
-            className="student-image" 
-          />
-        ) : (
-          <div className="student-image-placeholder">
-            {student.name.charAt(0)}
+    <>
+    <div className="student-card" data-course={student.courseId}>
+      {/* Minimize button */}
+      <button className="minimize-button" onClick={handleMinimizeClick} title="Minska">
+        <span className="minimize-icon">⤢</span>
+      </button>
+
+      {/* Left column - Profile image and name */}
+      <div className="student-left-column">
+        <div className="student-avatar">
+          {student.profileImageUrl ? (
+              <img 
+              src={student.profileImageUrl} 
+              alt={`${student.name}`} 
+              className="student-image" 
+              />
+            ) : (
+                <div className="student-image-placeholder">
+              {student.name.charAt(0)}
+            </div>
+          )}
+        </div>
+        <h3 className="student-name">{student.name}</h3>
+        <div className="student-course">{getCourseName(student.courseId)}</div>
+
+      {/* Save/like button */}
+      <button className="save-button" onClick={handleSaveClick}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        Spara kandidat
+      </button>
+
+      </div>
+      
+
+      {/* Right column - Student information */}
+      <div className="student-right-column">
+        {student.description && (
+            <div className="student-section student-description">
+            <h4>Beskrivning</h4>
+            <p>{student.description}</p>
           </div>
         )}
-        <h3>{student.name}</h3>
-      
-      <div className="student-course">
-        {student.courseId === "dd" ? "Digital Design" : "Webbutveckling"}
-      </div>
-
-      {/* Här ska finnas plas för like knapp */}
-      </div>
-
-      <div className="student-content">
-
-      <div className="student-description">
-            <h4>Description</h4>
-              <p>{student.desription}</p>  
-        </div>
-
-      {renderSpecificInfo()}
-
-      
-      <div className="student-links">
-      <h4>Bifogade Länkar</h4>
-      
-        {student.linkedin && (
-            <a href={student.linkedin} target="_blank" rel="noopener noreferrer">
-            LinkedIn
-          </a>
-        )}
-
-        {student.portfolio && (
-            <a href={student.portfolio} target="_blank" rel="noopener noreferrer">
-            Portfolio
-          </a>
-        )}
-
-        {/* {User.email && (
-            <a href={User.email} target="_blank" rel="noopener noreferrer">
-            Mail
-          </a>
-        )} */}
-
-        {/* ska vi bara skriva ut mailen? och isf behöver vi göra en query för att få tag i den i junktion table eller kan vi kalla på user.mail? */}
-
+        
+        {renderCourseSpecificInfo()}
+        
+        <div className="student-section student-links">
+          <h4>Bifogade Länkar</h4>
+          <div className="link-container">
+            {student.linkedin && (
+                <a href={student.linkedin} target="_blank" rel="noopener noreferrer" className="student-link">
+                <span className="link-icon linkedin-icon">📎</span>
+                My.linkedin
+              </a>
+            )}
+            
+            {student.portfolio && (
+                <a href={student.portfolio} target="_blank" rel="noopener noreferrer" className="student-link">
+                <span className="link-icon portfolio-icon">💼</span>
+                Portfolio.com
+              </a>
+            )}
+            
+            {student.email && (
+                <a href={`mailto:${student.email}`} className="student-link">
+                <span className="link-icon email-icon">✉️</span>
+                {student.email}
+              </a>
+            )}
+          </div>
         </div>
       </div>
+
     </div>
+            </>
   );
 }

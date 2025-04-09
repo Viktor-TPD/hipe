@@ -1,0 +1,266 @@
+.student-card {
+  display: flex;
+  background-color: var(--bg-white);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  padding: 1rem 1.25rem;
+  width: 50.1875rem;
+  height: 38.75rem;
+  position: relative;
+  min-height: 400px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1.25rem 1rem;
+  /* align-items: flex-end; */
+  gap: 2rem;
+  /* position: absolute;
+right: 22.125rem;
+top: 30.125rem; */
+
+h4 {
+    color: var(--bg-black);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.375rem;
+    letter-spacing: 0.00938rem;
+    margin:0 0 1rem 0;
+}
+
+p {
+    color: var(--font-Color-Dark-Gray, #4F4F4F);
+font-feature-settings: 'liga' off, 'clig' off;
+margin:0;
+padding: 0;
+
+/* body_16 */
+font-family: font/weight/Thin;
+font-size: var(--16, 1rem);
+font-style: normal;
+font-weight: 400;
+line-height: var(--22, 1.375rem); /* 137.5% */
+}
+}
+
+/* Left column: Profile image and name */
+.student-left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 2rem;
+  width: 18.875rem;
+  text-align: center;
+  border-right: 1px solid var(--grey-200);
+}
+
+.student-avatar {
+  margin-bottom: 1.5rem;
+}
+
+.student-image {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--grey-500);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-image-placeholder {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  background-color: var(--grey-500);
+  color: var(--bg-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 400;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-name {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+  color: var(--bg-black);
+}
+
+.student-course {
+  color: var(--grey-800);
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+/* Right column: Student information */
+.student-right-column {
+  display: flex;
+  padding: 3rem 2rem 1rem 2rem;
+  flex-direction: column;
+  gap: 1rem;
+  width: 27.3125rem;
+}
+
+.student-section {
+  margin-bottom: 1.5rem;
+}
+
+
+.student-description p {
+  margin: 0;
+  color: var(--grey-800);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Tags styling */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem;
+  background-color: var(--bg-white);
+  color: var(--bg-black);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 400;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.15), 0px 2px 1.5px 0px #FFF inset;
+
+}
+
+/* Links section */
+.student-links {
+  margin-top: auto;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.student-link {
+  display: flex;
+  align-items: center;
+  color: var(--grey-800);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.student-link:hover {
+  color: var(--yrgo-primary);
+}
+
+.student-link img {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+}
+
+/* Save/like button */
+.save-button {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--grey-800);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease;
+}
+
+.save-button:hover {
+  color: var(--yrgo-primary);
+  background-color: rgba(229, 18, 54, 0.05);
+}
+
+.save-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Minimize button */
+.minimize-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--grey-800);
+  font-size: 1.5rem;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.minimize-button:hover {
+  color: var(--yrgo-primary);
+}
+
+.minimize-icon {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .student-card {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .student-left-column {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 2rem;
+    border-right: none;
+    border-bottom: 1px solid var(--grey-200);
+    margin-bottom: 2rem;
+  }
+
+  .student-right-column {
+    padding-left: 0;
+  }
+
+  .save-button {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 1.5rem;
+    align-self: center;
+  }
+}
+
+/* Link icon styles */
+.link-icon {
+  color: var(--yrgo-primary);
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  display: inline-block;
+}
+
+.email-icon,
+.portfolio-icon,
+.linkedin-icon {
+  color: var(--yrgo-primary);
+}
