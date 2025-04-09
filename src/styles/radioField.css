@@ -60,6 +60,16 @@ input[type="radio"]:checked + label.option-label.dd {
   background-color: #dc3545;
 }
 
+input[type="radio"]:checked + label.option-label.student {
+  background-color: var(--yrgo-primary);
+  color: white;
+}
+
+input[type="radio"]:checked + label.option-label.company {
+  background-color: var(--yrgo-secondary, #001a52);
+  color: white;
+}
+
 .error-text {
   color: #e53935;
   font-size: 12px;
