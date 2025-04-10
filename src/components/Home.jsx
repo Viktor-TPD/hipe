@@ -24,7 +24,7 @@ function Home() {
   const { showNotification } = useNotification();
   const navigate = useNavigate();
 
-  const { formType } = useAuthForm();
+  const { formType, setFormType } = useAuthForm();
 
   const [userType, setUserType] = useState("student");
   const [userTypeValue, setUserTypeValue] = useState("Studenter");
@@ -46,6 +46,7 @@ function Home() {
         body: JSON.stringify({
           email: data.email,
           password: data.password,
+          userType: userType,
         }),
       });
 
@@ -130,29 +131,46 @@ function Home() {
 
   const renderLoginForm = () => {
     return (
-      <Form
-        onSubmit={handleLoginSubmit}
-        submitLabel={isLoading ? "Loggar in..." : "Logga in"}
-        disabled={isLoading}
-      >
-        <TextField
-          type="email"
-          name="email"
-          label="Email"
-          required={true}
-          placeholder="Ange din email"
-          autoComplete="email"
-        />
+      <>
+        {renderUserTypeToggle()}
+        <FormWrapper className="home-form-wrapper">
+          <h1>Logga in som {userTypeValue}</h1>
+          <Form
+            onSubmit={handleLoginSubmit}
+            submitLabel={isLoading ? "Loggar in..." : "Logga in"}
+            disabled={isLoading}
+            bottomButtons={false}
+          >
+            <TextField
+              type="email"
+              name="email"
+              label="Email"
+              required={true}
+              placeholder="Ange din email"
+              autoComplete="email"
+            />
 
-        <TextField
-          type="password"
-          name="password"
-          label="Lösenord"
-          required={true}
-          placeholder="Ange ditt lösenord"
-          autoComplete="current-password"
-        />
-      </Form>
+            <TextField
+              type="password"
+              name="password"
+              label="Lösenord"
+              required={true}
+              placeholder="Ange ditt lösenord"
+              autoComplete="current-password"
+            />
+
+            <section className="home-checkbox-wrapper">
+              <CheckboxField name="rememberMe" label="Kom ihåg mig?" />
+              <Button variant="primary" type="submit">
+                {isLoading ? "Loggar in..." : "Logga in"}
+              </Button>
+            </section>
+            <NavLink onClick={() => handleFormTypeChange("register")}>
+              Byt till Registrering
+            </NavLink>
+          </Form>
+        </FormWrapper>
+      </>
     );
   };
 
@@ -162,14 +180,18 @@ function Home() {
         <RadioField
           name="userType"
           options={[
-            { value: "student", label: "Studenter" },
+            { value: "student", label: "Student" },
             { value: "company", label: "Företag" },
           ]}
           value={userType}
           onValueChange={(e) => {
             if (e && e.target) {
               setUserType(e.target.value);
-              setUserTypeValue(e.target.labels[0].innerHTML);
+              if (e.target.value === "student") {
+                setUserTypeValue(e.target.labels[0].innerHTML + "er");
+              } else {
+                setUserTypeValue(e.target.labels[0].innerHTML);
+              }
             }
           }}
         />
@@ -178,6 +200,9 @@ function Home() {
   };
 
   const renderRegisterForm = () => {
+    const handleFormTypeChange = (type) => {
+      setFormType(type);
+    };
     return (
       <>
         {renderUserTypeToggle()}
@@ -246,10 +271,11 @@ function Home() {
           <h1>Välkommen till Yrgos Branschevent!</h1>
           <p>
             Där framtidens digitala designers och webbutvecklare möter
-            branschen! Letar du efter en LIA-plats eller nya talanger?
+            branschen!
             <br></br>
             <br></br>
-            Här skapas möjligheter, nätverk och framtida samarbeten!
+            Letar du efter en LIA-plats eller nya talanger? Här skapas
+            möjligheter, nätverk och framtida samarbeten!
           </p>
           <section className="home-info-container">
             <div className="home-info-item">

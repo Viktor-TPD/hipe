@@ -123,8 +123,8 @@
 aside {
   border-radius: 16px;
   padding: 2rem;
-  flex: 1;
   display: flex;
+  align-items: center;
 }
 
 .home-aside-right {
@@ -153,6 +153,8 @@ aside {
   color: var(--bg-black);
   margin-bottom: 2rem;
   flex: 1;
+  max-width: 600px;
+  min-width: 400px;
   h1 {
     color: var(--background-bg-black, #121212);
     font-feature-settings: "liga" off, "clig" off;
@@ -186,6 +188,16 @@ aside {
   width: 49%;
   border-radius: 20px;
   transition: background-color 0.3s, color 0.3s;
+}
+
+.home-form-wrapper form {
+  width: 90%;
+  height: 100%;
+}
+
+.form-field input {
+  width: 100%;
+  display: block;
 }
 
 input[type="radio"]:checked + label.option-label.student {
