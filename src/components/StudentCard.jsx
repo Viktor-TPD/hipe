@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/studentCard.css';
+import '../styles/imageUpload.css';
 
 export default function StudentCard({ student, onClose }) {
   // State for minimize/maximize
@@ -82,7 +83,7 @@ export default function StudentCard({ student, onClose }) {
 
       {/* Left column - Profile image and name */}
       <div className="student-left-column">
-        <div className="student-avatar">
+        <div className="image-preview">
           {student.profileImageUrl ? (
               <img 
               src={student.profileImageUrl} 
@@ -95,8 +96,8 @@ export default function StudentCard({ student, onClose }) {
             </div>
           )}
         </div>
-        <h3 className="student-name">{student.name}</h3>
-        <div className="student-course">{getCourseName(student.courseId)}</div>
+        <h2 className="student-name">{student.name}</h2>
+        <h3 className="student-course">{getCourseName(student.courseId)}</h3>
 
       {/* Save/like button */}
       <button className="save-button" onClick={handleSaveClick}>
