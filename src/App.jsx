@@ -2,15 +2,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import { NotificationProvider } from "./NotificationContext";
+import { AuthFormProvider } from "./AuthFormContext"; // Import our new context
 import NotificationDisplay from "./components/NotificationDisplay";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-import Login from "./components/Login";
-import Register from "./components/Register";
-
-// @todo remove Dashboard when Home is done
 import Dashboard from "./components/Dashboard";
 import Home from "./components/Home";
 import ProtectedRoute from "./ProtectedRoute";
@@ -24,7 +21,6 @@ import BrowseCompanies from "./components/BrowseCompanies";
 
 import CompanyCard from "./components/CompanyCard";
 
-
 import "./App.css";
 import "./styles/footer.css";
 import "./styles/header.css";
@@ -32,32 +28,13 @@ import "./styles/header.css";
 function AppContent() {
   const { currentUser } = useAuth();
 
-
   return (
     <div className="app">
       <Header />
       <main className="app-content">
         <Routes>
-          {/* Home route - redirect to dashboard if logged in, otherwise login */}
-          {/* When all the logic is added, we won't need conditional login anymore. @todo */}
-          <Route
-            path="/"
-            element={currentUser ? <Home /> : <Navigate to="/login" />}
-          />
-
-          {/* Auth routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          {/* Protected Home route */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          {/* Home route - accessible to everyone */}
+          <Route path="/" element={<Home />} />
 
           {/* Protected Dashboard route */}
           <Route
@@ -69,7 +46,7 @@ function AppContent() {
             }
           />
 
-          {/* Student-specific routes */}
+          {/* Profile routes */}
           <Route
             path="/profile"
             element={
@@ -83,6 +60,7 @@ function AppContent() {
             }
           />
 
+          {/* Browse routes */}
           <Route
             path="/browse"
             element={
@@ -96,6 +74,7 @@ function AppContent() {
             }
           />
 
+          {/* Favorites route */}
           <Route
             path="/favorites"
             element={
@@ -132,8 +111,10 @@ export default function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
-        <AppContent />
-        <NotificationDisplay />
+        <AuthFormProvider>
+          <AppContent />
+          <NotificationDisplay />
+        </AuthFormProvider>
       </NotificationProvider>
     </AuthProvider>
   );

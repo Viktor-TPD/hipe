@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-
+import { useAuthForm } from "../AuthFormContext";
 import Button from "./buttons/Button.jsx";
 
 function Header() {
   const { currentUser, logout } = useAuth();
+  const { setFormType } = useAuthForm();
 
   function Logo() {
     return (
@@ -21,6 +22,14 @@ function Header() {
     );
   }
 
+  const handleFormTypeChange = (type) => {
+    setFormType(type);
+
+    if (window.location.pathname !== "/") {
+      window.location.href = "/";
+    }
+  };
+
   return (
     <header className="app-header">
       <div className="header-container">
@@ -35,11 +44,11 @@ function Header() {
                 <Button variant="linkNavbar">Event</Button>
               </NavLink>
               {currentUser.userType === "student" && (
+                // @todo Give both of these proper links
                 <>
                   <NavLink to="/browse">
                     <Button variant="linkNavbar">Sök Företag</Button>
                   </NavLink>
-                  {/* @todo This needs the correct link */}
                   <NavLink to="/dashboard">
                     <Button variant="linkNavbar">Matchningar</Button>
                   </NavLink>
@@ -65,10 +74,18 @@ function Header() {
             </>
           ) : (
             <>
-              <NavLink to="/register">Registrering</NavLink>
-              <NavLink to="/login">
-                <Button variant="primary">Logga In</Button>
-              </NavLink>
+              <Button
+                variant="linkNavbar"
+                onClick={() => handleFormTypeChange("register")}
+              >
+                Registrering
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleFormTypeChange("login")}
+              >
+                Logga In
+              </Button>
             </>
           )}
         </nav>

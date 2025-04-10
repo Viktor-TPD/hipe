@@ -6,7 +6,7 @@ import React, {
   Children,
   cloneElement,
 } from "react";
-import Button from './buttons/Button.jsx';
+import Button from "./buttons/Button.jsx";
 
 // Create a context for the form
 export const FormContext = createContext({
@@ -26,6 +26,7 @@ export default function Form({
   submitLabel = "Submit",
   disabled = false,
   initialValues = {},
+  bottomButtons = true,
 }) {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
@@ -199,12 +200,15 @@ export default function Form({
           </div>
         )}
 
-{/* @todo if variant to be a propery, add it, for now this is good */}
-        <div className="button-container">
-        <Button variant="primary" type="submit" >{submitLabel}</Button>
-        <Button variant="select">Rensa Formulär X</Button>
-        </div>
-
+        {/* @todo if variant to be a propery, add it, for now this is good */}
+        {bottomButtons && (
+          <div className="button-container">
+            <Button variant="primary" type="submit">
+              {submitLabel}
+            </Button>
+            <Button variant="select">Rensa Formulär X</Button>
+          </div>
+        )}
       </form>
     </FormContext.Provider>
   );
