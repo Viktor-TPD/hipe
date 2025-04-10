@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./../AuthContext";
 import { useNotification } from "./../NotificationContext";
@@ -15,6 +16,8 @@ import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 import "./../styles/home.css";
 import "./../styles/radioField.css";
+import CheckboxField from "./fields/CheckboxField";
+import Button from "./buttons/Button";
 
 function Home() {
   const { currentUser, login } = useAuth();
@@ -24,11 +27,12 @@ function Home() {
   const { formType } = useAuthForm();
 
   const [userType, setUserType] = useState("student");
+  const [userTypeValue, setUserTypeValue] = useState("Studenter");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleUserTypeChange = (e) => {
-    setUserType(e.target.value);
+  const handleUserTypeChange = (value) => {
+    setUserType(value);
   };
 
   const handleLoginSubmit = async (data) => {
@@ -150,80 +154,86 @@ function Home() {
     );
   };
 
-  // Custom RadioField specifically for user type toggle
   const renderUserTypeToggle = () => {
     return (
       <div className="field-container">
-        <label className="field-label">Kontotyp</label>
-        <div className="options-container usertype-toggle">
-          <input
-            type="radio"
-            id="student-option"
-            name="userType"
-            value="student"
-            checked={userType === "student"}
-            onChange={handleUserTypeChange}
-            className="radio-input"
-          />
-          <label htmlFor="student-option" className="option-label student">
-            Student
-          </label>
-
-          <input
-            type="radio"
-            id="company-option"
-            name="userType"
-            value="company"
-            checked={userType === "company"}
-            onChange={handleUserTypeChange}
-            className="radio-input"
-          />
-          <label htmlFor="company-option" className="option-label company">
-            Företag
-          </label>
-        </div>
+        <RadioField
+          name="userType"
+          options={[
+            { value: "student", label: "Studenter" },
+            { value: "company", label: "Företag" },
+          ]}
+          value={userType}
+          onValueChange={(e) => {
+            if (e && e.target) {
+              setUserType(e.target.value);
+              setUserTypeValue(e.target.labels[0].innerHTML);
+            }
+          }}
+        />
       </div>
     );
   };
 
   const renderRegisterForm = () => {
     return (
-      <Form
-        onSubmit={handleRegisterSubmit}
-        submitLabel={isLoading ? "Registrerar..." : "Registrera"}
-        disabled={isLoading}
-      >
+      <>
         {renderUserTypeToggle()}
-
         <FormWrapper className="home-form-wrapper">
-          <TextField
-            type="email"
-            name="email"
-            label="Email"
-            required={true}
-            placeholder="Ange din email"
-            autoComplete="email"
-          />
+          <h1>Registrering för {userTypeValue}</h1>
+          <Form
+            onSubmit={handleRegisterSubmit}
+            submitLabel={isLoading ? "Registrerar..." : "Skicka in"}
+            disabled={isLoading}
+            bottomButtons={false}
+          >
+            <TextField
+              type="email"
+              name="email"
+              label="Email"
+              required={true}
+              placeholder="Ange din email"
+              autoComplete="email"
+            />
 
-          <TextField
-            type="password"
-            name="password"
-            label="Lösenord"
-            required={true}
-            placeholder="Skapa ett lösenord"
-            autoComplete="new-password"
-          />
+            <TextField
+              type="password"
+              name="password"
+              label="Lösenord"
+              required={true}
+              placeholder="Skapa ett lösenord"
+              autoComplete="new-password"
+            />
 
-          <TextField
-            type="password"
-            name="confirmPassword"
-            label="Bekräfta lösenord"
-            required={true}
-            placeholder="Bekräfta ditt lösenord"
-            autoComplete="new-password"
-          />
+            <TextField
+              type="password"
+              name="confirmPassword"
+              label="Bekräfta lösenord"
+              required={true}
+              placeholder="Bekräfta ditt lösenord"
+              autoComplete="new-password"
+            />
+            <section className="home-checkbox-wrapper">
+              <CheckboxField
+                name="privacyPolicy"
+                label={
+                  <>
+                    Jag har läst och godkänner{" "}
+                    <NavLink to="/policy">integritetspolicyn</NavLink>
+                  </>
+                }
+                required={true}
+              />
+              <Button variant="primary" type="submit">
+                {isLoading ? "Registrerar..." : "Skicka in"}
+              </Button>
+            </section>
+            <NavLink onClick={() => handleFormTypeChange("login")}>
+              Byt till Log in
+            </NavLink>
+          </Form>
         </FormWrapper>
-      </Form>
+      </>
     );
   };
 
@@ -257,7 +267,6 @@ function Home() {
         <aside>
           {!currentUser && (
             <section className="home-aside-right">
-              <h3>{formType === "login" ? "Logga in" : "Registrera dig"}</h3>
               {error && <div className="error-message">{error}</div>}
               {formType === "login" ? renderLoginForm() : renderRegisterForm()}
             </section>

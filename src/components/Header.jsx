@@ -44,6 +44,7 @@ function Header() {
                 <Button variant="linkNavbar">Event</Button>
               </NavLink>
               {currentUser.userType === "student" && (
+                // @todo Give both of these proper links
                 <>
                   <NavLink to="/browse">
                     <Button variant="linkNavbar">Sök Företag</Button>
