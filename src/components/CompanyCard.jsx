@@ -106,10 +106,6 @@ export default function CompanyCard({ company = {}, onClose }) {
                 <p>{company.contactPerson.email|| "No information available"}</p>
               </div>
             </section>
-
-              
-
-
             </div>
           </div>
        
