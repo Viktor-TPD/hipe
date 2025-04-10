@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from './../AuthContext.jsx'
-import '../styles/studentCard.css';
+import '../styles/card.css';
 import '../styles/imageUpload.css';
 
 export default function StudentCard({ student, onClose }) {

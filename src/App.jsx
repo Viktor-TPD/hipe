@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import { NotificationProvider } from "./NotificationContext";
 import NotificationDisplay from "./components/NotificationDisplay";
@@ -21,12 +22,16 @@ import CompanyProfile from "./components/CompanyProfile";
 import BrowseStudents from "./components/BrowseStudents";
 import BrowseCompanies from "./components/BrowseCompanies";
 
+import CompanyCard from "./components/CompanyCard";
+
+
 import "./App.css";
 import "./styles/footer.css";
 import "./styles/header.css";
 
 function AppContent() {
   const { currentUser } = useAuth();
+
 
   return (
     <div className="app">
@@ -96,6 +101,7 @@ function AppContent() {
             element={
               <ProtectedRoute requiredUserType="company">
                 <h1>Favourite students displayed here</h1>
+                <CompanyCard />
                 {/* Post internship component would go here */}
               </ProtectedRoute>
             }

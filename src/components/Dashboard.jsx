@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "./../AuthContext";
 import StudentCard from "./StudentCard";
 import { API_BASE_URL } from "../config";
+import CompanyCard from "./CompanyCard";
 
 function Dashboard() {
   const { currentUser, logout } = useAuth();
@@ -105,6 +106,8 @@ function Dashboard() {
           <h2>Välkommen till din företagsprofil!</h2>
           <p>Här kan du hantera din företagsprofil och hitta potentiella praktikanter.</p>
           
+          <CompanyCard company={companyData}/>
+
           <div className="dashboard-actions">
             <Link to="/profile">
               <Button variant="primary">Redigera Företagsprofil</Button>
