@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useAuth } from './../AuthContext.jsx'
 import '../styles/studentCard.css';
 import '../styles/imageUpload.css';
 
 export default function StudentCard({ student, onClose }) {
   // State for minimize/maximize
   const [minimized, setMinimized] = useState(false);
+  const {currentUser} = useAuth();
   
   // Determine course name from courseId
   const getCourseName = (courseId) => {
@@ -78,7 +80,8 @@ export default function StudentCard({ student, onClose }) {
     <div className="student-card" data-course={student.courseId}>
       {/* Minimize button */}
       <button className="minimize-button" onClick={handleMinimizeClick} title="Minska">
-        <span className="minimize-icon">⤢</span>
+        <p>Minska </p>
+      <img src="../public/assets/images/minimize.svg" alt="" />
       </button>
 
       {/* Left column - Profile image and name */}
@@ -126,22 +129,22 @@ export default function StudentCard({ student, onClose }) {
           <div className="link-container">
             {student.linkedin && (
                 <a href={student.linkedin} target="_blank" rel="noopener noreferrer" className="student-link">
-                <span className="link-icon linkedin-icon">📎</span>
+                <img src="../public/assets/images/linkedin.svg" alt="" />
                 My.linkedin
               </a>
             )}
             
             {student.portfolio && (
                 <a href={student.portfolio} target="_blank" rel="noopener noreferrer" className="student-link">
-                <span className="link-icon portfolio-icon">💼</span>
+                <img src="../public/assets/images/portfolio.svg" alt="" />
                 Portfolio.com
               </a>
             )}
             
-            {student.email && (
-                <a href={`mailto:${student.email}`} className="student-link">
-                <span className="link-icon email-icon">✉️</span>
-                {student.email}
+            {currentUser.email && (
+                <a href={`mailto:${currentUser.email}`} className="student-link">
+                <img src="../public/assets/images/mail.svg" alt="" />
+                {currentUser.email}
               </a>
             )}
           </div>

@@ -1,49 +1,49 @@
 
 const specializations = [
-    { value: "film", label: "Film" },
-    { value: "frontend", label: "Frontend" },
-    { value: "motiondesign", label: "Motiondesign" },
-    { value: "servicedesign", label: "Servicedesign" },
-    { value: "ui", label: "UI" },
-    { value: "ux", label: "UX" } ]
+    { value: "Film", label: "Film" },
+    { value: "Frontend", label: "Frontend" },
+    { value: "Motiondesign", label: "Motiondesign" },
+    { value: "Servicedesign", label: "Servicedesign" },
+    { value: "UI", label: "UI" },
+    { value: "UX", label: "UX" } ]
 
 const softwares = [
-    { value: "3dstager", label: "3D stager" },
-    { value: "aftereffects", label: "Aftereffects" },
-    { value: "blender3d", label: "Blender 3D" },
-    { value: "cavalry", label: "Cavalry" },
-    { value: "figma", label: "Figma" },
-    { value: "framer", label: "Framer" },
-    { value: "illustrator", label: "Illustrator" },
-    { value: "indesign", label: "InDesign" },
-    { value: "photoshop", label: "Photoshop" },
-    { value: "premierepro", label: "Premiere Pro" },
-    { value: "vscode", label: "Visual studio code" },
-    { value: "webflow", label: "Webflow" },
-    { value: "wordpress", label: "Wordpress" }]
+    { value: "3D stager", label: "3D stager" },
+    { value: "Aftereffects", label: "Aftereffects" },
+    { value: "Blender 3D", label: "Blender 3D" },
+    { value: "Cavalry", label: "Cavalry" },
+    { value: "Figma", label: "Figma" },
+    { value: "Framer", label: "Framer" },
+    { value: "Illustrator", label: "Illustrator" },
+    { value: "InDesign", label: "InDesign" },
+    { value: "Photoshop", label: "Photoshop" },
+    { value: "Premierepro", label: "Premiere Pro" },
+    { value: "Visual studio code", label: "Visual studio code" },
+    { value: "Webflow", label: "Webflow" },
+    { value: "Wordpress", label: "Wordpress" }]
 
 const languages = [
-    { value: "laravel", label: "Laravel" },
-    { value: "php", label: "Php" },
-    { value: "nodejs", label: "Node.js" },
-    { value: "nextjs", label: "Next.js" },
-    { value: "react", label: "React" },
-    { value: "tailwind", label: "Tailwind" },
-    { value: "javascript", label: "JavaScript" },
-    { value: "typescript", label: "TypeScript" },
-    { value: "sanity", label: "Sanity" },
-    { value: "sql", label: "SQL" },
-    { value: "nosql", label: "NoSQL" },
-    { value: "csharp", label: "C#" },
-    { value: "wordpress", label: "Wordpress" },
-    { value: "css", label: "CSS" },
-    { value: "figma", label: "Figma" }
+    { value: "Laravel", label: "Laravel" },
+    { value: "Php", label: "Php" },
+    { value: "Node.js", label: "Node.js" },
+    { value: "Next.js", label: "Next.js" },
+    { value: "React", label: "React" },
+    { value: "Tailwind", label: "Tailwind" },
+    { value: "JavaScript", label: "JavaScript" },
+    { value: "TypeScript", label: "TypeScript" },
+    { value: "Sanity", label: "Sanity" },
+    { value: "SQL", label: "SQL" },
+    { value: "NoSQL", label: "NoSQL" },
+    { value: "C#", label: "C#" },
+    { value: "Wordpress", label: "Wordpress" },
+    { value: "CSS", label: "CSS" },
+    { value: "Figma", label: "Figma" }
 ];
 
 const stacks = [
-    { value: "frontend", label: "Frontend" },
-    { value: "backend", label: "Backend" },
-    { value: "fullstack", label: "Fullstack" }, 
+    { value: "Frontend", label: "Frontend" },
+    { value: "Backend", label: "Backend" },
+    { value: "Fullstack", label: "Fullstack" }, 
 ];
 
     export {specializations, softwares, languages, stacks} 

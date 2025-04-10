@@ -13,6 +13,7 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 1.25rem 1rem;
   gap: 2rem;
+  
 
 h2 {
 color: var(--bg-black);
@@ -47,13 +48,9 @@ p {
 font-feature-settings: 'liga' off, 'clig' off;
 margin:0;
 padding: 0;
-
-/* body_16 */
-font-family: font/weight/Thin;
-font-size: var(--16, 1rem);
-font-style: normal;
+font-size: 1rem;
 font-weight: 400;
-line-height: var(--22, 1.375rem); /* 137.5% */
+line-height: 1.375rem; 
 }
 }
 
@@ -114,7 +111,9 @@ background: var(--background-bg-white, #FFF);
 
 /* Right column: Student information */
 .student-right-column {
+    
   display: flex;
+  margin-top: 2rem;
   padding: 3rem 2rem 1rem 2rem;
   flex-direction: column;
   gap: 1rem;
@@ -122,9 +121,16 @@ background: var(--background-bg-white, #FFF);
   border-radius: var(--Spacing-Padding-S, 0.5rem);
 border: 0.5px solid var(--stroke-weak, #BDBDBD);
 background: var(--background-bg-white, #FFF);
-
-/* Shadow/inner-card */
 box-shadow: 4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
+
+overflow-y: auto;
+position: relative;
+
+
+p {
+    max-width: fit-content;
+}
+
 }
 
 .student-section {
@@ -144,7 +150,7 @@ box-shadow: 4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  width: 50%;
+  width: 70%;
 }
 
 .tag {
@@ -161,7 +167,7 @@ box-shadow: 4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
 
 /* Links section */
 .student-links {
-  margin-top: 0;
+  margin-top: auto;
 
 }
 
@@ -213,29 +219,39 @@ box-shadow: 4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
   height: 1.5rem;
 }
 
+/* Ändra denna sen till "when liked" */
+
+.save-button svg:hover {
+    fill: red;
+    stroke: red;
+  }
+
+
+
 /* Minimize button */
 .minimize-button {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--grey-800);
-  font-size: 1.5rem;
   padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.minimize-button:hover {
-  color: var(--yrgo-primary);
+  gap: 0.62rem;
+  
+  p {
+      color: var(--bg-black);
+      font-size: 0.875rem;
+    
+  }
 }
 
 .minimize-icon {
   display: inline-block;
+ 
   width: 1.5rem;
   height: 1.5rem;
 }
