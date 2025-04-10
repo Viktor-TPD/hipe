@@ -19,15 +19,17 @@ function Dashboard() {
         try {
           setIsLoading(true);
           setError(null);
-          
-          const response = await fetch(`${API_BASE_URL}/api/v1/users/${currentUser.userId}/profile`);
-          
+
+          const response = await fetch(
+            `${API_BASE_URL}/api/v1/users/${currentUser.userId}/profile`
+          );
+
           if (!response.ok) {
             throw new Error("Failed to fetch profile data");
           }
-          
+
           const data = await response.json();
-          
+
           if (data.success && data.data.profile) {
             setStudentData(data.data.profile);
           }
@@ -38,7 +40,7 @@ function Dashboard() {
           setIsLoading(false);
         }
       };
-      
+
       fetchUserProfile();
     }
   }, [currentUser]);
@@ -52,24 +54,26 @@ function Dashboard() {
     _id: "sample-dd-id",
     name: "Anna Andersson",
     courseId: "dd",
-    description: "Kreativ designer med fokus på användarupplevelse och visuell kommunikation.",
+    description:
+      "Kreativ designer med fokus på användarupplevelse och visuell kommunikation.",
     specialization: ["ux", "ui", "servicedesign"],
     software: ["figma", "illustrator", "photoshop"],
     portfolio: "https://portfolio.example.com",
     linkedin: "https://linkedin.com/in/example",
-    profileImageUrl: ""
+    profileImageUrl: "",
   };
-  
+
   const sampleStudentWU = {
     _id: "sample-wu-id",
     name: "Erik Eriksson",
     courseId: "wu",
-    description: "Full-stack utvecklare med passion för clean code och användbara webbapplikationer.",
+    description:
+      "Full-stack utvecklare med passion för clean code och användbara webbapplikationer.",
     stack: "fullstack",
     languages: ["javascript", "react", "nodejs"],
     portfolio: "https://github.com/example",
     linkedin: "https://linkedin.com/in/example",
-    profileImageUrl: ""
+    profileImageUrl: "",
   };
 
   const renderDashboardContent = () => {
@@ -77,8 +81,11 @@ function Dashboard() {
       return (
         <div className="student-dashboard">
           <h2>Välkommen till din studentprofil!</h2>
-          <p>Här kan du hantera din profil och se företag som letar efter praktikanter.</p>
-          
+          <p>
+            Här kan du hantera din profil och se företag som letar efter
+            praktikanter.
+          </p>
+
           <div className="dashboard-actions">
             <Link to="/profile">
               {/* <Button variant="primary">Redigera Profil</Button> */}
@@ -87,7 +94,7 @@ function Dashboard() {
               {/* <Button variant="primary">Bläddra bland företag</Button> */}
             </Link>
           </div>
-          
+
           <h3>Din Profil</h3>
           {isLoading ? (
             <p>Laddar profildata...</p>
@@ -96,7 +103,10 @@ function Dashboard() {
           ) : studentData ? (
             <StudentCard student={studentData} />
           ) : (
-            <p>Ingen profildata hittades. <Link to="/profile">Skapa din profil</Link></p>
+            <p>
+              Ingen profildata hittades.{" "}
+              <Link to="/profile">Skapa din profil</Link>
+            </p>
           )}
         </div>
       );
@@ -104,9 +114,12 @@ function Dashboard() {
       return (
         <div className="company-dashboard">
           <h2>Välkommen till din företagsprofil!</h2>
-          <p>Här kan du hantera din företagsprofil och hitta potentiella praktikanter.</p>
-          
-          <CompanyCard company={companyData}/>
+          <p>
+            Här kan du hantera din företagsprofil och hitta potentiella
+            praktikanter.
+          </p>
+
+          <CompanyCard company={companyData} />
 
           <div className="dashboard-actions">
             <Link to="/profile">
@@ -116,12 +129,12 @@ function Dashboard() {
               <Button variant="primary">Bläddra bland studenter</Button>
             </Link>
           </div>
-          
+
           <h3>Studentprofiler Demo</h3>
           <div className="student-card-demo">
             <h4>Digital Design Student</h4>
             <StudentCard student={sampleStudentDD} />
-            
+
             <h4>Webbutveckling Student</h4>
             <StudentCard student={sampleStudentWU} />
           </div>

@@ -18,8 +18,7 @@ export default function CompanyProfile() {
   const transformInitialData = (profileData) => {
     return {
       companyName: profileData.companyName || "",
-      industry:
-        industries.find((ind) => ind.value === profileData.industry) || null,
+      industry: profileData.industry || null,
       description: profileData.description || "",
       website: profileData.website || "",
       "contactPerson.name": profileData.contactPerson?.name || "",
@@ -32,10 +31,7 @@ export default function CompanyProfile() {
   const transformSubmitData = (formData) => {
     return {
       companyName: formData.companyName,
-      industry:
-        typeof formData.industry === "object"
-          ? formData.industry.value
-          : formData.industry,
+      industry: formData.industry,
       description: formData.description || "",
       website: formData.website || "",
       contactPerson: {
@@ -104,35 +100,33 @@ export default function CompanyProfile() {
                 placeholder="Webbyrå"
               />
 
-          <TextareaField
-            name="description"
-            label="Beskrivning"
-            placeholder="Beskrivning"
-            rows={5}
-            maxLength={200}
-            resizable={false}
-            />
-          </FormWrapper>
-
-          <FormWrapper>
-
-          <h3>LIA</h3>
-            <TextField
-              name="internshipDetails"
-              label="LIA-platser tillgängliga"
-              placeholder="Platser"
+              <TextareaField
+                name="description"
+                label="Beskrivning"
+                placeholder="Beskrivning"
+                rows={5}
+                maxLength={200}
+                resizable={false}
               />
-          </FormWrapper>
+            </FormWrapper>
 
+            <FormWrapper>
+              <h3>LIA</h3>
+              <TextField
+                name="internshipDetails"
+                label="LIA-platser tillgängliga"
+                placeholder="Platser"
+              />
+            </FormWrapper>
 
-        <FormWrapper className="nested-form">
-          <h3>Kontaktperson</h3>
-          <TextField
-            name="contactPerson.name"
-            label="Namn"
-            required={true}
-            placeholder="Namn"
-            />
+            <FormWrapper className="nested-form">
+              <h3>Kontaktperson</h3>
+              <TextField
+                name="contactPerson.name"
+                label="Namn"
+                required={true}
+                placeholder="Namn"
+              />
 
               <TextField
                 name="contactPerson.email"
@@ -143,20 +137,17 @@ export default function CompanyProfile() {
               />
             </FormWrapper>
 
-        <FormWrapper className="nested-form">
-          <TextField
-            name="website"
-            label="Hemsida"
-            placeholder="Länk"
-            />
+            <FormWrapper className="nested-form">
+              <TextField name="website" label="Hemsida" placeholder="Länk" />
+            </FormWrapper>
+          </Form>
+          <p>
+            Vill du att vi tar bort dina användaruppgifter? Kontakta oss på
+            jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se
+          </p>
         </FormWrapper>
-      </Form>
-      <p>Vill du att vi tar bort dina användaruppgifter? Kontakta oss på jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se</p>
-    </FormWrapper>
-    <FormWrapper className="visited-company-wrapper">
-
-      </FormWrapper>
-            </article>
-            </>
+        <FormWrapper className="visited-company-wrapper"></FormWrapper>
+      </article>
+    </>
   );
 }

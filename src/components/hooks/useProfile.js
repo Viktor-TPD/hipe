@@ -146,7 +146,7 @@ export function useProfile({
       showNotification(successMessage, "success");
 
       // Navigate to dashboard
-      navigate("/dashboard");
+      navigate("/profile");
     } catch (error) {
       setError(error.message);
       showNotification(error.message, "error");

@@ -80,7 +80,7 @@ function AppContent() {
             element={
               <ProtectedRoute requiredUserType="company">
                 <h1>Favourite students displayed here</h1>
-                <CompanyCard />
+                {/* <CompanyCard company={companyData} /> */}
                 {/* Post internship component would go here */}
               </ProtectedRoute>
             }

@@ -64,6 +64,7 @@ function Home() {
       });
 
       showNotification("Inloggning lyckades!", "success");
+      navigate("/profile");
     } catch (error) {
       setError(error.message || "Failed to login. Please try again.");
       console.error("Login error:", error);
@@ -118,6 +119,7 @@ function Home() {
       });
 
       showNotification("Registrering lyckades!", "success");
+      navigate("/profile");
     } catch (error) {
       setError(error.message || "Registration failed. Please try again.");
       console.error("Registration error:", error);
