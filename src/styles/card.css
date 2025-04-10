@@ -1,4 +1,5 @@
-.student-card {
+.student-card,
+ .company-card {
   display: flex;
   background-color: var(--bg-white);
   border-radius: 1rem;
@@ -55,7 +56,8 @@ line-height: 1.375rem;
 }
 
 /* Left column: Profile image and name */
-.student-left-column {
+.student-left-column,
+ .company-left-column{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,7 +112,8 @@ background: var(--background-bg-white, #FFF);
 }
 
 /* Right column: Student information */
-.student-right-column {
+.student-right-column, 
+.company-right-column {
     
   display: flex;
   margin-top: 2rem;
@@ -131,10 +134,32 @@ p {
     max-width: fit-content;
 }
 
+.company-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+}
+
+.company-right-column {
+  gap: 2rem;
 }
 
 .student-section {
   margin-bottom: 1.5rem;
+  
+}
+
+.company-internship-box {
+  margin-top: auto;
+}
+
+.company-internship {
+ margin-bottom: 1rem;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 
@@ -166,7 +191,7 @@ p {
 }
 
 /* Links section */
-.student-links {
+.student-links, .company-links {
   margin-top: auto;
 
 }
@@ -177,7 +202,7 @@ p {
   gap: 0.75rem;
 }
 
-.student-link {
+.student-link, .company-link {
   display: flex;
   align-items: center;
   color: var(--grey-800);
@@ -186,11 +211,11 @@ p {
   transition: color 0.2s ease;
 }
 
-.student-link:hover {
+.student-link:hover, .company-link:hover {
   color: var(--yrgo-primary);
 }
 
-.student-link img {
+.student-link img, .company-link img {
   width: 1.25rem;
   height: 1.25rem;
   margin-right: 0.75rem;

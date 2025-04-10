@@ -20,6 +20,7 @@ export default function CompanyCard({ company = {}, onClose }) {
         }`
       );
     }
+    console.log("TJOHEJ" + company.contactPerson.name)
   };
 
   // If company is undefined or null, show a placeholder or return null
@@ -27,7 +28,9 @@ export default function CompanyCard({ company = {}, onClose }) {
     return <div className="company-card empty">No company data available</div>;
   }
 
+
   return (
+    
     <>
       <div className="company-card">
         {/* Minimize button */}
@@ -51,15 +54,21 @@ export default function CompanyCard({ company = {}, onClose }) {
               />
             ) : (
               <div className="company-image-placeholder">
-                {company.name ? company.name.charAt(0) : "?"}
+                {company.companyName ? company.companyName.charAt(0) : "?"}
               </div>
             )}
           </div>
-          <h2 className="company-name">{company.name || "Company Name"}</h2>
+          <h2 className="company-name">
+            {company.companyName || "Company Name"}
+          </h2>
         </div>
 
         {/* Right column - Company information */}
         <div className="company-right-column">
+          <div className="company-name">
+            <h4>Företagsnamn</h4>
+            <h4>{company.companyName}</h4>
+          </div>
           <div className="company-section company-focus">
             <h4>Företagsinriktning</h4>
             <p>{company.industry || "Not specified"}</p>
@@ -70,39 +79,41 @@ export default function CompanyCard({ company = {}, onClose }) {
             <p>{company.description || "No description available"}</p>
           </div>
 
-          <div className="company-section company-positions">
-            <h4>Liaplatser</h4>
-            <p>{company.internshipDetails || "No information available"}</p>
-          </div>
+         
+            {company.website && (
+              <a
+                href={company.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="company-link"
+              >
+                <img src="../public/assets/images/portfolio.svg" alt="" />
+                {company.website}
+              </a>
+            )}
+            <section className="company-internship-box">
 
-          <div className="company-section company-links">
-            <h4>Bifogade Länkar</h4>
-            <div className="link-container">
-              {company.website && (
-                <a
-                  href={company.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="company-link"
-                >
-                  <img src="../public/assets/images/portfolio.svg" alt="" />
-                  {company.website}
-                </a>
-              )}
+              <div className="company-section company-internship">
+                <h4>Liaplatser</h4>
+                <p>{company.internshipDetails || "No information available"}</p>
+              </div>
+              <div className="company-section company-internship">
+                <h4>Kontaktperson</h4>
+                <p>{company.contactPerson.name || "No information available"}</p>
+              </div>
+              <div className="company-section company-internship">
+                <h4>Mail</h4>
+                <p>{company.contactPerson.email|| "No information available"}</p>
+              </div>
+            </section>
 
-              {currentUser?.email && (
-                <a
-                  href={`mailto:${currentUser.email}`}
-                  className="company-link"
-                >
-                  <img src="../public/assets/images/mail.svg" alt="" />
-                  {currentUser.email}
-                </a>
-              )}
+              
+
+
             </div>
           </div>
-        </div>
-      </div>
+       
+     
     </>
   );
 }
