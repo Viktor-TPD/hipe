@@ -1,0 +1,48 @@
+.browse-companies-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  .button {
+    margin-bottom: auto;
+  }
+}
+
+.company-right-column {
+  display: none;
+}
+
+.company-card {
+  width: fit-content;
+}
+
+.companies-grid {
+  background-color: red;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 1111px;
+}
+
+.company-card-maximized {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  overflow-y: auto;
+  .company-right-column {
+    display: flex;
+  }
+}
+
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  z-index: 2;
+}
