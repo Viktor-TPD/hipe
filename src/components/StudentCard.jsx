@@ -8,72 +8,39 @@ import "../styles/imageUpload.css";
 export default function StudentCard({ student, onClose }) {
   const [minimized, setMinimized] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [companyProfile, setCompanyProfile] = useState(null);
   const { currentUser } = useAuth();
   const { showNotification } = useNotification();
-
-  // Check for existing like when component mounts
-  useEffect(() => {
-    const checkExistingLike = async () => {
-      if (currentUser?.userType === "company" && companyProfile) {
-        try {
-          const response = await fetch(
-            `${API_BASE_URL}/api/v1/likes?studentId=${student._id}&companyId=${companyProfile._id}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          // Important: check if response is ok before parsing
-          if (!response.ok) {
-            console.error("Failed to fetch likes", await response.text());
-            return;
-          }
-
-          const result = await response.json();
-
-          console.log("Existing Likes Check:", {
-            studentId: student._id,
-            companyId: companyProfile._id,
-            result,
-          });
-
-          // Set saved status based on count of likes
-          setIsSaved(result.count > 0);
-        } catch (error) {
-          console.error("Error checking existing like:", error);
-        }
-      }
-    };
-
-    if (companyProfile) {
-      checkExistingLike();
-    }
-  }, [companyProfile, student._id, currentUser]);
 
   // Fetch company profile when component mounts
   useEffect(() => {
     const fetchCompanyProfile = async () => {
       if (currentUser?.userType === "company") {
         try {
+          setIsLoading(true);
           const response = await fetch(
             `${API_BASE_URL}/api/v1/companies/${currentUser.userId}`
           );
+
+          if (!response.ok) {
+            console.error(
+              "Failed to fetch company profile:",
+              await response.text()
+            );
+            return;
+          }
+
           const result = await response.json();
 
-          console.log("Company Profile Fetch:", result);
-
-          if (result.success) {
+          if (result.success && result.data) {
             setCompanyProfile(result.data);
-          } else {
-            showNotification("Could not fetch company profile", "error");
+            console.log("Company profile loaded:", result.data._id);
           }
         } catch (error) {
           console.error("Error fetching company profile:", error);
-          showNotification("Error fetching company profile", "error");
+        } finally {
+          setIsLoading(false);
         }
       }
     };
@@ -81,10 +48,64 @@ export default function StudentCard({ student, onClose }) {
     fetchCompanyProfile();
   }, [currentUser]);
 
+  // Check if student is already liked once we have both student and company profile
+  useEffect(() => {
+    const checkExistingLike = async () => {
+      if (!student?._id || !companyProfile?._id) return;
+
+      try {
+        setIsLoading(true);
+
+        // Build URL with explicit query parameters
+        const url = new URL(`${API_BASE_URL}/api/v1/likes`);
+        url.searchParams.append("studentId", student._id);
+        url.searchParams.append("companyId", companyProfile._id);
+
+        console.log("Checking like status:", url.toString());
+        console.log("Student ID:", student._id);
+        console.log("Company ID:", companyProfile._id);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          // Handle different status codes differently
+          if (response.status === 404) {
+            // API endpoint not found - might need to check routes
+            console.warn("API endpoint not found:", await response.text());
+            setIsSaved(false);
+          } else {
+            // Other errors
+            const errorData = await response.json();
+            console.error("Error response:", errorData);
+            setIsSaved(false);
+          }
+          return;
+        }
+
+        const result = await response.json();
+        console.log("Like status check result:", result);
+
+        // Check if there are likes in the response
+        setIsSaved(result.count > 0);
+      } catch (error) {
+        console.error("Error checking like status:", error);
+        setIsSaved(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (student?._id && companyProfile?._id) {
+      checkExistingLike();
+    }
+  }, [student, companyProfile]);
+
   // Handle save/like button click
   const handleSaveClick = async () => {
-    // Comprehensive validation
-    if (currentUser?.userType !== "company") {
+    if (isLoading) return; // Prevent multiple clicks
+
+    // Validate prerequisites
+    if (!currentUser?.userType === "company") {
       showNotification("Only companies can save students", "error");
       return;
     }
@@ -94,11 +115,18 @@ export default function StudentCard({ student, onClose }) {
       return;
     }
 
+    if (!student?._id) {
+      showNotification("Invalid student profile", "error");
+      return;
+    }
+
     try {
-      console.log("Attempting to save/unsave student with details:", {
+      setIsLoading(true);
+
+      // Ensure we're sending valid IDs by logging them first
+      console.log("Sending like request with:", {
         studentId: student._id,
         companyId: companyProfile._id,
-        currentUserType: currentUser.userType,
       });
 
       const response = await fetch(`${API_BASE_URL}/api/v1/likes`, {
@@ -112,32 +140,41 @@ export default function StudentCard({ student, onClose }) {
         }),
       });
 
-      const result = await response.json();
+      // Log the response status and get the response text
+      console.log("Response status:", response.status);
+      const responseText = await response.text();
 
-      console.log("Full Like Response:", {
-        status: response.status,
-        ok: response.ok,
-        result,
-      });
+      // Try to parse the response as JSON, or use the raw text if parsing fails
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse response as JSON:", responseText);
+        throw new Error("Invalid server response");
+      }
 
-      if (response.ok && result.success) {
-        if (result.action === "created") {
-          setIsSaved(true);
-          showNotification("Student saved successfully", "success");
-        } else if (result.action === "deleted") {
-          setIsSaved(false);
-          showNotification("Student removed from saved list", "info");
-        }
-      } else {
-        // Handle error cases
+      console.log("Full response:", result);
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to update saved status");
+      }
+
+      if (result.success) {
+        setIsSaved(result.action === "created");
         showNotification(
-          result.message || "Failed to update saved status",
-          "error"
+          result.action === "created"
+            ? "Student saved successfully"
+            : "Student removed from saved list",
+          result.action === "created" ? "success" : "info"
         );
+      } else {
+        throw new Error(result.message || "Failed to update saved status");
       }
     } catch (error) {
       console.error("Error saving/unsaving student:", error);
-      showNotification("Error updating saved status", "error");
+      showNotification(error.message, "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -156,9 +193,6 @@ export default function StudentCard({ student, onClose }) {
       onClose();
     } else {
       setMinimized(!minimized);
-      console.log(
-        `${minimized ? "Maximized" : "Minimized"} student card: ${student.name}`
-      );
     }
   };
 
@@ -252,17 +286,18 @@ export default function StudentCard({ student, onClose }) {
           <button
             className={`save-button ${isSaved ? "saved" : ""}`}
             onClick={handleSaveClick}
+            disabled={isLoading}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="none"
+              fill={isSaved ? "red" : "none"}
               stroke="currentColor"
               strokeWidth="2"
             >
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
-            {isSaved ? "Sparad" : "Spara kandidat"}
+            {isLoading ? "Sparar..." : isSaved ? "Sparad" : "Spara kandidat"}
           </button>
         )}
       </div>
@@ -289,7 +324,7 @@ export default function StudentCard({ student, onClose }) {
                 className="student-link"
               >
                 <img src="../public/assets/images/linkedin.svg" alt="" />
-                My.linkedin
+                LinkedIn
               </a>
             )}
 
@@ -301,14 +336,17 @@ export default function StudentCard({ student, onClose }) {
                 className="student-link"
               >
                 <img src="../public/assets/images/portfolio.svg" alt="" />
-                Portfolio.com
+                Portfolio
               </a>
             )}
 
-            {currentUser?.email && (
-              <a href={`mailto:${currentUser.email}`} className="student-link">
+            {student.userId?.email && (
+              <a
+                href={`mailto:${student.userId.email}`}
+                className="student-link"
+              >
                 <img src="../public/assets/images/mail.svg" alt="" />
-                {currentUser.email}
+                {student.userId.email}
               </a>
             )}
           </div>
