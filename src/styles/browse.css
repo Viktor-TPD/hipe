@@ -1,4 +1,4 @@
-.browse-companies-container {
+.browse-companies-container, .browse-students-container {
   display: flex;
   flex-direction: row;
   gap: 2rem;
@@ -7,15 +7,20 @@
   }
 }
 
-.company-right-column {
+/* @todo ta bort denna flexdirection */
+.browse-students-container {
+  flex-direction: column;
+}
+
+.company-right-column, .student-right-column {
   display: none;
 }
 
-.company-card {
+.company-card, .student-card {
   width: fit-content;
 }
 
-.companies-grid {
+.companies-grid, .students-grid {
   background-color: red;
   display: flex;
   flex-wrap: wrap;
@@ -35,6 +40,29 @@
   }
 }
 
+.company-card-maximized, .student-card-maximized {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  overflow-y: auto;
+}
+
+.company-card-maximized .company-right-column,
+.student-card-maximized .student-right-column {
+  display: flex;
+}
+
+.companies-grid, .students-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1248px;
+}
+
 .blur-overlay {
   position: fixed;
   top: 0;
@@ -45,4 +73,79 @@
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
   z-index: 2;
+}
+
+/* Student browse specific styles */
+.filters-section {
+  background-color: var(--bg-white);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 1248px;
+}
+
+.filters-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--bg-black);
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.filter-select {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.reset-filters-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--grey-200);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reset-filters-button:hover {
+  background-color: var(--grey-300);
+}
+
+.students-count {
+  font-size: 0.9rem;
+  color: var(--grey-800);
+  margin-bottom: 1rem;
+}
+
+.no-results {
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: var(--grey-800);
+  background-color: var(--bg-white);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

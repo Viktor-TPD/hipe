@@ -3,12 +3,14 @@ import StudentCard from "./StudentCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import Select from "react-select";
 import { API_BASE_URL } from "./../config";
+import "./../styles/browse.css";
 
 export default function BrowseStudents() {
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeCardId, setActiveCardId] = useState(null);
 
   // Filter states
   const [courseId, setCourseId] = useState("");
@@ -61,6 +63,24 @@ export default function BrowseStudents() {
     selectedStack,
     selectedLanguages,
   ]);
+
+  // Handle card activation/deactivation
+  const handleCardActivation = (cardId, isActive) => {
+    setActiveCardId(isActive ? cardId : null);
+
+    // Lock body scrolling when a card is maximized
+    if (isActive) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  };
+
+  // Handle overlay click
+  const handleOverlayClick = () => {
+    setActiveCardId(null);
+    document.body.style.overflow = "";
+  };
 
   // Funktion för att applicera filter
   const applyFilters = () => {
@@ -272,7 +292,14 @@ export default function BrowseStudents() {
       <div className="students-grid">
         {filteredStudents.length > 0 ? (
           filteredStudents.map((student) => (
-            <StudentCard key={student._id} student={student} />
+            <StudentCard 
+              key={student._id} 
+              student={student} 
+              cardId={student._id}
+              isActive={student._id === activeCardId}
+              onActivate={handleCardActivation}
+              inBrowseView={true}
+            />
           ))
         ) : (
           <div className="no-results">
@@ -280,6 +307,11 @@ export default function BrowseStudents() {
           </div>
         )}
       </div>
+
+      {/* Single overlay for all cards */}
+      {activeCardId && (
+        <div className="blur-overlay" onClick={handleOverlayClick}></div>
+      )}
     </div>
   );
 }
