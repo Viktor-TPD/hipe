@@ -43,13 +43,11 @@ This document provides a reference for all API endpoints in the application.
 
 ## Likes Routes
 
-| Method | Endpoint            | Description                                |
-| ------ | ------------------- | ------------------------------------------ |
-| GET    | `/api/v1/likes`     | Get all likes with optional filtering      |
-| GET    | `/api/v1/likes/:id` | Get a specific like                        |
-| POST   | `/api/v1/likes`     | Create a new like                          |
-| PUT    | `/api/v1/likes/:id` | Update a like (e.g. change isPoked status) |
-| DELETE | `/api/v1/likes/:id` | Delete a like                              |
+| Method | Endpoint            | Description                           |
+| ------ | ------------------- | ------------------------------------- |
+| GET    | `/api/v1/likes`     | Get all likes with optional filtering |
+| GET    | `/api/v1/likes/:id` | Get a specific like                   |
+| POST   | `/api/v1/likes`     | Create a new like, delete if exists   |
 
 ## Upload Routes
 

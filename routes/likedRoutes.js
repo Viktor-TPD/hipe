@@ -5,21 +5,29 @@ import CompanyProfile from "../models/CompanyProfile.js";
 
 const router = express.Router();
 
-// GET /api/v1/likes - Get all likes with optional filtering
+// GET /api/v1/likes - Get likes with optional filtering
 router.get("/", async (req, res) => {
   try {
-    const { studentId, companyId, isPoked } = req.query;
-    let query = {};
+    const { studentId, companyId } = req.query;
 
-    // Add filters if provided
-    if (studentId) query.studentId = studentId;
-    if (companyId) query.companyId = companyId;
-    if (isPoked !== undefined) query.isPoked = isPoked === "true";
+    console.log("Likes Query Params:", { studentId, companyId });
 
-    // Find likes with the query
-    const likes = await Liked.find(query)
-      .populate("studentId", "name courseId")
-      .populate("companyId", "companyName industry");
+    if (!studentId || !companyId) {
+      return res.status(400).json({
+        success: false,
+        message: "Both studentId and companyId are required",
+      });
+    }
+
+    const likes = await Liked.find({
+      studentId,
+      companyId,
+    });
+
+    console.log("Likes Found:", {
+      count: likes.length,
+      likes,
+    });
 
     res.status(200).json({
       success: true,
@@ -36,42 +44,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /api/v1/likes/:id - Get a specific like
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const like = await Liked.findById(id)
-      .populate("studentId", "name courseId")
-      .populate("companyId", "companyName industry");
-
-    if (!like) {
-      return res.status(404).json({
-        success: false,
-        message: "Like not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: like,
-    });
-  } catch (error) {
-    console.error("❌ Error fetching like:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-});
-
-// POST /api/v1/likes - Create a new like
+// POST /api/v1/likes - Create or delete a like
 router.post("/", async (req, res) => {
   try {
-    const { studentId, companyId, isPoked } = req.body;
+    const { studentId, companyId } = req.body;
 
-    // Validate required fields
+    console.log("Received Like Request:", { studentId, companyId });
+
     if (!studentId || !companyId) {
       return res.status(400).json({
         success: false,
@@ -80,118 +59,65 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Check if student profile exists
     const student = await StudentProfile.findById(studentId);
     if (!student) {
+      console.error(`Student profile not found for ID: ${studentId}`);
       return res.status(404).json({
         success: false,
         message: "Student profile not found",
       });
     }
 
-    // Check if company profile exists
     const company = await CompanyProfile.findById(companyId);
     if (!company) {
+      console.error(`Company profile not found for ID: ${companyId}`);
       return res.status(404).json({
         success: false,
         message: "Company profile not found",
       });
     }
 
-    // Check if like already exists
     const existingLike = await Liked.findOne({ studentId, companyId });
+
     if (existingLike) {
-      return res.status(409).json({
-        success: false,
-        message: "Like already exists for this student and company",
+      await Liked.deleteOne({ studentId, companyId });
+
+      console.log("✅ Like deleted:", {
+        studentId,
+        companyId,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Like removed successfully",
+        action: "deleted",
+      });
+    } else {
+      const infoString = `${company.companyName} liked ${student.name}`;
+
+      const liked = new Liked({
+        studentId,
+        companyId,
+        info: infoString,
+      });
+
+      await liked.save();
+
+      console.log("✅ Like created:", {
+        studentId,
+        companyId,
+        info: infoString,
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "Like created successfully",
+        data: liked,
+        action: "created",
       });
     }
-
-    const liked = new Liked({
-      studentId,
-      companyId,
-      isPoked: isPoked || false,
-      date: new Date(),
-    });
-
-    await liked.save();
-    console.log("✅ Like created:", liked);
-
-    res.status(201).json({
-      success: true,
-      message: "Like created successfully",
-      data: liked,
-    });
   } catch (error) {
-    console.error("❌ Error creating like:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-});
-
-// PUT /api/v1/likes/:id - Update a like (e.g., change isPoked status)
-router.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { isPoked } = req.body;
-
-    // Find the like
-    const like = await Liked.findById(id);
-
-    if (!like) {
-      return res.status(404).json({
-        success: false,
-        message: "Like not found",
-      });
-    }
-
-    // Update isPoked status
-    if (isPoked !== undefined) {
-      like.isPoked = isPoked;
-    }
-
-    // Save the updated like
-    await like.save();
-    console.log("✅ Like updated:", like);
-
-    res.status(200).json({
-      success: true,
-      message: "Like updated successfully",
-      data: like,
-    });
-  } catch (error) {
-    console.error("❌ Error updating like:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-});
-
-// DELETE /api/v1/likes/:id - Delete a like
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const result = await Liked.findByIdAndDelete(id);
-
-    if (!result) {
-      return res.status(404).json({
-        success: false,
-        message: "Like not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Like deleted successfully",
-    });
-  } catch (error) {
-    console.error("❌ Error deleting like:", error);
+    console.error("❌ Error handling like:", error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
