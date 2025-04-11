@@ -62,6 +62,7 @@ export default function BrowseCompanies() {
 
   return (
     <div className="browse-companies-container">
+        <Button></Button>
       <div className="companies-grid">
         {companies.map((company) => (
           <CompanyCard
