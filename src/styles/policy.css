@@ -1,0 +1,116 @@
+.policy-article {
+  display: flex;
+  width: 100%;
+  padding: 32px 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  min-height: calc(100vh - 300px);
+  overflow-y: visible;
+}
+
+.policy-content {
+  display: flex;
+  width: 826px;
+  padding: 32px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 32px;
+  overflow-y: visible;
+  background-color: var(--bg-white);
+}
+
+.policy-content h1 {
+  color: var(--stroke-x-strong, #121212);
+  font-feature-settings: "liga" off, "clig" off;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.15px;
+  margin: 0;
+}
+
+.policy-content h2 {
+  color: var(--stroke-x-strong, #121212);
+  font-feature-settings: "liga" off, "clig" off;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.15px;
+  margin: 0;
+}
+
+.policy-content p,
+.policy-content li {
+  color: var(--stroke-x-strong, #121212);
+  font-feature-settings: "liga" off, "clig" off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0;
+}
+
+.policy-content ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.last-updated {
+  color: var(--grey-500);
+  font-style: italic;
+}
+
+.policy-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.back-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--yrgo-primary);
+  color: white;
+  border-radius: 36px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #c20e2e;
+}
+
+@media (max-width: 900px) {
+  .policy-content {
+    width: 90%;
+    max-width: 826px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .policy-content {
+    padding: 16px;
+    gap: 24px;
+  }
+
+  .policy-content h1 {
+    font-size: 20px;
+  }
+
+  .policy-content h2 {
+    font-size: 16px;
+  }
+
+  .policy-content p,
+  .policy-content li {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

@@ -20,6 +20,7 @@ import BrowseStudents from "./components/BrowseStudents";
 import BrowseCompanies from "./components/BrowseCompanies";
 
 import CompanyCard from "./components/CompanyCard";
+import Policy from "./components/Policy";
 
 import "./App.css";
 import "./styles/footer.css";
@@ -85,9 +86,8 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
-          {/* Unauthorized access page */}
-          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          {/* Policy route */}
+          <Route path="/policy" element={<Policy />} />
 
           {/* Catch-all for 404 */}
           <Route
