@@ -8,18 +8,15 @@ import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
 import { specializations, softwares, languages, stacks } from "./FormData";
-import { useAuth } from './../AuthContext.jsx'
+import { useAuth } from "./../AuthContext.jsx";
 import "./../styles/styles.css";
 import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 
-
-
 export default function StudentProfile() {
-  
   const [courseId, setCourseId] = useState("");
   const [error, setError] = useState("");
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
 
   // Transform API data to form format
   const transformInitialData = (profileData) => {
@@ -32,7 +29,7 @@ export default function StudentProfile() {
     };
 
     // Set courseId for conditional field rendering
-    setCourseId(profileData.courseId || "");
+    setCourseId(profileData.courseId || "dd");
 
     // Add course-specific fields
     if (profileData.courseId === "dd") {
@@ -163,161 +160,160 @@ export default function StudentProfile() {
 
   return (
     <>
+      <h1>{title}</h1>
+      <article>
+        {error && <div className="error-message">{error}</div>}
 
-    <h1>{title}</h1>
-    <article>
-      {error && <div className="error-message">{error}</div>}
-
-      <FormWrapper className="image-form-wrapper">
-        <ProfileImageUpload
-          onImageUploaded={handleImageUploaded}
-          currentImage={profileImage}
+        <FormWrapper className="image-form-wrapper">
+          <ProfileImageUpload
+            onImageUploaded={handleImageUploaded}
+            currentImage={profileImage}
           />
-      </FormWrapper>
+        </FormWrapper>
 
-      <FormWrapper className="about-me-form-wrapper">
-        <Form
-          onSubmit={handleSubmitProfile}
-          initialValues={initialFormData}
-          submitLabel={"Spara"}
-          disabled={isLoading}
+        <FormWrapper className="about-me-form-wrapper">
+          <Form
+            onSubmit={handleSubmitProfile}
+            initialValues={initialFormData}
+            submitLabel={"Spara"}
+            disabled={isLoading}
           >
-          <h3>Om mig</h3>
-          <TextField
-            name="name"
-            label="För- och efternamn"
-            required={true}
-            placeholder="Namn"
+            <h3>Om mig</h3>
+            <TextField
+              name="name"
+              label="För- och efternamn"
+              required={true}
+              placeholder="Namn"
             />
 
-          <TextareaField
-            name="description"
-            label="Beskrivning"
-            placeholder="Beskrivning"
-            rows={5}
-            maxLength={200}
+            <TextareaField
+              name="description"
+              label="Beskrivning"
+              placeholder="Beskrivning"
+              rows={5}
+              maxLength={200}
             />
-          <FormWrapper />
+            <FormWrapper />
 
-          <RadioField
-            name="courseId"
-            options={[
-              { value: "dd", label: "DD" },
-              { value: "wu", label: "WU" },
-            ]}
-            onValueChange={handleCourseSelection}
+            <RadioField
+              name="courseId"
+              options={[
+                { value: "dd", label: "DD" },
+                { value: "wu", label: "WU" },
+              ]}
+              onValueChange={handleCourseSelection}
             />
 
-          {courseId === "dd" && (
-            <FormWrapper className="course-specific-wrapper">
-              <h3>Inriktning</h3>
-              <SelectField
-                name="specialization1"
-                label="Inriktning 1"
-                options={specializations}
-                placeholder="Välj från listan"
+            {courseId === "dd" && (
+              <FormWrapper className="course-specific-wrapper">
+                <h3>Inriktning</h3>
+                <SelectField
+                  name="specialization1"
+                  label="Inriktning 1"
+                  options={specializations}
+                  placeholder="Välj från listan"
                 />
 
-              <SelectField
-                name="specialization2"
-                label="Inriktning 2"
-                options={specializations}
-                placeholder="Välj från listan"
+                <SelectField
+                  name="specialization2"
+                  label="Inriktning 2"
+                  options={specializations}
+                  placeholder="Välj från listan"
                 />
 
-              <SelectField
-                name="specialization3"
-                label="Inriktning 3"
-                options={specializations}
-                placeholder="Välj från listan"
+                <SelectField
+                  name="specialization3"
+                  label="Inriktning 3"
+                  options={specializations}
+                  placeholder="Välj från listan"
                 />
-              <h3>Designprogram</h3>
-              <SelectField
-                name="software1"
-                label="Designprogram 1"
-                options={softwares}
-                placeholder="Välj från listan"
-                />
-
-              <SelectField
-                name="software2"
-                label="Designprogram 2"
-                options={softwares}
-                placeholder="Välj från listan"
+                <h3>Designprogram</h3>
+                <SelectField
+                  name="software1"
+                  label="Designprogram 1"
+                  options={softwares}
+                  placeholder="Välj från listan"
                 />
 
-              <SelectField
-                name="software3"
-                label="Designprogram 3"
-                options={softwares}
-                placeholder="Välj från listan"
+                <SelectField
+                  name="software2"
+                  label="Designprogram 2"
+                  options={softwares}
+                  placeholder="Välj från listan"
                 />
+
+                <SelectField
+                  name="software3"
+                  label="Designprogram 3"
+                  options={softwares}
+                  placeholder="Välj från listan"
+                />
+              </FormWrapper>
+            )}
+
+            {courseId === "wu" && (
+              <FormWrapper className="course-specific-wrapper">
+                <h3>Techstack</h3>
+                <SelectField
+                  name="stack"
+                  label="Techstack"
+                  options={stacks}
+                  placeholder="Välj från listan"
+                />
+
+                <h3>Språk/ramverk</h3>
+                <SelectField
+                  name="languages1"
+                  label="Språk/Ramverk 1"
+                  options={languages}
+                  placeholder="Välj från listan"
+                />
+
+                <SelectField
+                  name="languages2"
+                  label="Språk/Ramverk 2"
+                  options={languages}
+                  placeholder="Välj från listan"
+                />
+
+                <SelectField
+                  name="languages3"
+                  label="Språk/Ramverk 3"
+                  options={languages}
+                  placeholder="Välj från listan"
+                />
+              </FormWrapper>
+            )}
+
+            <FormWrapper className="social-wrapper">
+              <h3>Bifogade Länkar</h3>
+              <TextField
+                name="portfolio"
+                label="Portfolio/GitHub"
+                placeholder="URL to your portfolio or GitHub"
+              />
+
+              <TextField
+                name="linkedin"
+                label="LinkedIn"
+                placeholder="URL to your LinkedIn profile"
+              />
+              <TextField
+                name="email"
+                label="Email"
+                placeholder={currentUser.email}
+                disabled={true}
+              />
             </FormWrapper>
-          )}
-          
-          {courseId === "wu" && (
-            <FormWrapper className="course-specific-wrapper">
-              <h3>Techstack</h3>
-              <SelectField
-                name="stack"
-                label="Techstack"
-                options={stacks}
-                placeholder="Välj från listan"
-                />
+          </Form>
 
-              <h3>Språk/ramverk</h3>
-              <SelectField
-                name="languages1"
-                label="Språk/Ramverk 1"
-                options={languages}
-                placeholder="Välj från listan"
-                />
-
-              <SelectField
-                name="languages2"
-                label="Språk/Ramverk 2"
-                options={languages}
-                placeholder="Välj från listan"
-                />
-
-              <SelectField
-                name="languages3"
-                label="Språk/Ramverk 3"
-                options={languages}
-                placeholder="Välj från listan"
-                />
-            </FormWrapper>
-          )}
-
-          <FormWrapper className="social-wrapper">
-            <h3>Bifogade Länkar</h3>
-            <TextField
-              name="portfolio"
-              label="Portfolio/GitHub"
-              placeholder="URL to your portfolio or GitHub"
-              />
-
-            <TextField
-              name="linkedin"
-              label="LinkedIn"
-              placeholder="URL to your LinkedIn profile"
-              />
-            <TextField
-              name="email"
-              label="Email"
-              placeholder={currentUser.email}
-              disabled={true}
-
-              />
-          </FormWrapper>
-        </Form>
-             
-      <p>Vill du att vi tar bort dina användaruppgifter? Kontakta oss på jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se</p>
-      </FormWrapper>
-      <FormWrapper className="visited-company-wrapper">
-
-      </FormWrapper>
-              </article>
+          <p>
+            Vill du att vi tar bort dina användaruppgifter? Kontakta oss på
+            jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se
+          </p>
+        </FormWrapper>
+        <FormWrapper className="visited-company-wrapper"></FormWrapper>
+      </article>
     </>
   );
 }
