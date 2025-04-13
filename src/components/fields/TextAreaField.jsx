@@ -20,7 +20,6 @@ export default function TextareaField({
     touched: formTouched,
   } = useFormContext();
 
-  // Use context values if not explicitly provided as props
   const fieldValue = value || formData[name] || "";
   const fieldError = error || errors[name];
   const fieldTouched = touched || formTouched[name];

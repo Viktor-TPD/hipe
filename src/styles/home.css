@@ -1,3 +1,4 @@
+/* DESKTOP */
 .home-container {
   flex: 1;
   display: flex;
@@ -251,6 +252,7 @@ label.option-label.company {
   cursor: pointer;
   position: relative;
   margin-right: 8px;
+  max-height: 18px;
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked {
@@ -295,4 +297,247 @@ label.option-label.company {
 
 .form a {
   text-decoration: none;
+}
+@media screen and (min-width: 1025px) {
+  .home-content {
+    justify-content: space-between;
+  }
+
+  .home-aside-left {
+    flex: 1;
+    max-width: 45%;
+  }
+
+  .home-aside-right {
+    flex: 1;
+    min-width: 450px;
+    max-width: 50%;
+  }
+
+  .home-form-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 450px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .home-aside-right {
+    max-width: 55%;
+  }
+
+  .home-form-wrapper {
+    padding: 2rem;
+  }
+}
+
+/* TABLET */
+@media screen and (max-width: 1024px) {
+  .home-form-wrapper {
+    min-width: none;
+  }
+
+  .home-content {
+    padding: 2rem 4rem;
+    gap: 2rem;
+  }
+
+  .home-aside-left h1 {
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: -1px;
+  }
+
+  .home-aside-left p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .home-info-container {
+    gap: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .home-form-wrapper {
+    min-width: 0;
+  }
+
+  .home-container {
+    padding: 80px 0;
+  }
+  .home-content {
+    flex-direction: column;
+    padding: 2rem 8rem;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .home-aside-left {
+    max-width: 100%;
+  }
+
+  .home-aside-left h1 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .home-aside-right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-form-wrapper {
+    width: 100%;
+    max-width: 500px;
+    align-items: center;
+  }
+
+  .home-form-wrapper form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-field input {
+    width: 90%;
+  }
+
+  aside {
+    width: 100%;
+  }
+
+  .field-container,
+  .form-field {
+    width: 100%;
+  }
+
+  .home-info-container {
+    justify-content: flex-start;
+  }
+
+  .gradient-overlay {
+    background: linear-gradient(
+        0deg,
+        rgba(229, 18, 54, 0.9) 0%,
+        var(--yrgo-primary) 100%
+      ),
+      transparent;
+  }
+
+  .home-form-wrapper {
+    width: 100%;
+  }
+}
+
+/* MOBILE */
+@media screen and (max-width: 480px) {
+  .home-content {
+    padding: 1.5rem;
+  }
+
+  .home-aside-left h1 {
+    color: #fff;
+    font-feature-settings: "liga" off, "clig" off;
+    font-family: font/weight/Thin;
+    font-size: var(--8, 32px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--8, 32px); /* 100% */
+  }
+
+  .home-aside-left p {
+    color: #fff;
+    font-feature-settings: "liga" off, "clig" off;
+
+    /* body_18 */
+    font-family: font/weight/Thin;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--24, 24px); /* 133.333% */
+    letter-spacing: 0.5px;
+  }
+
+  .home-info-container {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+
+  .home-form-wrapper {
+    min-width: 0;
+    padding: 1rem;
+  }
+
+  .home-form-wrapper h1 {
+    font-size: 18px;
+  }
+
+  .home-checkbox-wrapper {
+    gap: 16px;
+  }
+
+  .home-aside-right {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-form-wrapper {
+    /* padding: 0; */
+    width: 100%;
+    max-width: 500px;
+    align-items: center;
+  }
+
+  .home-form-wrapper form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-field input {
+    width: 87.5%;
+  }
+
+  aside {
+    width: 100%;
+  }
+
+  .checkbox-wrapper input {
+    max-height: 18px;
+  }
+}
+
+/* MOBILE SMALL */
+@media screen and (max-width: 360px) {
+  .home-content {
+    padding: 1rem;
+  }
+
+  .home-aside-left h1 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .home-info-item {
+    gap: 8px;
+  }
+
+  .home-info-item p {
+    font-size: 14px;
+  }
+
+  .home-form-wrapper {
+    padding: 0.75rem;
+  }
+
+  .form-field label {
+    font-size: 14px;
+  }
 }

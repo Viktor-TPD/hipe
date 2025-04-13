@@ -101,7 +101,7 @@ export default function Form({
     if (isRequired && !formData[name]) {
       setErrors({
         ...errors,
-        [name]: `This field is required`,
+        [name]: `Det här fältet är obligatoriskt.`,
       });
     }
   };
@@ -132,7 +132,7 @@ export default function Form({
     const newErrors = {};
     requiredFields.forEach((fieldName) => {
       if (!formData[fieldName]) {
-        newErrors[fieldName] = `This field is required`;
+        newErrors[fieldName] = `Det här fältet är obligatoriskt.`;
       }
     });
 
@@ -141,7 +141,7 @@ export default function Form({
       if ((key.includes("email") || key.endsWith(".email")) && value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-          newErrors[key] = "Please enter a valid email address";
+          newErrors[key] = "Var vänlig ange en giltig emailadress.";
         }
       }
     });
@@ -149,7 +149,7 @@ export default function Form({
     // Password validation
     if (formData.password) {
       if (formData.password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters long";
+        newErrors.password = "Lösenord måste vara minst 6 tecken långt.";
       }
     }
 
@@ -158,7 +158,7 @@ export default function Form({
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
     ) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "Angivna lösenord matchar inte.";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -196,7 +196,7 @@ export default function Form({
 
         {Object.keys(errors).length > 0 && (
           <div className="error-summary">
-            Please fix the errors above before submitting.
+            Vänligen åtgärda felen ovan innan du skickar in.
           </div>
         )}
 

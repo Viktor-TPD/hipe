@@ -53,7 +53,9 @@ function Home() {
       const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(responseData.message || "Invalid email or password");
+        throw new Error(
+          responseData.message || "Felaktig email eller lösenord."
+        );
       }
 
       const userData = responseData.data;
@@ -67,7 +69,7 @@ function Home() {
       showNotification("Inloggning lyckades!", "success");
       navigate("/profile");
     } catch (error) {
-      setError(error.message || "Failed to login. Please try again.");
+      setError(error.message || "Inloggning misslyckades. Försök igen.");
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
@@ -104,13 +106,13 @@ function Home() {
       const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(responseData.message || "Registration failed");
+        throw new Error(responseData.message || "Registrering misslyckades.");
       }
 
       const userData = responseData.data;
 
       if (!userData) {
-        throw new Error("Invalid response format from server");
+        throw new Error("Ogiltigt svar från server.");
       }
 
       login({
@@ -122,7 +124,9 @@ function Home() {
       showNotification("Registrering lyckades!", "success");
       navigate("/profile");
     } catch (error) {
-      setError(error.message || "Registration failed. Please try again.");
+      setError(
+        error.message || "Registrering misslyckades. Var vänlig försök igen."
+      );
       console.error("Registration error:", error);
     } finally {
       setIsLoading(false);

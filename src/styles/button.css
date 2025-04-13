@@ -8,9 +8,9 @@
 }
 
 .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }
 
 .button:disabled {
@@ -19,7 +19,6 @@
 
 .button:focus {
   outline: none;
-  
 }
 
 .button:hover {
@@ -115,7 +114,10 @@
   background-color: var(--bg-white);
   color: var(--bg-black);
   font-size: 1rem;
-  
+}
+
+.button-select:hover {
+  border: 1px solid transparent;
 }
 
 label img {

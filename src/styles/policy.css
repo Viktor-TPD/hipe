@@ -84,6 +84,7 @@
 
 .back-button:hover {
   background-color: #c20e2e;
+  color: white;
 }
 
 @media (max-width: 900px) {

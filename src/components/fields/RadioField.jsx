@@ -11,7 +11,7 @@ export default function RadioField({
   error = null,
   touched = false,
   required = false,
-  onValueChange, // Added callback for external state updates
+  onValueChange,
 }) {
   const {
     handleChange,
@@ -21,17 +21,15 @@ export default function RadioField({
     touched: formTouched,
   } = useFormContext();
 
-  // Use context values if not explicitly provided as props
   const fieldValue = value || formData[name] || "";
   const fieldError = error || errors[name];
   const fieldTouched = touched || formTouched[name];
   const hasError = fieldTouched && fieldError;
 
-  // Custom change handler that calls both context handler and external callback
   const handleRadioChange = (e) => {
-    handleChange(e); // Update form state
+    handleChange(e);
     if (onValueChange) {
-      onValueChange(e); // Call the external callback
+      onValueChange(e);
     }
   };
 
