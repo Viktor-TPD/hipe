@@ -85,9 +85,7 @@ function Header() {
                   <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
                     <Button variant="linkNavbar">Sök Företag</Button>
                   </NavLink>
-                  <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Matchningar</Button>
-                  </NavLink>
+
                   <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
                     <Button variant="linkNavbar">Min Profil</Button>
                   </NavLink>
