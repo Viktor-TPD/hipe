@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { useAuthForm } from "../AuthFormContext";
+import { useUserProfile } from "./hooks/useProfile";
 import Button from "./buttons/Button.jsx";
 
 function Header() {
   const { currentUser, logout } = useAuth();
   const { setFormType } = useAuthForm();
+  const { profileData } = useUserProfile();
   const [menuOpen, setMenuOpen] = useState(false);
 
   function Logo() {
@@ -24,6 +26,21 @@ function Header() {
     );
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && menuOpen) {
+        setMenuOpen(false);
+        document.body.style.overflow = "";
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [menuOpen]);
+
   const handleFormTypeChange = (type) => {
     setFormType(type);
 
@@ -34,11 +51,18 @@ function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+
+    // Lock body scrolling when menu is open
+    if (!menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
   };
 
   const getInitial = () => {
-    return currentUser && currentUser.email
-      ? currentUser.email.charAt(0).toUpperCase()
+    return profileData && profileData.email
+      ? profileData.email.charAt(0).toUpperCase()
       : "?";
   };
 
@@ -49,77 +73,97 @@ function Header() {
           <Logo />
         </div>
 
-        {currentUser && (
-          <div className="nav-links desktop-only">
-            <NavLink to="/" onClick={() => setMenuOpen(false)}>
-              <Button variant="linkNavbar">Event</Button>
-            </NavLink>
-            {currentUser.userType === "student" && (
-              <>
-                <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Sök Företag</Button>
-                </NavLink>
-                <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Matchningar</Button>
-                </NavLink>
-                <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Min Profil</Button>
-                </NavLink>
-              </>
-            )}
-            {currentUser.userType === "company" && (
-              <>
-                <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Sök Kandidater</Button>
-                </NavLink>
-                <NavLink to="/favorites" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Sparade Kandidater</Button>
-                </NavLink>
-                <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
-                  <Button variant="linkNavbar">Min Profil</Button>
-                </NavLink>
-              </>
-            )}
+        {currentUser ? (
+          // User is logged in
+          <>
+            <div className="nav-links desktop-only">
+              <NavLink to="/" onClick={() => setMenuOpen(false)}>
+                <Button variant="linkNavbar">Event</Button>
+              </NavLink>
+              {currentUser.userType === "student" && (
+                <>
+                  <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sök Företag</Button>
+                  </NavLink>
+                  <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Matchningar</Button>
+                  </NavLink>
+                  <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </NavLink>
+                </>
+              )}
+              {currentUser.userType === "company" && (
+                <>
+                  <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sök Kandidater</Button>
+                  </NavLink>
+                  <NavLink to="/favorites" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sparade Kandidater</Button>
+                  </NavLink>
+                  <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </NavLink>
+                </>
+              )}
+            </div>
+
+            <span
+              className="logout-text desktop-only"
+              onClick={() => {
+                logout();
+                setMenuOpen(false);
+              }}
+            >
+              Logga ut
+            </span>
+
+            {/* Only show hamburger menu when logged in */}
+            <button
+              className={`hamburger-menu ${menuOpen ? "hidden" : ""}`}
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              <span>Meny</span>
+              <div className="hamburger-icon">
+                <span className={`line ${menuOpen ? "open" : ""}`}></span>
+                <span className={`line ${menuOpen ? "open" : ""}`}></span>
+                <span className={`line ${menuOpen ? "open" : ""}`}></span>
+              </div>
+            </button>
+          </>
+        ) : (
+          // User is NOT logged in - always show auth buttons regardless of screen size
+          <div className="auth-buttons">
+            <Button
+              variant="linkNavbar"
+              onClick={() => handleFormTypeChange("register")}
+            >
+              Registrering
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => handleFormTypeChange("login")}
+            >
+              Logga In
+            </Button>
           </div>
         )}
 
+        {/* Mobile navigation menu - only for logged in users */}
         {currentUser && (
-          <span
-            className="logout-text desktop-only"
-            onClick={() => {
-              logout();
-              setMenuOpen(false);
-            }}
-          >
-            Logga ut
-          </span>
-        )}
-
-        <button
-          className={`hamburger-menu ${menuOpen ? "menu-open" : ""}`}
-          onClick={toggleMenu}
-        >
-          <span>Meny</span>
-          <div className="hamburger-icon">
-            <span className={`line ${menuOpen ? "open" : ""}`}></span>
-            <span className={`line ${menuOpen ? "open" : ""}`}></span>
-            <span className={`line ${menuOpen ? "open" : ""}`}></span>
-          </div>
-        </button>
-
-        <nav className={`main-nav ${menuOpen ? "mobile-open" : ""}`}>
-          {currentUser && (
+          <nav className={`main-nav ${menuOpen ? "mobile-open" : ""}`}>
             <div className="mobile-menu-header">
               <div className="user-profile-section">
                 <div className="user-avatar">
-                  {currentUser.profileImageUrl ? (
-                    <img src={currentUser.profileImageUrl} alt="Profile" />
+                  {profileData?.profileImageUrl ? (
+                    <img src={profileData.profileImageUrl} alt="Profile" />
                   ) : (
                     <div className="avatar-placeholder">{getInitial()}</div>
                   )}
                 </div>
                 <div className="user-info">
-                  <span>{currentUser.email}</span>
+                  <span>{profileData?.displayName || currentUser.email}</span>
                 </div>
               </div>
               <button
@@ -132,41 +176,50 @@ function Header() {
                 Logga ut
               </button>
             </div>
-          )}
 
-          <div className="nav-links-container">
-            {currentUser ? null : (
-              <>
-                <Button
-                  variant="linkNavbar"
-                  onClick={() => {
-                    handleFormTypeChange("register");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Registrering
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    handleFormTypeChange("login");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Logga In
-                </Button>
-              </>
-            )}
-          </div>
+            <div className="nav-links-container">
+              <NavLink to="/" onClick={() => setMenuOpen(false)}>
+                <Button variant="linkNavbar">Event</Button>
+              </NavLink>
 
-          <Button
-            variant="filter"
-            className="mobile-close-btn"
-            onClick={toggleMenu}
-          >
-            Stäng
-          </Button>
-        </nav>
+              {currentUser.userType === "student" && (
+                <>
+                  <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sök Företag</Button>
+                  </NavLink>
+                  <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Matchningar</Button>
+                  </NavLink>
+                  <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </NavLink>
+                </>
+              )}
+
+              {currentUser.userType === "company" && (
+                <>
+                  <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sök Kandidater</Button>
+                  </NavLink>
+                  <NavLink to="/favorites" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Sparade Kandidater</Button>
+                  </NavLink>
+                  <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
+                    <Button variant="linkNavbar">Min Profil</Button>
+                  </NavLink>
+                </>
+              )}
+            </div>
+
+            <Button
+              variant="filter"
+              className="mobile-close-btn"
+              onClick={toggleMenu}
+            >
+              Stäng
+            </Button>
+          </nav>
+        )}
       </div>
 
       {menuOpen && <div className="menu-overlay" onClick={toggleMenu}></div>}

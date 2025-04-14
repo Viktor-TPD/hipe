@@ -196,8 +196,14 @@ aside {
 }
 
 .form-field input {
-  width: 100%;
+  width: 92%;
   display: block;
+}
+
+#email,
+#password,
+#confirmPassword {
+  width: 100%;
 }
 
 input[type="radio"]:checked + label.option-label.student {
@@ -389,6 +395,12 @@ label.option-label.company {
     align-items: center;
   }
 
+  #email,
+  #password,
+  #confirmPassword {
+    width: 90%;
+  }
+
   .home-form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -402,7 +414,7 @@ label.option-label.company {
   }
 
   .form-field input {
-    width: 90%;
+    width: 92%;
   }
 
   aside {

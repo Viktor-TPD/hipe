@@ -152,6 +152,7 @@ function Home() {
               required={true}
               placeholder="Ange din email"
               autoComplete="email"
+              id="home-login-email"
             />
 
             <TextField
@@ -217,6 +218,7 @@ function Home() {
             submitLabel={isLoading ? "Registrerar..." : "Skicka in"}
             disabled={isLoading}
             bottomButtons={false}
+            id="home-register"
           >
             <TextField
               type="email"

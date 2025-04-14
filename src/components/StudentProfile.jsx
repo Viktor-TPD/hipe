@@ -299,7 +299,7 @@ export default function StudentProfile() {
                 placeholder="URL to your LinkedIn profile"
               />
               <TextField
-                name="email"
+                name="emailProfile"
                 label="Email"
                 placeholder={currentUser.email}
                 disabled={true}
