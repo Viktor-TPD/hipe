@@ -15,7 +15,7 @@ import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 
 export default function StudentProfile() {
-  const [courseId, setCourseId] = useState("");
+  const [courseId, setCourseId] = useState("dd");
   const [error, setError] = useState("");
   const { currentUser } = useAuth();
   const { profileData } = useUserProfile();
@@ -25,7 +25,7 @@ export default function StudentProfile() {
     const formData = {
       name: profileData.name || "",
       description: profileData.description || "",
-      courseId: profileData.courseId || "",
+      courseId: profileData.courseId || "dd",
       portfolio: profileData.portfolio || "",
       linkedin: profileData.linkedin || "",
     };
@@ -134,7 +134,6 @@ export default function StudentProfile() {
     return payload;
   };
 
-  // Use our custom hook
   const {
     isLoading,
     profileImage,
@@ -160,12 +159,15 @@ export default function StudentProfile() {
     ? "Uppdatera Studentprofil"
     : "Skapa Studentprofil";
 
+  // Only show VisitedCompanies if profile exists and has an ID
+  const showVisitedCompanies =
+    profileData && profileData.profile && profileData.profile._id;
+
   return (
     <>
       <h1>{title}</h1>
       <article>
         {error && <div className="error-message">{error}</div>}
-
         <FormWrapper className="image-form-wrapper">
           <h3>Profilbild</h3>
           <ProfileImageUpload
@@ -173,7 +175,6 @@ export default function StudentProfile() {
             currentImage={profileImage}
           />
         </FormWrapper>
-
         <FormWrapper className="about-me-form-wrapper">
           <Form
             onSubmit={handleSubmitProfile}
@@ -316,7 +317,9 @@ export default function StudentProfile() {
           </p>
         </FormWrapper>
         <aside className="visited-company-wrapper" id="visited-companies">
-          <VisitedCompanies studentId={profileData.profile._id} />
+          {showVisitedCompanies && (
+            <VisitedCompanies studentId={profileData.profile._id} />
+          )}
         </aside>
       </article>
     </>

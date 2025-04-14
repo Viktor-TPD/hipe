@@ -67,6 +67,11 @@ export default function VisitedCompanies({ studentId }) {
 
     if (studentId) {
       fetchVisitedCompanies();
+    } else {
+      setIsLoading(false);
+      setError(
+        "You need to create a profile first to see companies that liked you."
+      );
     }
   }, [studentId]);
 
