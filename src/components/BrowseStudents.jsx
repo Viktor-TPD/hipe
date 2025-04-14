@@ -233,14 +233,14 @@ export default function BrowseStudents() {
         <div className="filter-modal">
           <div className="filter-modal-content">
             <div className="filter-modal-header">
-              <h2>Filter Your Search</h2>
+              <h2>Filtrera din sökning</h2>
               <button className="close-button" onClick={toggleFilters}>
                 ×
               </button>
             </div>
 
             <div className="filter-section">
-              <h3>Education</h3>
+              <h3>Utbildning</h3>
               <div className="filter-buttons">
                 <button
                   className={`filter-button ${
@@ -256,7 +256,7 @@ export default function BrowseStudents() {
                   }`}
                   onClick={() => handleCourseChange("wu")}
                 >
-                  Web Development
+                  Webbutveckling
                 </button>
               </div>
             </div>
@@ -265,7 +265,7 @@ export default function BrowseStudents() {
             {(courseId === "" || courseId === "dd") && (
               <>
                 <div className="filter-section">
-                  <h3>Specialization</h3>
+                  <h3>Inriktning</h3>
                   <div className="filter-buttons">
                     {specializations.map((spec) => (
                       <button
@@ -284,7 +284,7 @@ export default function BrowseStudents() {
                 </div>
 
                 <div className="filter-section">
-                  <h3>Design Software</h3>
+                  <h3>Program</h3>
                   <div className="filter-buttons">
                     {softwares.map((software) => (
                       <button
@@ -308,7 +308,7 @@ export default function BrowseStudents() {
             {(courseId === "" || courseId === "wu") && (
               <>
                 <div className="filter-section">
-                  <h3>Stack</h3>
+                  <h3>Techstack</h3>
                   <div className="filter-buttons">
                     {stacks.map((stack) => (
                       <button
@@ -325,7 +325,7 @@ export default function BrowseStudents() {
                 </div>
 
                 <div className="filter-section">
-                  <h3>Languages/Frameworks</h3>
+                  <h3>Språk/ramverk</h3>
                   <div className="filter-buttons">
                     {languages.map((language) => (
                       <button
@@ -347,10 +347,10 @@ export default function BrowseStudents() {
 
             <div className="filter-actions">
               <button className="filter-apply-button" onClick={toggleFilters}>
-                Apply Filters
+                Filtrera
               </button>
               <button className="filter-reset-button" onClick={resetFilters}>
-                Clear All ×
+                Rensa ×
               </button>
             </div>
           </div>
