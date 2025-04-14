@@ -1,18 +1,24 @@
 import { useState, useEffect, useCallback } from "react";
 import StudentCard from "./StudentCard";
+import { useUserProfile } from "./hooks/useProfile";
+import { useAuth } from "./../AuthContext";
+import { useNotification } from "./../NotificationContext";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import { API_BASE_URL } from "./../config";
-import Button from "./buttons/Button.jsx";
 import "./../styles/browse.css";
 import "./../styles/filter.css";
 
-export default function BrowseStudents() {
+export default function FavouriteStudents() {
+  const { currentUser } = useAuth();
+  const { profileData } = useUserProfile();
+  const { showNotification } = useNotification();
+  
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeCardId, setActiveCardId] = useState(null);
-  const [showFilters, setShowFilters] = useState(false); // Added missing state
+  const [showFilters, setShowFilters] = useState(false);
 
   // Filter states
   const [courseId, setCourseId] = useState("");
@@ -21,15 +27,26 @@ export default function BrowseStudents() {
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-  // Fetch all students when component loads
+  // Fetch liked students when component loads and companyId is available
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchLikedStudents = async () => {
+      // Get company ID from profileData
+      const companyId = profileData?.profile?._id;
+      
+      if (!companyId) {
+        setIsLoading(false);
+        setError("Company profile not found. Please complete your profile first.");
+        return;
+      }
+
       try {
         setIsLoading(true);
-        const response = await fetch(`${API_BASE_URL}/api/v1/likes?=${companyId}`);
+        
+        // Use the proper endpoint from your routes to get likes for this company
+        const response = await fetch(`${API_BASE_URL}/api/v1/likes/company/${companyId}`);
 
         if (!response.ok) {
-          throw new Error("Failed to fetch student profiles");
+          throw new Error("Failed to fetch liked student profiles");
         }
 
         const responseData = await response.json();
@@ -39,21 +56,32 @@ export default function BrowseStudents() {
           throw new Error("Invalid response format from server");
         }
 
-        // Extract student data from the response
-        const studentData = responseData.data;
+        console.log("Liked students data:", responseData.data);
 
-        setStudents(studentData);
-        setFilteredStudents(studentData);
+        // Based on your route implementation in likedRoutes.js:
+        // The response contains likes with populated studentId objects
+        // We need to extract the student data from each like object
+        const studentData = responseData.data.map(like => like.studentId);
+        
+        // Filter out any potential null/undefined values
+        const validStudentData = studentData.filter(student => student);
+        
+        console.log(`Found ${validStudentData.length} liked students`);
+        
+        setStudents(validStudentData);
+        setFilteredStudents(validStudentData);
       } catch (error) {
-        console.error("Error fetching students:", error);
-        setError("Failed to load student profiles. Please try again later.");
+        console.error("Error fetching liked students:", error);
+        setError("Failed to load liked student profiles. Please try again later.");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchStudents();
-  }, []);
+    if (profileData?.profile) {
+      fetchLikedStudents();
+    }
+  }, [profileData]);
 
   // Memoized filter function to prevent unnecessary re-renders
   const applyFilters = useCallback(() => {
@@ -215,7 +243,7 @@ export default function BrowseStudents() {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading student profiles...</div>;
+    return <div className="loading">Laddar sparade kandidater...</div>;
   }
 
   if (error) {
@@ -357,12 +385,8 @@ export default function BrowseStudents() {
         </div>
       )}
 
-      {/* <div className="students-count">
-        Showing {filteredStudents.length} of {students.length} students
-      </div> */}
-
       <div className="students-grid">
-        <h1>Sök kandidater</h1>
+        <h1>Sparade kandidater</h1>
 
         <section className="cards-grid">
           {filteredStudents.length > 0 ? (
@@ -378,7 +402,7 @@ export default function BrowseStudents() {
             ))
           ) : (
             <div className="no-results">
-              No students match your filters. Try different filter options.
+              Inga sparade kandidater. Gå till "Sök kandidater" för att hitta och spara studenter.
             </div>
           )}
         </section>

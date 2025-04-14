@@ -19,6 +19,8 @@ import CompanyProfile from "./components/CompanyProfile";
 import BrowseStudents from "./components/BrowseStudents";
 import BrowseCompanies from "./components/BrowseCompanies";
 
+import FavouriteStudents from "./components/FavouriteStudents";
+
 import CompanyCard from "./components/CompanyCard";
 import Policy from "./components/Policy";
 
@@ -80,7 +82,7 @@ function AppContent() {
             path="/favorites"
             element={
               <ProtectedRoute requiredUserType="company">
-
+<FavouriteStudents/>
               </ProtectedRoute>
             }
           />
