@@ -221,3 +221,79 @@ export function useProfile({
     fetchProfileData,
   };
 }
+
+export const useUserProfile = () => {
+  const { currentUser } = useAuth();
+  const [profileData, setProfileData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (!currentUser || !currentUser.userId) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+
+        const response = await fetch(
+          `${API_BASE_URL}/api/v1/users/${currentUser.userId}/profile`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.data && data.data.profile) {
+          // Get name from profile based on user type
+          let displayName = "";
+          if (currentUser.userType === "student" && data.data.profile.name) {
+            displayName = data.data.profile.name;
+          } else if (
+            currentUser.userType === "company" &&
+            data.data.profile.companyName
+          ) {
+            displayName = data.data.profile.companyName;
+          }
+
+          // Combine user data with profile data
+          const enrichedUserData = {
+            ...currentUser,
+            profileImageUrl: data.data.profile.profileImageUrl || null,
+            displayName: displayName || currentUser.email,
+            profile: data.data.profile,
+          };
+
+          setProfileData(enrichedUserData);
+        } else {
+          setProfileData({
+            ...currentUser,
+            displayName: currentUser.email,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        setError("Could not load profile data");
+        setProfileData({
+          ...currentUser,
+          displayName: currentUser.email,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (currentUser) {
+      fetchProfileData();
+    } else {
+      setProfileData(null);
+      setIsLoading(false);
+    }
+  }, [currentUser]);
+
+  return { profileData, isLoading, error };
+};
