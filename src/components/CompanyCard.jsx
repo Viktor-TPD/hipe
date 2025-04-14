@@ -28,7 +28,7 @@ export default function CompanyCard({
     return <div className="company-card empty">No company data available</div>;
   }
 
-console.table(company)
+  console.table(company);
 
   return (
     <div className={`company-card ${isActive ? "company-card-maximized" : ""}`}>
@@ -36,6 +36,7 @@ console.table(company)
       <button
         className="minimize-button"
         onClick={handleMinimizeClick}
+        tabIndex={1}
         title={!isActive ? "Maximera" : "Minska"}
       >
         <p>{!isActive ? "Maximera" : "Minska"}</p>

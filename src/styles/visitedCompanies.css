@@ -23,7 +23,6 @@
 .companies-list {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.06),
     4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
 }
@@ -134,6 +133,19 @@
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
   z-index: 1000;
+}
+
+.company-mini-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--yrgo-primary);
+}
+
+.company-mini-card:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.company-mini-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--yrgo-primary);
 }
 
 @media (max-width: 768px) {
