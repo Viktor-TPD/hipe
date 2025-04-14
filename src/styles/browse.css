@@ -40,6 +40,10 @@
   }
 }
 
+.students-grid-favourites {
+  background-color: var(--yrgo-secondary);
+}
+
 .cards-grid {
   display: flex;
   flex-wrap: wrap;

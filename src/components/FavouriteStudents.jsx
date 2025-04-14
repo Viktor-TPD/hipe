@@ -246,7 +246,7 @@ export default function FavouriteStudents() {
             </div>
       
 
-      <div className="students-grid">
+      <div className="students-grid students-grid-favourites">
         <h1>Sparade kandidater</h1>
 
         <section className="cards-grid">
