@@ -14,7 +14,7 @@ h3 {
   margin-top: 1rem;
 }
 p {
-    margin: 1.5rem 0rem;
+  margin: 1.5rem 0rem;
 }
 
 label .field-label {
@@ -25,15 +25,24 @@ label .field-label {
 }
 
 #internshipDetails {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 #email {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .css-b62m3t-container {
   margin-bottom: 1rem;
+}
+
+.image-form-wrapper h3 {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.visited-companies-container h3 {
+  padding-bottom: 1rem;
 }
 
 input {
@@ -57,7 +66,7 @@ input {
 }
 
 .form-field input:disabled {
- margin-bottom:1rem;
+  margin-bottom: 1rem;
   background: var(--background-gray-Gray-500, #bdbdbd);
 }
 
