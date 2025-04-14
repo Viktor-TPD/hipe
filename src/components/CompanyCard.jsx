@@ -28,6 +28,8 @@ export default function CompanyCard({
     return <div className="company-card empty">No company data available</div>;
   }
 
+console.table(company)
+
   return (
     <div className={`company-card ${isActive ? "company-card-maximized" : ""}`}>
       {/* Minimize/Maximize button */}
@@ -53,7 +55,7 @@ export default function CompanyCard({
           {company.profileImageUrl ? (
             <img
               src={company.profileImageUrl}
-              alt={`${company.name || "Company"}`}
+              alt={`${company.companyName || "Company"}`}
               className="company-image"
             />
           ) : (

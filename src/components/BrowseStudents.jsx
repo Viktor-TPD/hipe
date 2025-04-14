@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import StudentCard from "./StudentCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import { API_BASE_URL } from "./../config";
-import Button from './buttons/Button.jsx'
+import Button from "./buttons/Button.jsx";
 import "./../styles/browse.css";
 import "./../styles/filter.css";
 
@@ -57,7 +57,7 @@ export default function BrowseStudents() {
 
   // Memoized filter function to prevent unnecessary re-renders
   const applyFilters = useCallback(() => {
-    const results = students.filter(student => {
+    const results = students.filter((student) => {
       // Filter by course if selected
       if (courseId && student.courseId !== courseId) {
         return false;
@@ -68,7 +68,7 @@ export default function BrowseStudents() {
         selectedSpecializations.length > 0 &&
         (courseId === "" || courseId === "dd") &&
         (!student.specialization ||
-          !selectedSpecializations.some(spec => 
+          !selectedSpecializations.some((spec) =>
             student.specialization.includes(spec)
           ))
       ) {
@@ -80,9 +80,7 @@ export default function BrowseStudents() {
         selectedSoftwares.length > 0 &&
         (courseId === "" || courseId === "dd") &&
         (!student.software ||
-          !selectedSoftwares.some(sw => 
-            student.software.includes(sw)
-          ))
+          !selectedSoftwares.some((sw) => student.software.includes(sw)))
       ) {
         return false;
       }
@@ -101,9 +99,7 @@ export default function BrowseStudents() {
         selectedLanguages.length > 0 &&
         (courseId === "" || courseId === "wu") &&
         (!student.languages ||
-          !selectedLanguages.some(lang => 
-            student.languages.includes(lang)
-          ))
+          !selectedLanguages.some((lang) => student.languages.includes(lang)))
       ) {
         return false;
       }
@@ -118,7 +114,7 @@ export default function BrowseStudents() {
     selectedSoftwares,
     selectedStack,
     selectedLanguages,
-    students
+    students,
   ]);
 
   // Update filtering when filters change
@@ -173,14 +169,18 @@ export default function BrowseStudents() {
   const handleFilterToggle = (setter, current, value) => {
     setter(
       current.includes(value)
-        ? current.filter(item => item !== value)
+        ? current.filter((item) => item !== value)
         : [...current, value]
     );
   };
 
   // Helper functions for different filter types
   const handleSpecializationToggle = (value) => {
-    handleFilterToggle(setSelectedSpecializations, selectedSpecializations, value);
+    handleFilterToggle(
+      setSelectedSpecializations,
+      selectedSpecializations,
+      value
+    );
   };
 
   const handleSoftwareToggle = (value) => {
@@ -199,15 +199,15 @@ export default function BrowseStudents() {
   // Check if a button should be active
   const isButtonActive = (type, value) => {
     switch (type) {
-      case 'course':
+      case "course":
         return courseId === value;
-      case 'specialization':
+      case "specialization":
         return selectedSpecializations.includes(value);
-      case 'software':
+      case "software":
         return selectedSoftwares.includes(value);
-      case 'stack':
+      case "stack":
         return selectedStack === value;
-      case 'language':
+      case "language":
         return selectedLanguages.includes(value);
       default:
         return false;
@@ -224,25 +224,17 @@ export default function BrowseStudents() {
 
   return (
     <div className="browse-students-container">
-      
-        <button 
-          className="filter-toggle-button" 
-          onClick={toggleFilters}
-        >
-          Filter
-          <img src="../../public/assets/images/filter.svg" alt="filter icon" />
-        </button>
-   
+      <button className="filter-toggle-button" onClick={toggleFilters}>
+        Filter
+        <img src="../../public/assets/images/filter.svg" alt="filter icon" />
+      </button>
 
       {showFilters && (
         <div className="filter-modal">
           <div className="filter-modal-content">
             <div className="filter-modal-header">
               <h2>Filter Your Search</h2>
-              <button 
-                className="close-button" 
-                onClick={toggleFilters}
-              >
+              <button className="close-button" onClick={toggleFilters}>
                 ×
               </button>
             </div>
@@ -250,15 +242,19 @@ export default function BrowseStudents() {
             <div className="filter-section">
               <h3>Education</h3>
               <div className="filter-buttons">
-                <button 
-                  className={`filter-button ${isButtonActive('course', 'dd') ? 'active' : ''}`}
-                  onClick={() => handleCourseChange('dd')}
+                <button
+                  className={`filter-button ${
+                    isButtonActive("course", "dd") ? "active" : ""
+                  }`}
+                  onClick={() => handleCourseChange("dd")}
                 >
                   Digital Design
                 </button>
-                <button 
-                  className={`filter-button ${isButtonActive('course', 'wu') ? 'active' : ''}`}
-                  onClick={() => handleCourseChange('wu')}
+                <button
+                  className={`filter-button ${
+                    isButtonActive("course", "wu") ? "active" : ""
+                  }`}
+                  onClick={() => handleCourseChange("wu")}
                 >
                   Web Development
                 </button>
@@ -266,15 +262,19 @@ export default function BrowseStudents() {
             </div>
 
             {/* Digital Design filters */}
-            {(courseId === '' || courseId === 'dd') && (
+            {(courseId === "" || courseId === "dd") && (
               <>
                 <div className="filter-section">
                   <h3>Specialization</h3>
                   <div className="filter-buttons">
-                    {specializations.map(spec => (
-                      <button 
+                    {specializations.map((spec) => (
+                      <button
                         key={spec.value}
-                        className={`filter-button ${isButtonActive('specialization', spec.value) ? 'active' : ''}`}
+                        className={`filter-button ${
+                          isButtonActive("specialization", spec.value)
+                            ? "active"
+                            : ""
+                        }`}
                         onClick={() => handleSpecializationToggle(spec.value)}
                       >
                         {spec.label}
@@ -286,10 +286,14 @@ export default function BrowseStudents() {
                 <div className="filter-section">
                   <h3>Design Software</h3>
                   <div className="filter-buttons">
-                    {softwares.map(software => (
-                      <button 
+                    {softwares.map((software) => (
+                      <button
                         key={software.value}
-                        className={`filter-button ${isButtonActive('software', software.value) ? 'active' : ''}`}
+                        className={`filter-button ${
+                          isButtonActive("software", software.value)
+                            ? "active"
+                            : ""
+                        }`}
                         onClick={() => handleSoftwareToggle(software.value)}
                       >
                         {software.label}
@@ -301,15 +305,17 @@ export default function BrowseStudents() {
             )}
 
             {/* Web Development filters */}
-            {(courseId === '' || courseId === 'wu') && (
+            {(courseId === "" || courseId === "wu") && (
               <>
                 <div className="filter-section">
                   <h3>Stack</h3>
                   <div className="filter-buttons">
-                    {stacks.map(stack => (
-                      <button 
+                    {stacks.map((stack) => (
+                      <button
                         key={stack.value}
-                        className={`filter-button ${isButtonActive('stack', stack.value) ? 'active' : ''}`}
+                        className={`filter-button ${
+                          isButtonActive("stack", stack.value) ? "active" : ""
+                        }`}
                         onClick={() => handleStackToggle(stack.value)}
                       >
                         {stack.label}
@@ -321,10 +327,14 @@ export default function BrowseStudents() {
                 <div className="filter-section">
                   <h3>Languages/Frameworks</h3>
                   <div className="filter-buttons">
-                    {languages.map(language => (
-                      <button 
+                    {languages.map((language) => (
+                      <button
                         key={language.value}
-                        className={`filter-button ${isButtonActive('language', language.value) ? 'active' : ''}`}
+                        className={`filter-button ${
+                          isButtonActive("language", language.value)
+                            ? "active"
+                            : ""
+                        }`}
                         onClick={() => handleLanguageToggle(language.value)}
                       >
                         {language.label}
@@ -336,16 +346,10 @@ export default function BrowseStudents() {
             )}
 
             <div className="filter-actions">
-              <button 
-                className="filter-apply-button"
-                onClick={toggleFilters}
-              >
+              <button className="filter-apply-button" onClick={toggleFilters}>
                 Apply Filters
               </button>
-              <button 
-                className="filter-reset-button"
-                onClick={resetFilters}
-              >
+              <button className="filter-reset-button" onClick={resetFilters}>
                 Clear All ×
               </button>
             </div>
@@ -356,29 +360,27 @@ export default function BrowseStudents() {
       {/* <div className="students-count">
         Showing {filteredStudents.length} of {students.length} students
       </div> */}
-      
-      <div className="students-grid">
-      <h1>Sök kandidater</h1>
-        
-<section className="cards-grid">
 
-        {filteredStudents.length > 0 ? (
-          filteredStudents.map((student) => (
-            <StudentCard 
-            key={student._id} 
-            student={student} 
-            cardId={student._id}
-            isActive={student._id === activeCardId}
-            onActivate={handleCardActivation}
-            inBrowseView={true}
-            />
-          ))
-        ) : (
-          <div className="no-results">
-            No students match your filters. Try different filter options.
-          </div>
-        )}
-        
+      <div className="students-grid">
+        <h1>Sök kandidater</h1>
+
+        <section className="cards-grid">
+          {filteredStudents.length > 0 ? (
+            filteredStudents.map((student) => (
+              <StudentCard
+                key={student._id}
+                student={student}
+                cardId={student._id}
+                isActive={student._id === activeCardId}
+                onActivate={handleCardActivation}
+                inBrowseView={true}
+              />
+            ))
+          ) : (
+            <div className="no-results">
+              No students match your filters. Try different filter options.
+            </div>
+          )}
         </section>
       </div>
 
