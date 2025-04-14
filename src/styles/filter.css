@@ -97,6 +97,27 @@
     gap: 10px;
     margin-bottom: 15px;
   }
+
+  .filter-section-favourites {
+    display: flex;
+    flex-direction: column;
+    width: 11.4375rem;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    border: 1px solid var(--stroke-weak);
+    background: var(--grey-100);
+    height: 10rem;
+    justify-content: center
+  }
+
+  .filter-buttons-favourites {
+    display:flex;
+    gap:1rem;
+  }
+  
   
   .filter-button {
     background-color: white;
@@ -109,10 +130,22 @@
     color: var(--bg-black)
   }
   
+  .filter-button:hover {
+    border: 1px solid #ccc;
+  }
+  
   .filter-button.active {
     background-color: #dd3333;
     color: white;
     border-color: #dd3333;
+  }
+
+  .filter-button-favourites {
+    border:none;
+  }
+
+  .filter-button-favourites:hover {
+    border:none;
   }
   
   /* Filter actions */

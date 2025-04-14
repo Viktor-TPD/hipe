@@ -31,9 +31,12 @@
   color: var(--bg-white);
   padding: 2rem;
   width: 67.0625rem;
+  flex-direction: column;
+  justify-content: flex-start;
 
   h1 {
     margin-left: 2rem;
+    text-align: left;
   }
 }
 

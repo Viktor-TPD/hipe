@@ -102,36 +102,6 @@ export default function FavouriteStudents() {
       ) {
         return false;
       }
-
-      // Filter by software if selected and course is Digital Design (or no course filter)
-      if (
-        selectedSoftwares.length > 0 &&
-        (courseId === "" || courseId === "dd") &&
-        (!student.software ||
-          !selectedSoftwares.some((sw) => student.software.includes(sw)))
-      ) {
-        return false;
-      }
-
-      // Filter by stack if selected and course is Web Development (or no course filter)
-      if (
-        selectedStack &&
-        (courseId === "" || courseId === "wu") &&
-        student.stack !== selectedStack
-      ) {
-        return false;
-      }
-
-      // Filter by languages if selected and course is Web Development (or no course filter)
-      if (
-        selectedLanguages.length > 0 &&
-        (courseId === "" || courseId === "wu") &&
-        (!student.languages ||
-          !selectedLanguages.some((lang) => student.languages.includes(lang)))
-      ) {
-        return false;
-      }
-
       return true;
     });
 
@@ -252,26 +222,12 @@ export default function FavouriteStudents() {
 
   return (
     <div className="browse-students-container">
-      <button className="filter-toggle-button" onClick={toggleFilters}>
-        Filter
-        <img src="../../public/assets/images/filter.svg" alt="filter icon" />
-      </button>
 
-      {showFilters && (
-        <div className="filter-modal">
-          <div className="filter-modal-content">
-            <div className="filter-modal-header">
-              <h2>Filter Your Search</h2>
-              <button className="close-button" onClick={toggleFilters}>
-                ×
-              </button>
-            </div>
-
-            <div className="filter-section">
-              <h3>Education</h3>
-              <div className="filter-buttons">
+            <div className="filter-section filter-section-favourites">
+              <h3>Utbildning</h3>
+              <div className="filter-buttons filter-buttons-favourites">
                 <button
-                  className={`filter-button ${
+                  className={`filter-button-favourites filter-button ${
                     isButtonActive("course", "dd") ? "active" : ""
                   }`}
                   onClick={() => handleCourseChange("dd")}
@@ -279,111 +235,16 @@ export default function FavouriteStudents() {
                   Digital Design
                 </button>
                 <button
-                  className={`filter-button ${
+                  className={`filter-button-favourites filter-button ${
                     isButtonActive("course", "wu") ? "active" : ""
                   }`}
                   onClick={() => handleCourseChange("wu")}
                 >
-                  Web Development
+                  Webbutveckling
                 </button>
               </div>
             </div>
-
-            {/* Digital Design filters */}
-            {(courseId === "" || courseId === "dd") && (
-              <>
-                <div className="filter-section">
-                  <h3>Specialization</h3>
-                  <div className="filter-buttons">
-                    {specializations.map((spec) => (
-                      <button
-                        key={spec.value}
-                        className={`filter-button ${
-                          isButtonActive("specialization", spec.value)
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={() => handleSpecializationToggle(spec.value)}
-                      >
-                        {spec.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="filter-section">
-                  <h3>Design Software</h3>
-                  <div className="filter-buttons">
-                    {softwares.map((software) => (
-                      <button
-                        key={software.value}
-                        className={`filter-button ${
-                          isButtonActive("software", software.value)
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={() => handleSoftwareToggle(software.value)}
-                      >
-                        {software.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Web Development filters */}
-            {(courseId === "" || courseId === "wu") && (
-              <>
-                <div className="filter-section">
-                  <h3>Stack</h3>
-                  <div className="filter-buttons">
-                    {stacks.map((stack) => (
-                      <button
-                        key={stack.value}
-                        className={`filter-button ${
-                          isButtonActive("stack", stack.value) ? "active" : ""
-                        }`}
-                        onClick={() => handleStackToggle(stack.value)}
-                      >
-                        {stack.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="filter-section">
-                  <h3>Languages/Frameworks</h3>
-                  <div className="filter-buttons">
-                    {languages.map((language) => (
-                      <button
-                        key={language.value}
-                        className={`filter-button ${
-                          isButtonActive("language", language.value)
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={() => handleLanguageToggle(language.value)}
-                      >
-                        {language.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            <div className="filter-actions">
-              <button className="filter-apply-button" onClick={toggleFilters}>
-                Apply Filters
-              </button>
-              <button className="filter-reset-button" onClick={resetFilters}>
-                Clear All ×
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      
 
       <div className="students-grid">
         <h1>Sparade kandidater</h1>
