@@ -1,5 +1,3 @@
-
-
 /* Filter toggle button */
 .browse-header {
     display: flex;
@@ -27,12 +25,9 @@
   
   /* Modal styles */
   .filter-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
+    position: absolute;
+    top: 100%;
+    display: block;
     justify-content: center;
     align-items: flex-start;
     z-index: 1000;
@@ -42,14 +37,15 @@
   .filter-modal-content {
     background-color: white;
     width: 90%;
-    max-width: 600px;
+    max-width: 400px;
     border-radius: 8px;
     padding: 20px;
-    margin-top: 50px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     max-height: 80vh;
     overflow-y: auto;
+    border: 1px solid var(--yrgo-primary);
+    margin-left: 1rem;
   }
   
   .filter-modal-header {
@@ -59,8 +55,18 @@
     margin-bottom: 20px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
+    position: relative;
   }
   
+.filter-toggle-button {
+    position: relative;
+  } 
+
+ .filter-toggle-button + .filter-modal {
+    top: 24%;
+    left: 0;
+  } 
+
   .filter-modal-header h2 {
     margin: 0;
     font-size: 24px;
@@ -95,11 +101,12 @@
   .filter-button {
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 0.25rem;
     padding: 8px 15px;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: var(--bg-black)
   }
   
   .filter-button.active {
