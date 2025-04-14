@@ -2,14 +2,11 @@
   display: flex;
   flex-direction: row;
   gap: 2rem;
+ margin: 3rem 0;
+  justify-content: center;
   .button {
     margin-bottom: auto;
   }
-}
-
-/* @todo ta bort denna flexdirection */
-.browse-students-container {
-  flex-direction: column;
 }
 
 .company-right-column, .student-right-column {
@@ -17,15 +14,34 @@
 }
 
 .company-card, .student-card {
-  width: fit-content;
+  width: 18rem;
+}
+
+.student-left-column {
+  border:none;
 }
 
 .companies-grid, .students-grid {
-  background-color: red;
+  background-color: var(--yrgo-primary);
+  border-radius: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap:2rem;
+  color: var(--bg-white);
+  padding: 2rem;
+  width: 67.0625rem;
+
+  h1 {
+    margin-left: 2rem;
+  }
+}
+
+.cards-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  width: 1248px;
+
 }
 
 .company-card-maximized {
@@ -41,26 +57,19 @@
 }
 
 .company-card-maximized, .student-card-maximized {
+  width: fit-content ;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
   overflow-y: auto;
+  
 }
 
 .company-card-maximized .company-right-column,
 .student-card-maximized .student-right-column {
   display: flex;
-}
-
-.companies-grid, .students-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 1rem;
-  width: 100%;
-  max-width: 1248px;
 }
 
 .blur-overlay {
@@ -134,11 +143,7 @@
   background-color: var(--grey-300);
 }
 
-.students-count {
-  font-size: 0.9rem;
-  color: var(--grey-800);
-  margin-bottom: 1rem;
-}
+
 
 .no-results {
   width: 100%;

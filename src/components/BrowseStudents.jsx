@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import StudentCard from "./StudentCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
-import Select from "react-select";
 import { API_BASE_URL } from "./../config";
+import Button from './buttons/Button.jsx'
 import "./../styles/browse.css";
+import "./../styles/filter.css";
 
 export default function BrowseStudents() {
   const [students, setStudents] = useState([]);
@@ -11,6 +12,7 @@ export default function BrowseStudents() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeCardId, setActiveCardId] = useState(null);
+  const [showFilters, setShowFilters] = useState(false); // Added missing state
 
   // Filter states
   const [courseId, setCourseId] = useState("");
@@ -19,7 +21,7 @@ export default function BrowseStudents() {
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-  // Hämta alla studenter när komponenten laddas
+  // Fetch all students when component loads
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -53,27 +55,83 @@ export default function BrowseStudents() {
     fetchStudents();
   }, []);
 
-  // Uppdatera filtreringen när filter ändras
-  useEffect(() => {
-    applyFilters();
+  // Memoized filter function to prevent unnecessary re-renders
+  const applyFilters = useCallback(() => {
+    const results = students.filter(student => {
+      // Filter by course if selected
+      if (courseId && student.courseId !== courseId) {
+        return false;
+      }
+
+      // Filter by specialization if selected and course is Digital Design (or no course filter)
+      if (
+        selectedSpecializations.length > 0 &&
+        (courseId === "" || courseId === "dd") &&
+        (!student.specialization ||
+          !selectedSpecializations.some(spec => 
+            student.specialization.includes(spec)
+          ))
+      ) {
+        return false;
+      }
+
+      // Filter by software if selected and course is Digital Design (or no course filter)
+      if (
+        selectedSoftwares.length > 0 &&
+        (courseId === "" || courseId === "dd") &&
+        (!student.software ||
+          !selectedSoftwares.some(sw => 
+            student.software.includes(sw)
+          ))
+      ) {
+        return false;
+      }
+
+      // Filter by stack if selected and course is Web Development (or no course filter)
+      if (
+        selectedStack &&
+        (courseId === "" || courseId === "wu") &&
+        student.stack !== selectedStack
+      ) {
+        return false;
+      }
+
+      // Filter by languages if selected and course is Web Development (or no course filter)
+      if (
+        selectedLanguages.length > 0 &&
+        (courseId === "" || courseId === "wu") &&
+        (!student.languages ||
+          !selectedLanguages.some(lang => 
+            student.languages.includes(lang)
+          ))
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+    setFilteredStudents(results);
   }, [
     courseId,
     selectedSpecializations,
     selectedSoftwares,
     selectedStack,
     selectedLanguages,
+    students
   ]);
+
+  // Update filtering when filters change
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   // Handle card activation/deactivation
   const handleCardActivation = (cardId, isActive) => {
     setActiveCardId(isActive ? cardId : null);
 
     // Lock body scrolling when a card is maximized
-    if (isActive) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isActive ? "hidden" : "";
   };
 
   // Handle overlay click
@@ -82,66 +140,7 @@ export default function BrowseStudents() {
     document.body.style.overflow = "";
   };
 
-  // Funktion för att applicera filter
-  const applyFilters = () => {
-    let results = [...students];
-
-    // Filtrera på utbildning om vald
-    if (courseId) {
-      results = results.filter((student) => student.courseId === courseId);
-    }
-
-    // Filtrera på specialization om någon är vald och utbildningen är DD
-    if (
-      selectedSpecializations.length > 0 &&
-      (courseId === "" || courseId === "dd")
-    ) {
-      results = results.filter(
-        (student) =>
-          student.specialization &&
-          selectedSpecializations.some((spec) =>
-            student.specialization.includes(spec.value)
-          )
-      );
-    }
-
-    // Filtrera på software om någon är vald och utbildningen är DD
-    if (
-      selectedSoftwares.length > 0 &&
-      (courseId === "" || courseId === "dd")
-    ) {
-      results = results.filter(
-        (student) =>
-          student.software &&
-          selectedSoftwares.some((sw) => student.software.includes(sw.value))
-      );
-    }
-
-    // Filtrera på stack om vald och utbildningen är WU
-    if (selectedStack && (courseId === "" || courseId === "wu")) {
-      results = results.filter(
-        (student) => student.stack === selectedStack.value
-      );
-    }
-
-    // Filtrera på languages om någon är vald och utbildningen är WU
-    if (
-      selectedLanguages.length > 0 &&
-      (courseId === "" || courseId === "wu")
-    ) {
-      results = results.filter(
-        (student) =>
-          student.languages &&
-          selectedLanguages.some((lang) =>
-            student.languages.includes(lang.value)
-          )
-      );
-    }
-
-    setFilteredStudents(results);
-  };
-
-  // Återställ alla filter
+  // Reset all filters
   const resetFilters = () => {
     setCourseId("");
     setSelectedSpecializations([]);
@@ -150,12 +149,12 @@ export default function BrowseStudents() {
     setSelectedLanguages([]);
   };
 
-  // Hantera val av utbildning
-  const handleCourseChange = (e) => {
-    const selectedCourse = e.target.value;
-    setCourseId(selectedCourse);
+  // Handle education selection
+  const handleCourseChange = (selectedCourse) => {
+    // Toggle course if already selected
+    setCourseId(courseId === selectedCourse ? "" : selectedCourse);
 
-    // Återställ utbildningsspecifika filter när utbildning ändras
+    // Reset education-specific filters when education changes
     if (selectedCourse === "dd") {
       setSelectedStack(null);
       setSelectedLanguages([]);
@@ -165,70 +164,58 @@ export default function BrowseStudents() {
     }
   };
 
-  // Rendera filtreringsdelen baserat på vald utbildning
-  const renderCourseSpecificFilters = () => {
-    if (courseId === "dd") {
-      return (
-        <>
-          <div className="filter-group">
-            <label>Inriktningar</label>
-            <Select
-              isMulti
-              options={specializations}
-              value={selectedSpecializations}
-              onChange={setSelectedSpecializations}
-              placeholder="Välj inriktningar..."
-              className="filter-select"
-            />
-          </div>
+  // Toggle filter panel
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
 
-          <div className="filter-group">
-            <label>Designprogram</label>
-            <Select
-              isMulti
-              options={softwares}
-              value={selectedSoftwares}
-              onChange={setSelectedSoftwares}
-              placeholder="Välj designprogram..."
-              className="filter-select"
-            />
-          </div>
-        </>
-      );
-    } else if (courseId === "wu") {
-      return (
-        <>
-          <div className="filter-group">
-            <label>Stack</label>
-            <Select
-              options={stacks}
-              value={selectedStack}
-              onChange={setSelectedStack}
-              placeholder="Välj stack..."
-              className="filter-select"
-              isClearable
-            />
-          </div>
+  // Generic toggle handler for filter arrays
+  const handleFilterToggle = (setter, current, value) => {
+    setter(
+      current.includes(value)
+        ? current.filter(item => item !== value)
+        : [...current, value]
+    );
+  };
 
-          <div className="filter-group">
-            <label>Språk/Ramverk</label>
-            <Select
-              isMulti
-              options={languages}
-              value={selectedLanguages}
-              onChange={setSelectedLanguages}
-              placeholder="Välj språk/ramverk..."
-              className="filter-select"
-            />
-          </div>
-        </>
-      );
+  // Helper functions for different filter types
+  const handleSpecializationToggle = (value) => {
+    handleFilterToggle(setSelectedSpecializations, selectedSpecializations, value);
+  };
+
+  const handleSoftwareToggle = (value) => {
+    handleFilterToggle(setSelectedSoftwares, selectedSoftwares, value);
+  };
+
+  const handleLanguageToggle = (value) => {
+    handleFilterToggle(setSelectedLanguages, selectedLanguages, value);
+  };
+
+  // Handle stack selection (only one can be selected)
+  const handleStackToggle = (value) => {
+    setSelectedStack(selectedStack === value ? null : value);
+  };
+
+  // Check if a button should be active
+  const isButtonActive = (type, value) => {
+    switch (type) {
+      case 'course':
+        return courseId === value;
+      case 'specialization':
+        return selectedSpecializations.includes(value);
+      case 'software':
+        return selectedSoftwares.includes(value);
+      case 'stack':
+        return selectedStack === value;
+      case 'language':
+        return selectedLanguages.includes(value);
+      default:
+        return false;
     }
-    return null;
   };
 
   if (isLoading) {
-    return <div className="loading">Laddar studentprofiler...</div>;
+    return <div className="loading">Loading student profiles...</div>;
   }
 
   if (error) {
@@ -237,75 +224,162 @@ export default function BrowseStudents() {
 
   return (
     <div className="browse-students-container">
-      <h2>Bläddra bland studenter</h2>
+      
+        <button 
+          className="filter-toggle-button" 
+          onClick={toggleFilters}
+        >
+          Filter
+          <img src="../../public/assets/images/filter.svg" alt="filter icon" />
+        </button>
+   
 
-      <div className="filters-section">
-        <h3>Filtrera studenter</h3>
+      {showFilters && (
+        <div className="filter-modal">
+          <div className="filter-modal-content">
+            <div className="filter-modal-header">
+              <h2>Filter Your Search</h2>
+              <button 
+                className="close-button" 
+                onClick={toggleFilters}
+              >
+                ×
+              </button>
+            </div>
 
-        <div className="filter-group">
-          <label>Utbildning</label>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="courseId"
-                value=""
-                checked={courseId === ""}
-                onChange={handleCourseChange}
-              />
-              Alla
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="courseId"
-                value="dd"
-                checked={courseId === "dd"}
-                onChange={handleCourseChange}
-              />
-              Digital Design
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="courseId"
-                value="wu"
-                checked={courseId === "wu"}
-                onChange={handleCourseChange}
-              />
-              Webutveckling
-            </label>
+            <div className="filter-section">
+              <h3>Education</h3>
+              <div className="filter-buttons">
+                <button 
+                  className={`filter-button ${isButtonActive('course', 'dd') ? 'active' : ''}`}
+                  onClick={() => handleCourseChange('dd')}
+                >
+                  Digital Design
+                </button>
+                <button 
+                  className={`filter-button ${isButtonActive('course', 'wu') ? 'active' : ''}`}
+                  onClick={() => handleCourseChange('wu')}
+                >
+                  Web Development
+                </button>
+              </div>
+            </div>
+
+            {/* Digital Design filters */}
+            {(courseId === '' || courseId === 'dd') && (
+              <>
+                <div className="filter-section">
+                  <h3>Specialization</h3>
+                  <div className="filter-buttons">
+                    {specializations.map(spec => (
+                      <button 
+                        key={spec.value}
+                        className={`filter-button ${isButtonActive('specialization', spec.value) ? 'active' : ''}`}
+                        onClick={() => handleSpecializationToggle(spec.value)}
+                      >
+                        {spec.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="filter-section">
+                  <h3>Design Software</h3>
+                  <div className="filter-buttons">
+                    {softwares.map(software => (
+                      <button 
+                        key={software.value}
+                        className={`filter-button ${isButtonActive('software', software.value) ? 'active' : ''}`}
+                        onClick={() => handleSoftwareToggle(software.value)}
+                      >
+                        {software.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Web Development filters */}
+            {(courseId === '' || courseId === 'wu') && (
+              <>
+                <div className="filter-section">
+                  <h3>Stack</h3>
+                  <div className="filter-buttons">
+                    {stacks.map(stack => (
+                      <button 
+                        key={stack.value}
+                        className={`filter-button ${isButtonActive('stack', stack.value) ? 'active' : ''}`}
+                        onClick={() => handleStackToggle(stack.value)}
+                      >
+                        {stack.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="filter-section">
+                  <h3>Languages/Frameworks</h3>
+                  <div className="filter-buttons">
+                    {languages.map(language => (
+                      <button 
+                        key={language.value}
+                        className={`filter-button ${isButtonActive('language', language.value) ? 'active' : ''}`}
+                        onClick={() => handleLanguageToggle(language.value)}
+                      >
+                        {language.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="filter-actions">
+              <button 
+                className="filter-apply-button"
+                onClick={toggleFilters}
+              >
+                Apply Filters
+              </button>
+              <button 
+                className="filter-reset-button"
+                onClick={resetFilters}
+              >
+                Clear All ×
+              </button>
+            </div>
           </div>
         </div>
+      )}
 
-        {renderCourseSpecificFilters()}
-
-        <button className="reset-filters-button" onClick={resetFilters}>
-          Återställ filter
-        </button>
-      </div>
-
-      <div className="students-count">
-        Visar {filteredStudents.length} av {students.length} studenter
-      </div>
-
+      {/* <div className="students-count">
+        Showing {filteredStudents.length} of {students.length} students
+      </div> */}
+      
       <div className="students-grid">
+      <h1>Sök kandidater</h1>
+        
+<section className="cards-grid">
+
         {filteredStudents.length > 0 ? (
           filteredStudents.map((student) => (
             <StudentCard 
-              key={student._id} 
-              student={student} 
-              cardId={student._id}
-              isActive={student._id === activeCardId}
-              onActivate={handleCardActivation}
-              inBrowseView={true}
+            key={student._id} 
+            student={student} 
+            cardId={student._id}
+            isActive={student._id === activeCardId}
+            onActivate={handleCardActivation}
+            inBrowseView={true}
             />
           ))
         ) : (
           <div className="no-results">
-            Inga studenter matchar dina filter. Prova med andra filterval.
+            No students match your filters. Try different filter options.
           </div>
         )}
+        
+        </section>
       </div>
 
       {/* Single overlay for all cards */}

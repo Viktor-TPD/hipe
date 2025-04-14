@@ -69,6 +69,9 @@ line-height: 1.375rem;
 border: 1px solid var(--stroke-weak, #BDBDBD);
 background: var(--background-bg-white, #FFF);
 }
+.student-card.student-card-maximized .student-left-column {
+  border: 1px solid var(--stroke-weak); 
+}
 
 .student-avatar {
   margin-bottom: 1.5rem;

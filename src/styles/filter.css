@@ -13,10 +13,16 @@
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 25px;
+    border-radius: 0.25rem;
     font-size: 16px;
     cursor: pointer;
     font-weight: 500;
+    height: 2.5rem;
+    width: 11.4375rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
   }
   
   /* Modal styles */

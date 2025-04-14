@@ -270,9 +270,9 @@ export default function StudentCard({
       <button
         className="minimize-button"
         onClick={handleMinimizeClick}
-        title={!isActive ? "Maximera" : "Minska"}
+        title={!isActive ? "Förstora" : "Minska"}
       >
-        <p>{!isActive ? "Maximera" : "Minska"}</p>
+        <p>{!isActive ? "Förstora" : "Minska"}</p>
         <img
           src={
             !isActive

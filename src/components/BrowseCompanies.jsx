@@ -233,7 +233,7 @@ export default function BrowseStudents() {
   return (
     <div className="browse-students-container">
       <div className="browse-header">
-        <h2>Bläddra bland studenter</h2>
+        <h2>Bläddra bland företag</h2>
         <button 
           className="filter-toggle-button" 
           onClick={toggleFilters}
