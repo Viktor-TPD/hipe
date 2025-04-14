@@ -51,13 +51,6 @@ function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-
-    // Lock body scrolling when menu is open
-    if (!menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
   };
 
   const getInitial = () => {

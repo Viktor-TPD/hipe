@@ -8,7 +8,6 @@ import NotificationDisplay from "./components/NotificationDisplay";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-import Dashboard from "./components/Dashboard";
 import Home from "./components/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
@@ -38,16 +37,6 @@ function AppContent() {
         <Routes>
           {/* Home route - accessible to everyone */}
           <Route path="/" element={<Home />} />
-
-          {/* Protected Dashboard route */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
 
           {/* Profile routes */}
           <Route
