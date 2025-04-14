@@ -120,6 +120,12 @@
   border: 1px solid transparent;
 }
 
+.button-select:focus {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+  z-index: 5;
+}
+
 label img {
   width: 1.5rem;
   height: 1.5rem;

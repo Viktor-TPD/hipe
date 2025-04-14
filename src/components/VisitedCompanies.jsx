@@ -128,6 +128,14 @@ export default function VisitedCompanies({ studentId }) {
               key={company._id}
               className="company-mini-card"
               onClick={() => handleMiniCardClick(company)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleMiniCardClick(company);
+                }
+              }}
+              tabIndex="0"
+              role="button"
+              aria-label={`View details for ${company.companyName}`}
             >
               <div className="company-mini-image">
                 {company.profileImageUrl ? (

@@ -45,6 +45,26 @@
   margin: 0px;
   cursor: pointer;
   color: var(--bg-white);
+  outline: 2px solid transparent;
+  position: relative;
+}
+
+.option-label::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 10px;
+  border: 2px solid var(--yrgo-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.radio-input:focus-visible + .option-label::after {
+  opacity: 1;
 }
 
 input[type="radio"]:checked + label.option-label {

@@ -71,6 +71,7 @@ export default function CompanyProfile() {
         {error && <div className="error-message">{error}</div>}
 
         <FormWrapper className="image-form-wrapper">
+          <h3>Profilbild</h3>
           <ProfileImageUpload
             onImageUploaded={handleImageUploaded}
             currentImage={profileImage}

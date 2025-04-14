@@ -105,6 +105,14 @@ function Header() {
                 logout();
                 setMenuOpen(false);
               }}
+              tabIndex="0"
+              role="button"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  logout();
+                  setMenuOpen(false);
+                }
+              }}
             >
               Logga ut
             </span>

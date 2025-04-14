@@ -53,6 +53,7 @@ export default function RadioField({
               onChange={handleRadioChange}
               onBlur={handleBlur}
               required={required && !fieldValue}
+              tabIndex={0}
             />
             <label
               className={`option-label ${option.value}`}
