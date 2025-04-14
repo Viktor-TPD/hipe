@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useProfile } from "./hooks/useProfile";
+import { useProfile, useUserProfile } from "./hooks/useProfile";
 import Form from "./Form";
 import TextField from "./fields/TextField";
 import RadioField from "./fields/RadioField";
@@ -7,6 +7,7 @@ import SelectField from "./fields/SelectField";
 import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
+import VisitedCompanies from "./VisitedCompanies";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import { useAuth } from "./../AuthContext.jsx";
 import "./../styles/styles.css";
@@ -17,6 +18,7 @@ export default function StudentProfile() {
   const [courseId, setCourseId] = useState("");
   const [error, setError] = useState("");
   const { currentUser } = useAuth();
+  const { profileData } = useUserProfile();
 
   // Transform API data to form format
   const transformInitialData = (profileData) => {
@@ -165,6 +167,7 @@ export default function StudentProfile() {
         {error && <div className="error-message">{error}</div>}
 
         <FormWrapper className="image-form-wrapper">
+          <h3>Profilbild</h3>
           <ProfileImageUpload
             onImageUploaded={handleImageUploaded}
             currentImage={profileImage}
@@ -312,7 +315,9 @@ export default function StudentProfile() {
             jullyn0722@skola.goteborg.se eller viktoh0812@skola.goteborg.se
           </p>
         </FormWrapper>
-        <FormWrapper className="visited-company-wrapper"></FormWrapper>
+        <aside className="visited-company-wrapper" id="visited-companies">
+          <VisitedCompanies studentId={profileData.profile._id} />
+        </aside>
       </article>
     </>
   );
