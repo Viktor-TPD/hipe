@@ -38,35 +38,48 @@ export default function FavouriteStudents() {
         setError("Company profile not found. Please complete your profile first.");
         return;
       }
-
+    
       try {
         setIsLoading(true);
         
-        // Use the proper endpoint from your routes to get likes for this company
-        const response = await fetch(`${API_BASE_URL}/api/v1/likes/company/${companyId}`);
-
-        if (!response.ok) {
+        // Steg 1: Hämta likes för företaget
+        const likesResponse = await fetch(`${API_BASE_URL}/api/v1/likes/company/${companyId}`);
+    
+        if (!likesResponse.ok) {
           throw new Error("Failed to fetch liked student profiles");
         }
-
-        const responseData = await response.json();
-
-        // Check if the response has the expected structure
-        if (!responseData.success || !responseData.data) {
+    
+        const likesData = await likesResponse.json();
+    
+        if (!likesData.success || !likesData.data) {
           throw new Error("Invalid response format from server");
         }
-
-        console.log("Liked students data:", responseData.data);
-
-        // Based on your route implementation in likedRoutes.js:
-        // The response contains likes with populated studentId objects
-        // We need to extract the student data from each like object
-        const studentData = responseData.data.map(like => like.studentId);
+    
+        // Steg 2: Extrahera student IDs från likes
+        const studentIds = likesData.data
+          .map(like => like.studentId._id || like.studentId)
+          .filter(id => id);
+    
+        if (studentIds.length === 0) {
+          setStudents([]);
+          setFilteredStudents([]);
+          setIsLoading(false);
+          return;
+        }
+    
+        // Steg 3: Hämta fullständiga studentdata för varje ID
+        const studentPromises = studentIds.map(async (studentId) => {
+          const studentResponse = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}`);
+          if (!studentResponse.ok) return null;
+          
+          const studentData = await studentResponse.json();
+          return studentData.success && studentData.data ? studentData.data : null;
+        });
+    
+        const studentResults = await Promise.all(studentPromises);
+        const validStudentData = studentResults.filter(student => student);
         
-        // Filter out any potential null/undefined values
-        const validStudentData = studentData.filter(student => student);
-        
-        console.log(`Found ${validStudentData.length} liked students`);
+        console.log(`Found ${validStudentData.length} liked students with complete data`);
         
         setStudents(validStudentData);
         setFilteredStudents(validStudentData);
@@ -77,7 +90,7 @@ export default function FavouriteStudents() {
         setIsLoading(false);
       }
     };
-
+  
     if (profileData?.profile) {
       fetchLikedStudents();
     }
@@ -221,6 +234,8 @@ export default function FavouriteStudents() {
   }
 
   return (
+    <article id="favourites-container">
+
     <div className="browse-students-container">
 
             <div className="filter-section filter-section-favourites">
@@ -228,18 +243,18 @@ export default function FavouriteStudents() {
               <div className="filter-buttons filter-buttons-favourites">
                 <button
                   className={`filter-button-favourites filter-button ${
-                    isButtonActive("course", "dd") ? "active" : ""
-                  }`}
-                  onClick={() => handleCourseChange("dd")}
-                >
+                      isButtonActive("course", "dd") ? "active" : ""
+                    }`}
+                    onClick={() => handleCourseChange("dd")}
+                    >
                   Digital Design
                 </button>
                 <button
                   className={`filter-button-favourites filter-button ${
-                    isButtonActive("course", "wu") ? "active" : ""
-                  }`}
-                  onClick={() => handleCourseChange("wu")}
-                >
+                      isButtonActive("course", "wu") ? "active" : ""
+                    }`}
+                    onClick={() => handleCourseChange("wu")}
+                    >
                   Webbutveckling
                 </button>
               </div>
@@ -247,22 +262,22 @@ export default function FavouriteStudents() {
       
 
       <div className="students-grid students-grid-favourites">
-        <h1>Sparade kandidater</h1>
+        <h1 id="favourites">Sparade kandidater</h1>
 
         <section className="cards-grid">
           {filteredStudents.length > 0 ? (
-            filteredStudents.map((student) => (
-              <StudentCard
-                key={student._id}
-                student={student}
-                cardId={student._id}
-                isActive={student._id === activeCardId}
-                onActivate={handleCardActivation}
-                inBrowseView={true}
-              />
-            ))
-          ) : (
-            <div className="no-results">
+              filteredStudents.map((student) => (
+                  <StudentCard
+                  key={student._id}
+                  student={student}
+                  cardId={student._id}
+                  isActive={student._id === activeCardId}
+                  onActivate={handleCardActivation}
+                  inBrowseView={true}
+                  />
+                ))
+            ) : (
+                <div className="no-results">
               Inga sparade kandidater. Gå till "Sök kandidater" för att hitta och spara studenter.
             </div>
           )}
@@ -271,8 +286,9 @@ export default function FavouriteStudents() {
 
       {/* Single overlay for all cards */}
       {activeCardId && (
-        <div className="blur-overlay" onClick={handleOverlayClick}></div>
-      )}
+          <div className="blur-overlay" onClick={handleOverlayClick}></div>
+        )}
     </div>
+        </article>
   );
 }

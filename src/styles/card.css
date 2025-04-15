@@ -329,3 +329,9 @@ p {
 .linkedin-icon {
   color: var(--yrgo-primary);
 }
+
+@media (max-width: 470px) {
+  .company-card, .student-card {
+    align-items: center;
+  }
+}
