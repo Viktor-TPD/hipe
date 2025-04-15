@@ -234,6 +234,8 @@ export default function FavouriteStudents() {
   }
 
   return (
+    <article id="favourites-container">
+
     <div className="browse-students-container">
 
             <div className="filter-section filter-section-favourites">
@@ -241,18 +243,18 @@ export default function FavouriteStudents() {
               <div className="filter-buttons filter-buttons-favourites">
                 <button
                   className={`filter-button-favourites filter-button ${
-                    isButtonActive("course", "dd") ? "active" : ""
-                  }`}
-                  onClick={() => handleCourseChange("dd")}
-                >
+                      isButtonActive("course", "dd") ? "active" : ""
+                    }`}
+                    onClick={() => handleCourseChange("dd")}
+                    >
                   Digital Design
                 </button>
                 <button
                   className={`filter-button-favourites filter-button ${
-                    isButtonActive("course", "wu") ? "active" : ""
-                  }`}
-                  onClick={() => handleCourseChange("wu")}
-                >
+                      isButtonActive("course", "wu") ? "active" : ""
+                    }`}
+                    onClick={() => handleCourseChange("wu")}
+                    >
                   Webbutveckling
                 </button>
               </div>
@@ -264,18 +266,18 @@ export default function FavouriteStudents() {
 
         <section className="cards-grid">
           {filteredStudents.length > 0 ? (
-            filteredStudents.map((student) => (
-              <StudentCard
-                key={student._id}
-                student={student}
-                cardId={student._id}
-                isActive={student._id === activeCardId}
-                onActivate={handleCardActivation}
-                inBrowseView={true}
-              />
-            ))
-          ) : (
-            <div className="no-results">
+              filteredStudents.map((student) => (
+                  <StudentCard
+                  key={student._id}
+                  student={student}
+                  cardId={student._id}
+                  isActive={student._id === activeCardId}
+                  onActivate={handleCardActivation}
+                  inBrowseView={true}
+                  />
+                ))
+            ) : (
+                <div className="no-results">
               Inga sparade kandidater. Gå till "Sök kandidater" för att hitta och spara studenter.
             </div>
           )}
@@ -284,8 +286,9 @@ export default function FavouriteStudents() {
 
       {/* Single overlay for all cards */}
       {activeCardId && (
-        <div className="blur-overlay" onClick={handleOverlayClick}></div>
-      )}
+          <div className="blur-overlay" onClick={handleOverlayClick}></div>
+        )}
     </div>
+        </article>
   );
 }
