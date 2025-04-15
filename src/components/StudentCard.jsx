@@ -22,7 +22,6 @@ export default function StudentCard({
   const { showNotification } = useNotification();
   const [showFirstLikeMessage, setShowFirstLikeMessage] = useState(false);
 
-
   // Fetch company profile when component mounts
   useEffect(() => {
     const fetchCompanyProfile = async () => {
@@ -121,12 +120,12 @@ export default function StudentCard({
   // Handle save/like button click
   const handleSaveClick = async () => {
     if (isLoading) return;
-  
+
     if (!currentUser?.userType === "company") {
       showNotification("Only companies can save students", "error");
       return;
     }
-  
+
     if (!companyProfile) {
       showNotification(
         "Var vänlig och fyll i din information på din profilsida innan du sparar kandidater.",
@@ -134,20 +133,20 @@ export default function StudentCard({
       );
       return;
     }
-  
+
     if (!student?._id) {
       showNotification("Invalid student profile", "error");
       return;
     }
-  
+
     try {
       setIsLoading(true);
-  
+
       console.log("Sending like request with:", {
         studentId: student._id,
         companyId: companyProfile._id,
       });
-  
+
       const response = await fetch(`${API_BASE_URL}/api/v1/likes`, {
         method: "POST",
         headers: {
@@ -158,31 +157,28 @@ export default function StudentCard({
           companyId: companyProfile._id,
         }),
       });
-  
+
       const result = await response.json(); // ✅ bara denna!
-  
+
       console.log("Full response:", result);
-  
+
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Failed to update saved status");
       }
-  
+
       // ✅ Visa första-like-popup om det är första gången
       if (result.firstLike) {
         setShowFirstLikeMessage(true);
         setTimeout(() => setShowFirstLikeMessage(false), 4000);
       }
-  
+
       // ✅ Uppdatera UI/sparad status
       setIsSaved(result.action === "created");
-  
+
       showNotification(
-        result.action === "created"
-        ? "Kandidat sparad!"
-        : "Kandidat borttagen",
+        result.action === "created" ? "Kandidat sparad!" : "Kandidat borttagen",
         result.action === "created" ? "success" : "info"
       );
-  
     } catch (error) {
       console.error("Error saving/unsaving student:", error);
       showNotification(error.message, "error");
@@ -190,8 +186,6 @@ export default function StudentCard({
       setIsLoading(false);
     }
   };
-  
-  
 
   // Determine course name from courseId
   const getCourseName = (courseId) => {
@@ -287,8 +281,8 @@ export default function StudentCard({
         <img
           src={
             !isActive
-              ? "../public/assets/images/maximize.svg"
-              : "../public/assets/images/minimize.svg"
+              ? "/assets/images/maximize.svg"
+              : "/assets/images/minimize.svg"
           }
           alt=""
         />
@@ -312,12 +306,11 @@ export default function StudentCard({
         <h2 className="student-name">{student.name}</h2>
         <h3 className="student-course">{getCourseName(student.courseId)}</h3>
 
-
         {showFirstLikeMessage && (
-  <div className="like-tooltip">
-    OBS, dina val blir synliga för de studenter du sparar! 💡
-  </div>
-)}
+          <div className="like-tooltip">
+            OBS, dina val blir synliga för de studenter du sparar! 💡
+          </div>
+        )}
 
         {/* Save/like button */}
         {currentUser?.userType === "company" && (
@@ -361,7 +354,7 @@ export default function StudentCard({
                 rel="noopener noreferrer"
                 className="student-link"
               >
-                <img src="../public/assets/images/linkedin.svg" alt="" />
+                <img src="/assets/images/linkedin.svg" alt="" />
                 LinkedIn
               </a>
             )}
@@ -373,7 +366,7 @@ export default function StudentCard({
                 rel="noopener noreferrer"
                 className="student-link"
               >
-                <img src="../public/assets/images/portfolio.svg" alt="" />
+                <img src="/assets/images/portfolio.svg" alt="" />
                 Portfolio
               </a>
             )}
@@ -383,7 +376,7 @@ export default function StudentCard({
                 href={`mailto:${student.userId.email}`}
                 className="student-link"
               >
-                <img src="../public/assets/images/mail.svg" alt="" />
+                <img src="/assets/images/mail.svg" alt="" />
                 {student.userId.email}
               </a>
             )}

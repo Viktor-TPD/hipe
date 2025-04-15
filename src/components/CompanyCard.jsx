@@ -51,8 +51,8 @@ export default function CompanyCard({
         <img
           src={
             !isActive
-              ? "../public/assets/images/maximize.svg"
-              : "../public/assets/images/minimize.svg"
+              ? "/assets/images/maximize.svg"
+              : "/assets/images/minimize.svg"
           }
           alt=""
         />
@@ -101,7 +101,7 @@ export default function CompanyCard({
             rel="noopener noreferrer"
             className="company-link"
           >
-            <img src="../public/assets/images/portfolio.svg" alt="" />
+            <img src="/assets/images/portfolio.svg" alt="" />
             {company.website}
           </a>
         )}

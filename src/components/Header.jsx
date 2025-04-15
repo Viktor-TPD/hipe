@@ -19,12 +19,9 @@ function Header() {
       <picture className="logo-item">
         <source
           media="(max-width: 768px)"
-          srcSet="./../../public/assets/images/yrgo-logo-mobile.svg"
+          srcSet="/assets/images/yrgo-logo-mobile.svg"
         />
-        <img
-          src="./../../public/assets/images/yrgo-logo-desktop.svg"
-          alt="Logo"
-        />
+        <img src="/assets/images/yrgo-logo-desktop.svg" alt="Logo" />
       </picture>
     );
   }
