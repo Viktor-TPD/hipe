@@ -112,7 +112,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
           />
           <label htmlFor="profileImage" className="button-select">
             {isUploading ? "Laddar upp..." : "Ladda upp bild"}
-            <img src="../public/assets/images/upload.svg" alt="" />
+            <img src="/assets/images/upload.svg" alt="" />
           </label>
         </button>
       </div>

@@ -202,7 +202,7 @@ export default function BrowseStudents() {
     <div className="browse-students-container">
       <button className="filter-toggle-button" onClick={toggleFilters}>
         Filter
-        <img src="../../public/assets/images/filter.svg" alt="filter icon" />
+        <img src="/assets/images/filter.svg" alt="filter icon" />
       </button>
 
       {showFilters && (
