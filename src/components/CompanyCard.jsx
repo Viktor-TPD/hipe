@@ -13,17 +13,14 @@ export default function CompanyCard({
 }) {
   const { currentUser } = useAuth();
 
-  // Handle minimize/maximize button click
   const handleMinimizeClick = (e) => {
     if (onClose) {
       onClose();
     } else if (onActivate) {
-      // Using the parent component's state management
       onActivate(cardId, !isActive);
     }
   };
 
-  // If company is undefined or null, show a placeholder or return null
   if (!company) {
     return <div className="company-card empty">No company data available</div>;
   }
@@ -40,7 +37,6 @@ export default function CompanyCard({
 
   return (
     <div className={`company-card ${isActive ? "company-card-maximized" : ""}`}>
-      {/* Minimize/Maximize button */}
       <button
         className="minimize-button"
         onClick={handleMinimizeClick}
@@ -58,7 +54,6 @@ export default function CompanyCard({
         />
       </button>
 
-      {/* Left column - Profile image and name */}
       <div className="company-left-column">
         <div className="image-preview">
           {company.profileImageUrl ? (
@@ -78,7 +73,6 @@ export default function CompanyCard({
         </h2>
       </div>
 
-      {/* Right column - Company information */}
       <div className="company-right-column">
         <div className="company-name">
           <h4>Företagsnamn</h4>

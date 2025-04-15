@@ -6,7 +6,6 @@ const router = express.Router();
 // GET /api/v1/companies - Get all company profiles
 router.get("/", async (req, res) => {
   try {
-    // Support filtering by industry
     const { industry } = req.query;
     const query = industry ? { industry } : {};
 
@@ -35,13 +34,11 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // First try to find by MongoDB _id
     let companyProfile = await CompanyProfile.findById(id).populate(
       "userId",
       "email"
     );
 
-    // If not found, try finding by userId
     if (!companyProfile) {
       companyProfile = await CompanyProfile.findOne({ userId: id }).populate(
         "userId",
@@ -84,7 +81,6 @@ router.post("/", async (req, res) => {
       profileImageUrl,
     } = req.body;
 
-    // Validate required fields
     if (
       !userId ||
       !companyName ||
@@ -99,7 +95,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Check if profile already exists for this user
     const existingProfile = await CompanyProfile.findOne({ userId });
     if (existingProfile) {
       return res.status(409).json({
@@ -107,8 +102,6 @@ router.post("/", async (req, res) => {
         message: "A profile already exists for this user",
       });
     }
-
-    console.log("Creating company profile for user:", userId);
 
     const company = new CompanyProfile({
       userId,
@@ -125,7 +118,6 @@ router.post("/", async (req, res) => {
     });
 
     await company.save();
-    console.log("✅ CompanyProfile created:", company);
 
     res.status(201).json({
       success: true,
@@ -156,7 +148,6 @@ router.put("/:id", async (req, res) => {
       profileImageUrl,
     } = req.body;
 
-    // Find the existing profile
     const existingProfile = await CompanyProfile.findOne({ userId: id });
 
     if (!existingProfile) {
@@ -166,7 +157,6 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    // Update the profile with new data
     if (companyName) existingProfile.companyName = companyName;
     if (industry) existingProfile.industry = industry;
     if (description !== undefined) existingProfile.description = description;
@@ -184,9 +174,7 @@ router.put("/:id", async (req, res) => {
     if (profileImageUrl !== undefined)
       existingProfile.profileImageUrl = profileImageUrl;
 
-    // Save the updated profile
     await existingProfile.save();
-    console.log("✅ Profil uppdaterad!", existingProfile);
 
     res.status(200).json({
       success: true,
@@ -208,7 +196,6 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find and delete by userId
     const result = await CompanyProfile.findOneAndDelete({ userId: id });
 
     if (!result) {

@@ -16,7 +16,6 @@ export default function CheckboxField({
     touched: formTouched,
   } = useFormContext();
 
-  // Use context values if not explicitly provided as props
   const fieldChecked =
     checked !== undefined ? checked : formData[name] || false;
   const fieldError = error || errors[name];
