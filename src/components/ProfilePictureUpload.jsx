@@ -25,7 +25,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
     if (!allowedTypes.includes(selectedFile.type)) {
       showNotification(
-        "Please select an image file (JPEG, PNG, or GIF)",
+        "Vänligen välj en av följande filtyper: JPEG, PNG, or GIF",
         "error"
       );
       return;
@@ -33,7 +33,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
 
     // Check file size (max 5MB)
     if (selectedFile.size > 5 * 1024 * 1024) {
-      showNotification("Image size should be less than 5MB", "error");
+      showNotification("Bilder måste vara under 5MB", "error");
       return;
     }
 
@@ -63,7 +63,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to upload image");
+        throw new Error(data.message || "Bilduppladdning misslyckades");
       }
 
       // Call the callback with the image URL (note the nested data structure)
@@ -71,7 +71,7 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
         onImageUploaded(data.data.profileImageUrl);
       }
 
-      showNotification("Image uploaded successfully", "success");
+      showNotification("Bild uppladdad!", "success");
     } catch (error) {
       console.error("Error uploading image:", error);
       showNotification(error.message || "Failed to upload image", "error");
@@ -111,10 +111,8 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
             disabled={isUploading}
           />
           <label htmlFor="profileImage" className="button-select">
-            {isUploading
-              ? "Laddar upp..."
-              : "Ladda upp bild"}
-          <img src="../public/assets/images/upload.svg" alt="" />
+            {isUploading ? "Laddar upp..." : "Ladda upp bild"}
+            <img src="../public/assets/images/upload.svg" alt="" />
           </label>
         </button>
       </div>

@@ -146,7 +146,7 @@ router.post("/", async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Student profile created successfully",
+      message: "Studentprofil skapad!",
       data: student,
     });
   } catch (error) {
@@ -201,11 +201,11 @@ router.put("/:id", async (req, res) => {
 
     // Save the updated profile
     await existingProfile.save();
-    console.log("✅ StudentProfile updated:", existingProfile);
+    console.log("✅ Profil uppdaterad!", existingProfile);
 
     res.status(200).json({
       success: true,
-      message: "Student profile updated successfully",
+      message: "Profil uppdaterad!",
       data: existingProfile,
     });
   } catch (error) {

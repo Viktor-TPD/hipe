@@ -186,11 +186,11 @@ router.put("/:id", async (req, res) => {
 
     // Save the updated profile
     await existingProfile.save();
-    console.log("✅ CompanyProfile updated:", existingProfile);
+    console.log("✅ Profil uppdaterad!", existingProfile);
 
     res.status(200).json({
       success: true,
-      message: "Company profile updated successfully",
+      message: "Profil uppdaterad!",
       data: existingProfile,
     });
   } catch (error) {
@@ -232,20 +232,17 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-
-
-
 router.get("/company-profiles", async (req, res) => {
   try {
-    const companyProfiles = await CompanyProfile.find().populate("userId", "email");
+    const companyProfiles = await CompanyProfile.find().populate(
+      "userId",
+      "email"
+    );
     res.status(200).json(companyProfiles);
   } catch (error) {
     console.error("❌ Error fetching company profiles:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
 
 export default router;

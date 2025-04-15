@@ -56,6 +56,14 @@ export default function StudentCard({
     fetchCompanyProfile();
   }, [currentUser]);
 
+  const ensureHttps = (url) => {
+    if (!url) return url;
+    if (url.match(/^https?:\/\//)) {
+      return url;
+    }
+    return `https://${url}`;
+  };
+
   // Check if student is already liked once we have both student and company profile
   useEffect(() => {
     const checkExistingLike = async () => {
@@ -119,7 +127,10 @@ export default function StudentCard({
     }
 
     if (!companyProfile) {
-      showNotification("Please complete your company profile first", "error");
+      showNotification(
+        "Var vänlig och fyll i din information på din profilsida innan du sparar kandidater.",
+        "error"
+      );
       return;
     }
 
@@ -171,8 +182,8 @@ export default function StudentCard({
         setIsSaved(result.action === "created");
         showNotification(
           result.action === "created"
-            ? "Student saved successfully"
-            : "Student removed from saved list",
+            ? "Kandidat sparad!"
+            : "Kandidat borttagen",
           result.action === "created" ? "success" : "info"
         );
       } else {
@@ -207,7 +218,9 @@ export default function StudentCard({
 
   // If student is undefined or null, show a placeholder or return null
   if (!student) {
-    return <div className="student-card empty">No student data available</div>;
+    return (
+      <div className="student-card empty">Ingen studentdata tillgänglig</div>
+    );
   }
 
   // Render course-specific information based on student's course
@@ -227,7 +240,7 @@ export default function StudentCard({
             </div>
           </div>
           <div className="student-section student-software">
-            <h4>Design Program</h4>
+            <h4>Designprogram</h4>
             <div className="tags">
               {student.software &&
                 student.software.map((sw, index) => (
@@ -340,7 +353,7 @@ export default function StudentCard({
           <div className="link-container">
             {student.linkedin && (
               <a
-                href={student.linkedin}
+                href={ensureHttps(student.linkedin)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="student-link"
@@ -352,7 +365,7 @@ export default function StudentCard({
 
             {student.portfolio && (
               <a
-                href={student.portfolio}
+                href={ensureHttps(student.portfolio)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="student-link"

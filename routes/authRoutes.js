@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists with this email",
+        message: "Den här emailen används av ett annat konto.",
       });
     }
 
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Felaktig email eller lösenord",
       });
     }
 
@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Felaktig email eller lösenord",
       });
     }
 

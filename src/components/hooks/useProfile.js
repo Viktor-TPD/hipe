@@ -136,12 +136,8 @@ export function useProfile({
 
       // Show success notification
       const successMessage = existingProfile
-        ? `${
-            profileType === "student" ? "Student" : "Company"
-          } profile updated successfully`
-        : `${
-            profileType === "student" ? "Student" : "Company"
-          } profile created successfully`;
+        ? "Profil uppdaterad!"
+        : "Profil skapad!";
 
       showNotification(successMessage, "success");
 
