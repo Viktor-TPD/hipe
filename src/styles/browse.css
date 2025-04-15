@@ -34,7 +34,6 @@
   gap: 2rem;
   color: var(--bg-white);
   padding: 2rem;
-  
   width: 67.0625rem;
   flex-direction: column;
   justify-content: flex-start;
@@ -48,11 +47,9 @@
 .students-grid-favourites {
   background-color: var(--yrgo-secondary);
   width: auto;
-  
 }
 
 #favourites-container {
-  /* width: 100%; */
   margin: 0 2rem;
 }
 
@@ -103,7 +100,6 @@
   z-index: 2;
 }
 
-/* Student browse specific styles */
 .filters-section {
   background-color: var(--bg-white);
   padding: 1.5rem;

@@ -55,7 +55,6 @@ line-height: 1.375rem;
 }
 }
 
-/* Left column: Profile image and name */
 .student-left-column,
  .company-left-column{
   display: flex;
@@ -69,9 +68,9 @@ line-height: 1.375rem;
 border: none;
 background: var(--background-bg-white, #FFF);
 }
+
 .student-card.student-card-maximized .student-left-column,
-.company-card.company-card-maximized .company-left-column
- {
+.company-card.company-card-maximized .company-left-column {
   border: 1px solid var(--stroke-weak); 
 }
 
@@ -116,7 +115,6 @@ background: var(--background-bg-white, #FFF);
   margin-bottom: 1.5rem;
 }
 
-/* Right column: Student information */
 .student-right-column, 
 .company-right-column {
     
@@ -130,10 +128,8 @@ background: var(--background-bg-white, #FFF);
 border: 0.5px solid var(--stroke-weak, #BDBDBD);
 background: var(--background-bg-white, #FFF);
 box-shadow: 4px 4px 4.3px 0px rgba(0, 0, 0, 0.15) inset;
-
 overflow-y: auto;
 position: relative;
-
 
 p {
     max-width: fit-content;
@@ -175,7 +171,6 @@ p {
   line-height: 1.6;
 }
 
-/* Tags styling */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -192,13 +187,10 @@ p {
   font-size: 1rem;
   font-weight: 400;
   box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.15), 0px 2px 1.5px 0px #FFF inset;
-
 }
 
-/* Links section */
 .student-links, .company-links {
   margin-top: auto;
-
 }
 
 .link-container {
@@ -226,7 +218,6 @@ p {
   margin-right: 0.75rem;
 }
 
-/* Save/like button */
 .save-button {
  margin-top:auto;
   background: none;
@@ -242,23 +233,16 @@ p {
   transition: all 0.2s ease;
 }
 
-
-
 .save-button svg {
   width: 1.5rem;
   height: 1.5rem;
 }
 
-/* Ändra denna sen till "when liked" */
-
 .save-button svg:hover {
-    fill: red;
-    stroke: red;
+    fill: var(--yrgo-primary);
+    stroke: var(--yrgo-primary)
   }
 
-
-
-/* Minimize button */
 .minimize-button {
   position: absolute;
   top: 1rem;
@@ -275,7 +259,6 @@ p {
   p {
       color: var(--bg-black);
       font-size: 0.875rem;
-    
   }
 }
 
@@ -286,7 +269,33 @@ p {
   height: 1.5rem;
 }
 
-/* Responsive adjustments */
+
+.link-icon {
+  color: var(--yrgo-primary);
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  display: inline-block;
+}
+
+.email-icon,
+.portfolio-icon,
+.linkedin-icon {
+  color: var(--yrgo-primary);
+}
+
+.like-tooltip {
+  background-color:var(--bg-white);
+  color: var(--bg-black);
+  border: 1px solid var(--stroke-weak);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 70px;
+  max-width: 300px;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
 @media (max-width: 992px) {
   .student-card {
     flex-direction: column;
@@ -315,34 +324,6 @@ p {
     align-self: center;
   }
 }
-
-/* Link icon styles */
-.link-icon {
-  color: var(--yrgo-primary);
-  margin-right: 0.5rem;
-  width: 1.25rem;
-  display: inline-block;
-}
-
-.email-icon,
-.portfolio-icon,
-.linkedin-icon {
-  color: var(--yrgo-primary);
-}
-
-.like-tooltip {
-  background-color:var(--bg-white);
-  color: var(--bg-black);
-  border: 1px solid var(--stroke-weak);
-  padding: 10px 15px;
-  border-radius: 8px;
-  margin-top: 70px;
-  max-width: 300px;
-  font-size: 0.8rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: left;
-}
-
 
 @media (max-width: 470px) {
   .company-card, .student-card {

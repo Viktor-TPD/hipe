@@ -1,4 +1,4 @@
-/* Filter toggle button */
+
 .browse-header {
     display: flex;
     justify-content: space-between;
@@ -23,7 +23,7 @@
     justify-content: center;
   }
   
-  /* Modal styles */
+
   .filter-modal {
     position: absolute;
     top: 100%;
@@ -80,7 +80,7 @@
     color: #333;
   }
   
-  /* Filter sections */
+
   .filter-section {
     margin-bottom: 20px;
   }
@@ -147,8 +147,7 @@
   .filter-button-favourites:hover {
     border:none;
   }
-  
-  /* Filter actions */
+
   .filter-actions {
     display: flex;
     justify-content: space-between;
@@ -178,9 +177,6 @@
     display: flex;
     align-items: center;
   }
-  
-  
-
 
   @media (max-width: 768px) {
   .filter-toggle-button {
