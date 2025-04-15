@@ -13,6 +13,8 @@ const companyProfileSchema = new Schema(
     },
     profileImageUrl: { type: String, default: "" },
     internshipDetails: { type: String },
+    hasLikedOnce: { type: Boolean, default: false },
+
   },
   { timestamps: true, collection: "CompanyProfile" }
 );

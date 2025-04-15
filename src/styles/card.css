@@ -330,6 +330,20 @@ p {
   color: var(--yrgo-primary);
 }
 
+.like-tooltip {
+  background-color:var(--bg-white);
+  color: var(--bg-black);
+  border: 1px solid var(--stroke-weak);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 70px;
+  max-width: 300px;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+
 @media (max-width: 470px) {
   .company-card, .student-card {
     align-items: center;

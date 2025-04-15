@@ -122,6 +122,14 @@ router.post("/", async (req, res) => {
 
       await liked.save();
 
+      let isFirstLike = false;
+
+      if (!company.hasLikedOnce) {
+        company.hasLikedOnce = true;
+        await company.save();
+        isFirstLike = true;
+      }
+
       console.log("✅ Like created:", {
         studentId,
         companyId,
@@ -133,6 +141,7 @@ router.post("/", async (req, res) => {
         message: "Like created successfully",
         data: liked,
         action: "created",
+        firstLike: isFirstLike, 
       });
     }
   } catch (error) {
