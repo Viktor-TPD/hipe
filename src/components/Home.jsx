@@ -26,7 +26,7 @@ function Home() {
   const { formType, setFormType } = useAuthForm();
 
   const [userType, setUserType] = useState("student");
-  const [userTypeValue, setUserTypeValue] = useState("Studenter");
+  const [userTypeValue, setUserTypeValue] = useState("Student");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,11 +39,13 @@ function Home() {
       setError("");
       setIsLoading(true);
 
+      const normalizedEmail = data.email.toLowerCase();
+
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: data.email,
+          email: normalizedEmail,
           password: data.password,
           userType: userType,
         }),
@@ -80,6 +82,8 @@ function Home() {
       setError("");
       setIsLoading(true);
 
+
+
       if (data.password.length < 6) {
         setError("Lösenordet måste vara minst 6 tecken långt");
         setIsLoading(false);
@@ -92,11 +96,13 @@ function Home() {
         return;
       }
 
+      const normalizedEmail = data.email.toLowerCase();
+
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: data.email,
+          email: normalizedEmail,
           password: data.password,
           userType: userType,
         }),
@@ -163,6 +169,8 @@ function Home() {
               autoComplete="current-password"
             />
 
+{error && <div className="error-message">{error}</div>}
+
             <section className="home-checkbox-wrapper">
               <CheckboxField name="rememberMe" label="Kom ihåg mig?" />
               <Button variant="primary" type="submit">
@@ -192,7 +200,7 @@ function Home() {
             if (e && e.target) {
               setUserType(e.target.value);
               if (e.target.value === "student") {
-                setUserTypeValue(e.target.labels[0].innerHTML + "er");
+                setUserTypeValue(e.target.labels[0].innerHTML);
               } else {
                 setUserTypeValue(e.target.labels[0].innerHTML);
               }
@@ -245,6 +253,7 @@ function Home() {
               placeholder="Bekräfta ditt lösenord"
               autoComplete="new-password"
             />
+            {error && <div className="error-message">{error}</div>}
             <section className="home-checkbox-wrapper">
               <CheckboxField
                 name="privacyPolicy"
@@ -300,7 +309,7 @@ function Home() {
         <aside>
           {!currentUser && (
             <section className="home-aside-right">
-              {error && <div className="error-message">{error}</div>}
+
               {formType === "login" ? renderLoginForm() : renderRegisterForm()}
             </section>
           )}
