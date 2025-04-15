@@ -179,19 +179,7 @@
     align-items: center;
   }
   
-  /* Responsive adjustments
-  @media (max-width: 768px) {
-    .filter-modal-content {
-      width: 95%;
-      margin-top: 20px;
-      padding: 15px;
-    }
-    
-    .filter-button {
-      padding: 6px 12px;
-      font-size: 13px;
-    }
-  } */
+  
 
 
   @media (max-width: 768px) {
@@ -212,8 +200,14 @@
     color: var(--bg-white);
     margin:0;
     border:none;
-    
+    padding: 1rem;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
+
+  .filter-section-favourites > * {
+    padding: 0 2rem;
+}
   
 
 }

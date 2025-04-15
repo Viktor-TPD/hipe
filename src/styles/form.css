@@ -124,3 +124,12 @@ article {
 .form-wrapper.visited-company-wrapper {
   width: 182px;
 }
+
+@media (max-width:790px) {
+  article {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+}
