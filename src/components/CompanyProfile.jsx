@@ -6,7 +6,6 @@ import SelectField from "./fields/SelectField";
 import TextareaField from "./fields/TextAreaField";
 import ProfileImageUpload from "./ProfilePictureUpload";
 import FormWrapper from "./FormWrapper";
-import "./../styles/styles.css";
 import "./../styles/form.css";
 import "./../styles/button.css";
 import "./../styles/imageUpload.css";

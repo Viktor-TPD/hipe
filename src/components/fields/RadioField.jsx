@@ -1,7 +1,6 @@
 import React from "react";
 import { useFormContext } from "../Form";
 import "./../../styles/radioField.css";
-import "./../../styles/styles.css";
 
 export default function RadioField({
   name,

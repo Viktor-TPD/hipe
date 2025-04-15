@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import { NotificationProvider } from "./NotificationContext";
-import { AuthFormProvider } from "./AuthFormContext"; // Import our new context
+import { AuthFormProvider } from "./AuthFormContext";
 import NotificationDisplay from "./components/NotificationDisplay";
 
 import Header from "./components/Header";
@@ -71,7 +71,7 @@ function AppContent() {
             path="/favorites"
             element={
               <ProtectedRoute requiredUserType="company">
-<FavouriteStudents/>
+                <FavouriteStudents />
               </ProtectedRoute>
             }
           />

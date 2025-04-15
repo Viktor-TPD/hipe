@@ -3,6 +3,7 @@ import { useAuth } from "./../AuthContext";
 import { useNotification } from "./../NotificationContext";
 import { API_BASE_URL } from "./../config";
 import CompanyCard from "./CompanyCard";
+
 import "./../styles/visitedCompanies.css";
 
 export default function VisitedCompanies({ studentId }) {

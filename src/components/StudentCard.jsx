@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "./../AuthContext.jsx";
 import { useNotification } from "./../NotificationContext.jsx";
 import { API_BASE_URL } from "./../config";
+
 import "../styles/card.css";
 import "../styles/imageUpload.css";
 

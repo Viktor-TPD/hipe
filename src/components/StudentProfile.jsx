@@ -10,7 +10,7 @@ import FormWrapper from "./FormWrapper";
 import VisitedCompanies from "./VisitedCompanies";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import { useAuth } from "./../AuthContext.jsx";
-import "./../styles/styles.css";
+
 import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 

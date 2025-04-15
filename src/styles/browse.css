@@ -1,33 +1,37 @@
-.browse-companies-container, .browse-students-container {
+.browse-companies-container,
+.browse-students-container {
   display: flex;
   flex-direction: row;
   gap: 2rem;
- margin: 3rem 0;
+  margin: 3rem 0;
   justify-content: center;
   .button {
     margin-bottom: auto;
   }
 }
 
-.company-right-column, .student-right-column {
+.company-right-column,
+.student-right-column {
   display: none;
 }
 
-.company-card, .student-card {
+.company-card,
+.student-card {
   width: 18rem;
 }
 
 .student-left-column {
-  border:none;
+  border: none;
 }
 
-.companies-grid, .students-grid {
+.companies-grid,
+.students-grid {
   background-color: var(--yrgo-primary);
   border-radius: 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap:2rem;
+  gap: 2rem;
   color: var(--bg-white);
   padding: 2rem;
   width: 67.0625rem;
@@ -48,7 +52,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-
 }
 
 .company-card-maximized {
@@ -63,15 +66,15 @@
   }
 }
 
-.company-card-maximized, .student-card-maximized {
-  width: fit-content ;
+.company-card-maximized,
+.student-card-maximized {
+  width: fit-content;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
   overflow-y: auto;
-  
 }
 
 .company-card-maximized .company-right-column,
@@ -149,8 +152,6 @@
 .reset-filters-button:hover {
   background-color: var(--grey-300);
 }
-
-
 
 .no-results {
   width: 100%;

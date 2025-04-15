@@ -1,13 +1,12 @@
-import React from 'react';
-import './../../styles/radioButtonGroup.css';
-import './../../styles/styles.css';
+import React from "react";
+import "./../../styles/radioButtonGroup.css";
 
-const RadioButtonGroup = ({ 
-  options, 
-  selectedValue, 
-  onChange, 
-  name, 
-  className = '' 
+const RadioButtonGroup = ({
+  options,
+  selectedValue,
+  onChange,
+  name,
+  className = "",
 }) => {
   return (
     <div className={`radio-group ${className}`}>
@@ -21,10 +20,7 @@ const RadioButtonGroup = ({
             checked={selectedValue === option.value}
             onChange={() => onChange(option.value)}
           />
-          <label 
-            htmlFor={`${name}-${option.value}`}
-            className="radio-label"
-          >
+          <label htmlFor={`${name}-${option.value}`} className="radio-label">
             {option.label}
           </label>
         </div>

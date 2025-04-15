@@ -1,0 +1,70 @@
+/* BUTTONS */
+.button:focus {
+  outline: none;
+}
+
+.button-select:focus {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+  z-index: 5;
+}
+
+/* FORM */
+.minimize-button:focus-visible {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+}
+
+/* HEADER */
+.mobile-close-btn:focus,
+.button-linkNavbar:focus {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+}
+.button-primary:focus {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+}
+
+.logout-text:focus {
+  outline: 2px solid var(--yrgo-primary);
+  outline-offset: 2px;
+}
+
+/* HOME */
+.checkbox-wrapper input[type="checkbox"]:focus {
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* RADIOFIELD */
+.option-label::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 10px;
+  border: 2px solid var(--yrgo-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.radio-input:focus-visible + .option-label::after {
+  opacity: 1;
+}
+
+/* VISITED COMPANIES */
+.company-mini-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--yrgo-primary);
+}
+
+.company-mini-card:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.company-mini-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--yrgo-primary);
+}

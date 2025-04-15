@@ -135,19 +135,6 @@
   z-index: 1000;
 }
 
-.company-mini-card:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--yrgo-primary);
-}
-
-.company-mini-card:focus:not(:focus-visible) {
-  outline: none;
-}
-
-.company-mini-card:focus-visible {
-  box-shadow: 0 0 0 2px var(--yrgo-primary);
-}
-
 @media (max-width: 768px) {
   .companies-list {
     max-height: 40vh;

@@ -17,10 +17,6 @@
   cursor: not-allowed;
 }
 
-.button:focus {
-  outline: none;
-}
-
 .button:hover {
   outline: none;
   border: none;
@@ -118,12 +114,6 @@
 
 .button-select:hover {
   border: 1px solid transparent;
-}
-
-.button-select:focus {
-  outline: 2px solid var(--yrgo-primary);
-  outline-offset: 2px;
-  z-index: 5;
 }
 
 label img {

@@ -124,8 +124,3 @@ article {
 .form-wrapper.visited-company-wrapper {
   width: 182px;
 }
-
-.minimize-button:focus-visible {
-  outline: 2px solid var(--yrgo-primary);
-  outline-offset: 2px;
-}

@@ -1,14 +1,13 @@
-import React from 'react';
-import './../../styles/button.css';
-import './../../styles/styles.css';
+import React from "react";
+import "./../../styles/button.css";
 
-const Button = ({ 
-  children, 
-  onClick, 
-  type = 'button', 
-  className = '', 
+const Button = ({
+  children,
+  onClick,
+  type = "button",
+  className = "",
   disabled = false,
-  variant = 'primary' // primary, filter, linkNavbar, select
+  variant = "primary", // primary, filter, linkNavbar, select
 }) => {
   return (
     <button

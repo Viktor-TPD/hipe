@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import StudentCard from "./StudentCard";
 import { specializations, softwares, languages, stacks } from "./FormData";
 import { API_BASE_URL } from "./../config";
-import Button from "./buttons/Button.jsx";
 import "./../styles/browse.css";
 import "./../styles/filter.css";
 

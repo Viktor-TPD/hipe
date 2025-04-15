@@ -7,17 +7,16 @@ import { useAuthForm } from "./../AuthFormContext";
 import { API_BASE_URL } from "./../config";
 
 import Form from "./Form";
+import CheckboxField from "./fields/CheckboxField";
+import Button from "./buttons/Button";
 import TextField from "./fields/TextField";
 import RadioField from "./fields/RadioField";
 import FormWrapper from "./FormWrapper";
 
-import "./../styles/styles.css";
 import "./../styles/form.css";
 import "./../styles/imageUpload.css";
 import "./../styles/home.css";
 import "./../styles/radioField.css";
-import CheckboxField from "./fields/CheckboxField";
-import Button from "./buttons/Button";
 
 function Home() {
   const { currentUser, login } = useAuth();

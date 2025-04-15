@@ -277,11 +277,6 @@ label.option-label.company {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-
-.checkbox-wrapper input[type="checkbox"]:focus {
-  outline: 1px solid rgba(0, 0, 0, 0.2);
-}
-
 .checkbox-wrapper label {
   font-size: var(--14, 14px);
   font-style: normal;

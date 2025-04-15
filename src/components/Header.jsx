@@ -5,6 +5,9 @@ import { useAuthForm } from "../AuthFormContext";
 import { useUserProfile } from "./hooks/useProfile";
 import Button from "./buttons/Button.jsx";
 
+import "./../styles/ac11y.css";
+import "./../styles/styles.css";
+
 function Header() {
   const { currentUser, logout } = useAuth();
   const { setFormType } = useAuthForm();
