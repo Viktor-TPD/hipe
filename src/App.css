@@ -34,8 +34,6 @@
   box-sizing: border-box;
 }
 
-
-
 .textarea-field:focus {
   outline: none;
   border-color: #646cff;
@@ -50,17 +48,16 @@
   box-shadow: 0 0 0 1px rgba(229, 62, 62, 0.3);
 }
 
-
-
-/* Notification Styles */
+/* NOTIFICATIONS */
 .notification-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 280px;
+  min-width: 240px;
   max-width: 400px;
   padding: 16px;
   border-radius: 6px;
@@ -118,11 +115,11 @@
 
 @keyframes slide-in {
   from {
-    transform: translateX(100%);
+    transform: translateX(-50%) translateY(-20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
