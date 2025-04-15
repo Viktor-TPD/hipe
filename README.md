@@ -2,11 +2,10 @@
 
 Hipe is a web application designed to connect Digital Design (DD) and Web Development (WU) students from YRGO with potential employers during a LIA event. The platform allows students to showcase their skills and portfolios while companies can browse and save students they're interested in for internships and job opportunities.
 
-![Hipe Platform](https://placeholder-image.com/hipe-screenshot.png)
-
 ## Features
 
 ### For Students:
+
 - Create and customize detailed profile showcasing skills, portfolio links, and specializations
 - Upload a picture of yourself to be more memorable
 - Browse and view company profiles
@@ -14,6 +13,7 @@ Hipe is a web application designed to connect Digital Design (DD) and Web Develo
 - Responsive design for all devices
 
 ### For Companies:
+
 - Create company profiles with industry details, internship offerings, and contact information
 - Upload a profile picture/company logo
 - Browse student profiles with advanced filtering options
@@ -21,6 +21,7 @@ Hipe is a web application designed to connect Digital Design (DD) and Web Develo
 - Direct access to student portfolios and contact information
 
 ### General Features:
+
 - Secure authentication system with user-specific views
 - Responsive design that works across desktop, tablet, and mobile devices
 - Real-time profile updates
@@ -29,12 +30,14 @@ Hipe is a web application designed to connect Digital Design (DD) and Web Develo
 ## Technology Stack
 
 ### Frontend
-- React 
+
+- React
 - React Router
 - CSS for styling
 - Vite for build and development
 
 ### Backend
+
 - Node.js
 - Express.js
 - MongoDB with Mongoose
@@ -44,6 +47,7 @@ Hipe is a web application designed to connect Digital Design (DD) and Web Develo
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - MongoDB database
 - AWS S3 bucket for image storage
@@ -52,17 +56,20 @@ Hipe is a web application designed to connect Digital Design (DD) and Web Develo
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/hipe.git
 cd hipe
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory and configure the following variables:
+
 ```
 DB_USER=your_mongodb_username
 DB_PASSWORD=your_mongodb_password
@@ -75,11 +82,13 @@ NODE_ENV=development
 ```
 
 4. Start the development server
+
 ```bash
 npm run dev
 ```
 
 5. For production builds
+
 ```bash
 npm run build
 npm start
@@ -108,12 +117,14 @@ npm start
 The application provides the following RESTful API endpoints:
 
 ### Authentication Routes
+
 - `POST /api/v1/auth/register` - Register a new user
 - `POST /api/v1/auth/login` - Login user
 - `POST /api/v1/auth/verify` - Verify user session
 - `POST /api/v1/auth/logout` - Logout user
 
 ### Student Profile Routes
+
 - `GET /api/v1/students` - Get all student profiles (with optional filters)
 - `GET /api/v1/students/:id` - Get a specific student profile
 - `POST /api/v1/students` - Create a new student profile
@@ -121,6 +132,7 @@ The application provides the following RESTful API endpoints:
 - `DELETE /api/v1/students/:id` - Delete a student profile
 
 ### Company Profile Routes
+
 - `GET /api/v1/companies` - Get all company profiles
 - `GET /api/v1/companies/:id` - Get a specific company profile
 - `POST /api/v1/companies` - Create a new company profile
@@ -128,6 +140,7 @@ The application provides the following RESTful API endpoints:
 - `DELETE /api/v1/companies/:id` - Delete a company profile
 
 ### Likes Routes
+
 - `GET /api/v1/likes` - Get all likes with optional filtering
 - `POST /api/v1/likes` - Create a new like or delete if exists
 - `GET /api/v1/likes/student/:studentId` - Get all companies that liked a student
