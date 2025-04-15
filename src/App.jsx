@@ -35,7 +35,7 @@ function AppContent() {
       <Header />
       <main className="app-content">
         <Routes>
-          {/* Home route - accessible to everyone */}
+          {/* Home route*/}
           <Route path="/" element={<Home />} />
 
           {/* Profile routes */}

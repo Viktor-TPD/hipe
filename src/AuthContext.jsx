@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
 
-  // Check if user is already logged in (from localStorage)
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -22,13 +21,11 @@ export function AuthProvider({ children }) {
         const user = JSON.parse(userStr);
 
         if (user && user.userId) {
-          // Verify the session is still valid with the backend
           const isValid = await verifyUserSession(user);
 
           if (isValid) {
             setCurrentUser(user);
           } else {
-            // Session is invalid - clear localStorage
             localStorage.removeItem("user");
           }
         }
@@ -47,7 +44,6 @@ export function AuthProvider({ children }) {
     if (!user || !user.userId) return false;
 
     try {
-      // Call your backend to verify the user session
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/verify`, {
         method: "POST",
         headers: {
@@ -63,18 +59,15 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Login function
   const login = (userData) => {
     try {
       setAuthError(null);
 
-      // Ensure the data contains required fields
       if (!userData.userId || !userData.email || !userData.userType) {
         setAuthError("Invalid user data");
         return false;
       }
 
-      // Store user in state and localStorage
       setCurrentUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       return true;
@@ -106,16 +99,13 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Function to update user data (e.g., after profile changes)
   const updateUserData = (newData) => {
     if (!currentUser) return false;
 
     try {
-      // Update only allowed fields
       const updatedUser = {
         ...currentUser,
         ...newData,
-        // Ensure userId and userType cannot be changed
         userId: currentUser.userId,
         userType: currentUser.userType,
       };

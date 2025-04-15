@@ -72,15 +72,12 @@ export function useProfile({
   const handleSubmitProfile = async (formData) => {
     try {
       setError("");
-      console.log("Form submission data:", formData);
 
       const payload = {
         ...transformSubmitData(formData),
         userId: currentUser.userId,
         profileImageUrl: profileImage || "",
       };
-
-      console.log("Submitting payload:", payload);
 
       const endpoint = existingProfile ? endpoints.update : endpoints.create;
       const method = existingProfile ? "PUT" : "POST";
