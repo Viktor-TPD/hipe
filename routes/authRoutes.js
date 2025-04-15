@@ -11,7 +11,6 @@ router.post("/register", async (req, res) => {
 
     const normalizedEmail = email.toLowerCase();
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({
@@ -36,8 +35,6 @@ router.post("/register", async (req, res) => {
       email: user.email,
       userType: user.userType,
     };
-
-    console.log("✅ User registered:", user.email);
 
     res.status(201).json({
       success: true,

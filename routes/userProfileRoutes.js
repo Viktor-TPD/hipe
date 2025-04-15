@@ -108,9 +108,7 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    // Update provided fields
     if (email) {
-      // Check if email is already in use by another user
       const emailExists = await User.findOne({ email, _id: { $ne: id } });
       if (emailExists) {
         return res.status(400).json({
@@ -123,7 +121,6 @@ router.put("/:id", async (req, res) => {
 
     await user.save();
 
-    // Return updated user without password
     const updatedUser = await User.findById(id).select("-password");
 
     res.status(200).json({
@@ -155,14 +152,12 @@ router.delete("/:id", async (req, res) => {
       });
     }
 
-    // Delete associated profile based on user type
     if (user.userType === "student") {
       await StudentProfile.findOneAndDelete({ userId: id });
     } else if (user.userType === "company") {
       await CompanyProfile.findOneAndDelete({ userId: id });
     }
 
-    // Delete the user
     await User.findByIdAndDelete(id);
 
     res.status(200).json({

@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
     const { courseId, specialization, software, languages, stack } = req.query;
     let query = {};
 
-    // Add filters if provided
     if (courseId) query.courseId = courseId;
 
     if (specialization) {
@@ -57,13 +56,11 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // First try to find by MongoDB _id
     let studentProfile = await StudentProfile.findById(id).populate(
       "userId",
       "email"
     );
 
-    // If not found, try finding by userId
     if (!studentProfile) {
       studentProfile = await StudentProfile.findOne({ userId: id }).populate(
         "userId",
@@ -109,7 +106,6 @@ router.post("/", async (req, res) => {
       profileImageUrl,
     } = req.body;
 
-    // Validate required fields
     if (!userId || !name || !courseId) {
       return res.status(400).json({
         success: false,
@@ -118,7 +114,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Check if profile already exists for this user
     const existingProfile = await StudentProfile.findOne({ userId });
     if (existingProfile) {
       return res.status(409).json({
@@ -142,7 +137,6 @@ router.post("/", async (req, res) => {
     });
 
     await student.save();
-    console.log("✅ StudentProfile created:", student);
 
     res.status(201).json({
       success: true,
@@ -176,7 +170,6 @@ router.put("/:id", async (req, res) => {
       profileImageUrl,
     } = req.body;
 
-    // Find the profile by userId
     const existingProfile = await StudentProfile.findOne({ userId: id });
 
     if (!existingProfile) {
@@ -186,7 +179,6 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    // Update provided fields only
     if (name) existingProfile.name = name;
     if (courseId) existingProfile.courseId = courseId;
     if (description !== undefined) existingProfile.description = description;
@@ -199,9 +191,7 @@ router.put("/:id", async (req, res) => {
     if (profileImageUrl !== undefined)
       existingProfile.profileImageUrl = profileImageUrl;
 
-    // Save the updated profile
     await existingProfile.save();
-    console.log("✅ Profil uppdaterad!", existingProfile);
 
     res.status(200).json({
       success: true,
@@ -223,7 +213,6 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find and delete by userId
     const result = await StudentProfile.findOneAndDelete({ userId: id });
 
     if (!result) {

@@ -24,6 +24,7 @@
 .button-primary {
   border-radius: 36px;
   background: var(--yrgo-primary);
+  color: var(--bg-white);
 }
 
 .button-primary:hover:not(:disabled) {

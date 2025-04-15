@@ -13,7 +13,6 @@ import "./../styles/imageUpload.css";
 export default function CompanyProfile() {
   const [error, setError] = useState("");
 
-  // Transform API data to form format
   const transformInitialData = (profileData) => {
     return {
       companyName: profileData.companyName || "",
@@ -26,7 +25,6 @@ export default function CompanyProfile() {
     };
   };
 
-  // Transform form data to API format
   const transformSubmitData = (formData) => {
     return {
       companyName: formData.companyName,
@@ -41,7 +39,6 @@ export default function CompanyProfile() {
     };
   };
 
-  // Use our custom hook
   const {
     isLoading,
     profileImage,

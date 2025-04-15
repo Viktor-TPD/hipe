@@ -19,7 +19,6 @@ router.post(
 
       const userId = req.params.userId;
 
-      // Find the user to determine their type
       const user = await User.findById(userId);
 
       if (!user) {
@@ -29,15 +28,8 @@ router.post(
         });
       }
 
-      // Upload file to S3
       const profileImageUrl = await uploadToS3(req.file);
 
-      console.log(
-        `Profile image uploaded for ${user.userType} with userId:`,
-        userId
-      );
-
-      // Return the image URL to the client
       res.status(200).json({
         success: true,
         message: "Profile image uploaded successfully",
@@ -59,7 +51,6 @@ router.delete("/profile-image/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    // Find the user to determine their type
     const user = await User.findById(userId);
 
     if (!user) {

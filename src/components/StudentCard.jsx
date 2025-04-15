@@ -22,7 +22,6 @@ export default function StudentCard({
   const { showNotification } = useNotification();
   const [showFirstLikeMessage, setShowFirstLikeMessage] = useState(false);
 
-  // Fetch company profile when component mounts
   useEffect(() => {
     const fetchCompanyProfile = async () => {
       if (currentUser?.userType === "company") {
@@ -44,7 +43,6 @@ export default function StudentCard({
 
           if (result.success && result.data) {
             setCompanyProfile(result.data);
-            console.log("Company profile loaded:", result.data._id);
           }
         } catch (error) {
           console.error("Error fetching company profile:", error);
@@ -65,7 +63,6 @@ export default function StudentCard({
     return `https://${url}`;
   };
 
-  // Check if student is already liked once we have both student and company profile
   useEffect(() => {
     const checkExistingLike = async () => {
       if (!student?._id || !companyProfile?._id) return;
@@ -73,25 +70,17 @@ export default function StudentCard({
       try {
         setIsLoading(true);
 
-        // Build URL with explicit query parameters
         const url = new URL(`${API_BASE_URL}/api/v1/likes`);
         url.searchParams.append("studentId", student._id);
         url.searchParams.append("companyId", companyProfile._id);
 
-        console.log("Checking like status:", url.toString());
-        console.log("Student ID:", student._id);
-        console.log("Company ID:", companyProfile._id);
-
         const response = await fetch(url);
 
         if (!response.ok) {
-          // Handle different status codes differently
           if (response.status === 404) {
-            // API endpoint not found - might need to check routes
             console.warn("API endpoint not found:", await response.text());
             setIsSaved(false);
           } else {
-            // Other errors
             const errorData = await response.json();
             console.error("Error response:", errorData);
             setIsSaved(false);
@@ -100,9 +89,7 @@ export default function StudentCard({
         }
 
         const result = await response.json();
-        console.log("Like status check result:", result);
 
-        // Check if there are likes in the response
         setIsSaved(result.count > 0);
       } catch (error) {
         console.error("Error checking like status:", error);
@@ -117,7 +104,6 @@ export default function StudentCard({
     }
   }, [student, companyProfile]);
 
-  // Handle save/like button click
   const handleSaveClick = async () => {
     if (isLoading) return;
 
@@ -141,12 +127,6 @@ export default function StudentCard({
 
     try {
       setIsLoading(true);
-
-      console.log("Sending like request with:", {
-        studentId: student._id,
-        companyId: companyProfile._id,
-      });
-
       const response = await fetch(`${API_BASE_URL}/api/v1/likes`, {
         method: "POST",
         headers: {
@@ -158,21 +138,17 @@ export default function StudentCard({
         }),
       });
 
-      const result = await response.json(); // ✅ bara denna!
-
-      console.log("Full response:", result);
+      const result = await response.json();
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Failed to update saved status");
       }
 
-      // ✅ Visa första-like-popup om det är första gången
       if (result.firstLike) {
         setShowFirstLikeMessage(true);
         setTimeout(() => setShowFirstLikeMessage(false), 4000);
       }
 
-      // ✅ Uppdatera UI/sparad status
       setIsSaved(result.action === "created");
 
       showNotification(
@@ -187,7 +163,6 @@ export default function StudentCard({
     }
   };
 
-  // Determine course name from courseId
   const getCourseName = (courseId) => {
     return courseId === "dd"
       ? "Digital Designer"
@@ -196,24 +171,20 @@ export default function StudentCard({
       : "Unknown";
   };
 
-  // Handle minimize/maximize button click
   const handleMinimizeClick = (e) => {
     if (onClose) {
       onClose();
     } else if (onActivate) {
-      // Using the parent component's state management
       onActivate(cardId, !isActive);
     }
   };
 
-  // If student is undefined or null, show a placeholder or return null
   if (!student) {
     return (
       <div className="student-card empty">Ingen studentdata tillgänglig</div>
     );
   }
 
-  // Render course-specific information based on student's course
   const renderCourseSpecificInfo = () => {
     if (student.courseId === "dd") {
       return (
@@ -270,7 +241,6 @@ export default function StudentCard({
 
   return (
     <div className={`student-card ${isActive ? "student-card-maximized" : ""}`}>
-      {/* Minimize/Maximize button */}
       <button
         className="minimize-button"
         onClick={handleMinimizeClick}
@@ -288,7 +258,6 @@ export default function StudentCard({
         />
       </button>
 
-      {/* Left column - Profile image and name */}
       <div className="student-left-column">
         <div className="image-preview">
           {student.profileImageUrl ? (
@@ -312,7 +281,6 @@ export default function StudentCard({
           </div>
         )}
 
-        {/* Save/like button */}
         {currentUser?.userType === "company" && (
           <button
             className={`save-button ${isSaved ? "saved" : ""}`}
@@ -333,7 +301,6 @@ export default function StudentCard({
         )}
       </div>
 
-      {/* Right column - Student information */}
       <div className="student-right-column">
         {student.description && (
           <div className="student-section student-description">

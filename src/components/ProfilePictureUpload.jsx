@@ -9,7 +9,6 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
   const { currentUser } = useAuth();
   const { showNotification } = useNotification();
 
-  // Initialize preview with currentImage if available
   useEffect(() => {
     if (currentImage) {
       setPreview(currentImage);
@@ -31,17 +30,14 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       return;
     }
 
-    // Check file size (max 5MB)
     if (selectedFile.size > 5 * 1024 * 1024) {
       showNotification("Bilder måste vara under 5MB", "error");
       return;
     }
 
-    // Create local preview immediately
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
 
-    // Start upload process
     uploadFile(selectedFile);
   };
 
@@ -66,7 +62,6 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
         throw new Error(data.message || "Bilduppladdning misslyckades");
       }
 
-      // Call the callback with the image URL (note the nested data structure)
       if (onImageUploaded) {
         onImageUploaded(data.data.profileImageUrl);
       }
@@ -76,11 +71,9 @@ function ProfileImageUpload({ onImageUploaded, currentImage }) {
       console.error("Error uploading image:", error);
       showNotification(error.message || "Failed to upload image", "error");
 
-      // If upload failed but we were updating an existing image, keep the old one
       if (currentImage) {
         setPreview(currentImage);
       } else {
-        // If this was a new upload that failed, clear the preview
         setPreview(null);
       }
     } finally {

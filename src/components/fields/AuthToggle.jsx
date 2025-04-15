@@ -1,9 +1,5 @@
 import React from "react";
 
-/**
- * AuthToggle component for switching between login and register forms
- * Mimics the DD/WU course selection style
- */
 export default function AuthToggle({ activeMode, onToggle }) {
   const handleModeChange = (e) => {
     onToggle(e.target.value);
