@@ -48,6 +48,7 @@
 .students-grid-favourites {
   background-color: var(--yrgo-secondary);
   width: auto;
+  
 }
 
 #favourites-container {
@@ -59,6 +60,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  gap: 1rem;
 }
 
 .company-card-maximized {
