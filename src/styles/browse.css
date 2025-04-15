@@ -161,3 +161,47 @@
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+@media (max-width: 470px) {
+
+  .app-content {
+    background-color: var(--yrgo-secondary);
+  }
+
+  .browse-companies-container, .browse-students-container {
+    gap:0;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+
+
+  .students-grid {
+    background-color: var(--bg-white);
+    padding:0;
+    width: 100vw;
+
+    h1 {
+      background-color: var(--yrgo-primary);
+      height: 2rem;;
+      margin:0;
+      padding: 2rem 0 1rem 0;
+      text-align: center;
+      max-width: 100vw;
+      font-weight: 300;
+    }
+    #favourites {
+      background: #ffffff;
+      background: linear-gradient(180deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 39.9%, rgba(229, 18, 54, 1) 40%, rgba(229, 18, 54, 1) 100%);
+      border-radius: 20px 20px 0 0 ;
+      padding: 4rem 0 1rem 0;
+    }
+  }
+  .cards-grid {
+    width: 100vw;
+  }
+
+  .student-card, .company-card {
+    height: auto;
+  }
+}

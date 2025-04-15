@@ -7,7 +7,7 @@
   }
   
   .filter-toggle-button {
-    background-color: #dd3333;
+    background-color: var(--yrgo-primary);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -192,3 +192,28 @@
       font-size: 13px;
     }
   } */
+
+
+  @media (max-width: 768px) {
+  .filter-toggle-button {
+    border-radius: 0;
+    width: 100vw;
+    border:none;
+  }
+
+  .filter-modal-content {
+    width: 80vw;
+  }
+
+  .filter-section-favourites {
+    width: 100vw;
+    background-color: var(--yrgo-secondary);
+    border-radius: 0;
+    color: var(--bg-white);
+    margin:0;
+    border:none;
+    
+  }
+  
+
+}
