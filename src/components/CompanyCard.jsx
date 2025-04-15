@@ -28,6 +28,14 @@ export default function CompanyCard({
     return <div className="company-card empty">No company data available</div>;
   }
 
+  const ensureHttps = (url) => {
+    if (!url) return url;
+    if (url.match(/^https?:\/\//)) {
+      return url;
+    }
+    return `https://${url}`;
+  };
+
   console.table(company);
 
   return (
@@ -36,7 +44,7 @@ export default function CompanyCard({
       <button
         className="minimize-button"
         onClick={handleMinimizeClick}
-        tabIndex={1}
+        tabIndex={0}
         title={!isActive ? "Maximera" : "Minska"}
       >
         <p>{!isActive ? "Maximera" : "Minska"}</p>
@@ -88,7 +96,7 @@ export default function CompanyCard({
 
         {company.website && (
           <a
-            href={company.website}
+            href={ensureHttps(company.website)}
             target="_blank"
             rel="noopener noreferrer"
             className="company-link"
