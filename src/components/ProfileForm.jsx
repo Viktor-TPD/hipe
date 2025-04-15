@@ -2,9 +2,6 @@ import { useState } from "react";
 import Form from "./Form";
 import ProfileImageUpload from "./ProfilePictureUpload";
 
-/**
- * A reusable profile form component for both student and company profiles
- */
 export default function ProfileForm({
   title,
   fields,

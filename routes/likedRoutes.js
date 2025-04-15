@@ -11,12 +11,10 @@ router.get("/", async (req, res) => {
   try {
     const { studentId, companyId } = req.query;
 
-    // Allow more flexible querying - either one or both parameters can be provided
     const query = {};
     if (studentId) query.studentId = studentId;
     if (companyId) query.companyId = companyId;
 
-    // If no query parameters are provided, return an error
     if (Object.keys(query).length === 0) {
       return res.status(400).json({
         success: false,
@@ -25,11 +23,6 @@ router.get("/", async (req, res) => {
     }
 
     const likes = await Liked.find(query);
-
-    console.log("Likes Found:", {
-      query,
-      count: likes.length,
-    });
 
     return res.status(200).json({
       success: true,
@@ -51,9 +44,6 @@ router.post("/", async (req, res) => {
   try {
     const { studentId, companyId } = req.body;
 
-    console.log("Received Like Request:", { studentId, companyId });
-
-    // Validate required fields
     if (!studentId || !companyId) {
       return res.status(400).json({
         success: false,
@@ -62,7 +52,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Validate ObjectIDs to prevent server errors
     try {
       new mongoose.Types.ObjectId(studentId);
       new mongoose.Types.ObjectId(companyId);
@@ -72,7 +61,7 @@ router.post("/", async (req, res) => {
         message: "Invalid ID format",
         error: error.message,
       });
-    } // Verify that studentId refers to a valid StudentProfile
+    }
 
     const student = await StudentProfile.findById(studentId);
     if (!student) {
@@ -83,7 +72,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Verify that companyId refers to a valid CompanyProfile
     const company = await CompanyProfile.findById(companyId);
     if (!company) {
       console.error(`Company profile not found for ID: ${companyId}`);
@@ -93,17 +81,10 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Check if the like already exists
     const existingLike = await Liked.findOne({ studentId, companyId });
 
     if (existingLike) {
-      // Like exists, so delete it
       await Liked.deleteOne({ studentId, companyId });
-
-      console.log("✅ Like deleted:", {
-        studentId,
-        companyId,
-      });
 
       return res.status(200).json({
         success: true,
@@ -111,7 +92,6 @@ router.post("/", async (req, res) => {
         action: "deleted",
       });
     } else {
-      // Like doesn't exist, so create it
       const infoString = `${company.companyName} liked ${student.name}`;
 
       const liked = new Liked({
@@ -130,18 +110,12 @@ router.post("/", async (req, res) => {
         isFirstLike = true;
       }
 
-      console.log("✅ Like created:", {
-        studentId,
-        companyId,
-        info: infoString,
-      });
-
       return res.status(201).json({
         success: true,
         message: "Like created successfully",
         data: liked,
         action: "created",
-        firstLike: isFirstLike, 
+        firstLike: isFirstLike,
       });
     }
   } catch (error) {
@@ -159,7 +133,6 @@ router.get("/student/:studentId", async (req, res) => {
   try {
     const { studentId } = req.params;
 
-    // Validate StudentProfile exists
     const student = await StudentProfile.findById(studentId);
     if (!student) {
       return res.status(404).json({
@@ -168,7 +141,6 @@ router.get("/student/:studentId", async (req, res) => {
       });
     }
 
-    // Find all likes for this student and populate company details
     const likes = await Liked.find({ studentId }).populate({
       path: "companyId",
       select:
@@ -195,7 +167,6 @@ router.get("/company/:companyId", async (req, res) => {
   try {
     const { companyId } = req.params;
 
-    // Validate CompanyProfile exists
     const company = await CompanyProfile.findById(companyId);
     if (!company) {
       return res.status(404).json({
@@ -204,7 +175,6 @@ router.get("/company/:companyId", async (req, res) => {
       });
     }
 
-    // Find all likes by this company and populate student details
     const likes = await Liked.find({ companyId }).populate({
       path: "studentId",
       select:

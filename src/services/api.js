@@ -1,12 +1,7 @@
-/**
- * API Service for interacting with the backend
- */
-
-// Dynamic base URL that works in both development and production
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "/api/v1" // In production, use relative path (same origin)
-    : "http://localhost:4000/api/v1"; // In development, use localhost
+    ? "/api/v1"
+    : "http://localhost:4000/api/v1";
 
 async function fetchApi(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -35,7 +30,6 @@ async function fetchApi(endpoint, options = {}) {
   }
 }
 
-// Auth API endpoints
 export const authApi = {
   register: (userData) =>
     fetchApi("/auth/register", {
@@ -61,10 +55,8 @@ export const authApi = {
     }),
 };
 
-// Student Profile API endpoints
 export const studentApi = {
   getAll: (filters = {}) => {
-    // Convert filters object to query string
     const queryParams = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value)) {
@@ -98,7 +90,6 @@ export const studentApi = {
     }),
 };
 
-// Company Profile API endpoints
 export const companyApi = {
   getAll: () => fetchApi("/companies"),
 
@@ -122,12 +113,10 @@ export const companyApi = {
     }),
 };
 
-// User Profile API endpoints
 export const userApi = {
   getProfile: (userId) => fetchApi(`/users/${userId}/profile`),
 };
 
-// Likes API endpoints
 export const likesApi = {
   create: (likeData) =>
     fetchApi("/likes", {
@@ -147,16 +136,13 @@ export const likesApi = {
     }),
 };
 
-// Upload API endpoints
 export const uploadApi = {
   uploadProfileImage: (userId, formData) => {
-    // For file uploads, we need the full URL
     const uploadUrl = `${API_BASE_URL}/uploads/profile-image/${userId}`;
 
     return fetch(uploadUrl, {
       method: "POST",
       body: formData,
-      // No Content-Type header for FormData - browser sets it with boundary
     }).then((response) => {
       if (!response.ok) {
         return response.json().then((err) => {

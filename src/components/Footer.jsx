@@ -22,7 +22,7 @@ function Footer() {
           <img src="/assets/images/instagram.svg" alt="Instagram" />
         </div>
 
-        {/* Mobile/tablet version - revised structure */}
+        {/* Mobile/tablet version*/}
         <section className="footer-section" id="mobile-only-footer">
           <div className="footer-item">
             <img src="/assets/images/icon-map-pin.svg" alt="" />

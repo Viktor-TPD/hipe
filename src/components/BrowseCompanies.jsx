@@ -12,14 +12,12 @@ export default function BrowseStudents() {
   const [activeCardId, setActiveCardId] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Filter states
   const [courseId, setCourseId] = useState("");
   const [selectedSpecializations, setSelectedSpecializations] = useState([]);
   const [selectedSoftwares, setSelectedSoftwares] = useState([]);
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-  // Fetch all companies when component loads
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -32,16 +30,13 @@ export default function BrowseStudents() {
 
         const responseData = await response.json();
 
-        // Check if the response has the expected structure
         if (!responseData.success || !responseData.data) {
           throw new Error("Invalid response format from server");
         }
 
-        // Extract company data from the response
         const companyData = responseData.data;
 
         setCompanies(companyData);
-        
       } catch (error) {
         console.error("Error fetching companies:", error);
         setError("Failed to load company profiles. Please try again later.");
@@ -49,15 +44,12 @@ export default function BrowseStudents() {
         setIsLoading(false);
       }
     };
-    console.log("HÄRÄÄRÄ" + companies)
     fetchCompanies();
   }, []);
 
-  // Handle card activation/deactivation
   const handleCardActivation = (cardId, isActive) => {
     setActiveCardId(isActive ? cardId : null);
 
-    // Lock body scrolling when a card is maximized
     if (isActive) {
       document.body.style.overflow = "hidden";
     } else {
@@ -65,22 +57,19 @@ export default function BrowseStudents() {
     }
   };
 
-  // Handle overlay click
   const handleOverlayClick = () => {
     setActiveCardId(null);
     document.body.style.overflow = "";
   };
 
-  // Toggle filter panel
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
 
-  // Handle specialization checkbox toggle
   const handleSpecializationToggle = (value) => {
-    setSelectedSpecializations(prev => {
+    setSelectedSpecializations((prev) => {
       if (prev.includes(value)) {
-        return prev.filter(item => item !== value);
+        return prev.filter((item) => item !== value);
       } else {
         return [...prev, value];
       }
@@ -97,15 +86,14 @@ export default function BrowseStudents() {
 
   return (
     <div className="browse-companies-container">
-    
       <div className="companies-grid">
         <h1>Bläddra bland företag</h1>
         <section className="cards-grid">
           {companies.length > 0 ? (
             companies.map((company) => (
-              <CompanyCard 
-                key={company._id} 
-                company={company} 
+              <CompanyCard
+                key={company._id}
+                company={company}
                 cardId={company._id}
                 isActive={company._id === activeCardId}
                 onActivate={handleCardActivation}
@@ -120,7 +108,6 @@ export default function BrowseStudents() {
         </section>
       </div>
 
-      {/* Single overlay for all cards */}
       {activeCardId && (
         <div className="blur-overlay" onClick={handleOverlayClick}></div>
       )}

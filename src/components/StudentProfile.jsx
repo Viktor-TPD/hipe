@@ -20,7 +20,6 @@ export default function StudentProfile() {
   const { currentUser } = useAuth();
   const { profileData } = useUserProfile();
 
-  // Transform API data to form format
   const transformInitialData = (profileData) => {
     const formData = {
       name: profileData.name || "",
@@ -30,12 +29,9 @@ export default function StudentProfile() {
       linkedin: profileData.linkedin || "",
     };
 
-    // Set courseId for conditional field rendering
     setCourseId(profileData.courseId || "dd");
 
-    // Add course-specific fields
     if (profileData.courseId === "dd") {
-      // Add specialization fields
       if (profileData.specialization && profileData.specialization.length > 0) {
         profileData.specialization.filter(Boolean).forEach((spec, index) => {
           const option = specializations.find((s) => s.value === spec);
@@ -45,7 +41,6 @@ export default function StudentProfile() {
         });
       }
 
-      // Add software fields
       if (profileData.software && profileData.software.length > 0) {
         profileData.software.filter(Boolean).forEach((sw, index) => {
           const option = softwares.find((s) => s.value === sw);
@@ -55,7 +50,6 @@ export default function StudentProfile() {
         });
       }
     } else if (profileData.courseId === "wu") {
-      // Add stack field
       if (profileData.stack) {
         const stackOption = stacks.find((s) => s.value === profileData.stack);
         if (stackOption) {
@@ -63,7 +57,6 @@ export default function StudentProfile() {
         }
       }
 
-      // Add languages fields
       if (profileData.languages && profileData.languages.length > 0) {
         profileData.languages.filter(Boolean).forEach((lang, index) => {
           const option = languages.find((l) => l.value === lang);
@@ -77,7 +70,6 @@ export default function StudentProfile() {
     return formData;
   };
 
-  // Transform form data to API format
   const transformSubmitData = (formData) => {
     const payload = {
       name: formData.name,
@@ -87,7 +79,6 @@ export default function StudentProfile() {
       linkedin: formData.linkedin || "",
     };
 
-    // Add course-specific fields
     if (formData.courseId === "dd") {
       payload.specialization = [
         typeof formData.specialization1 === "object"
@@ -159,7 +150,6 @@ export default function StudentProfile() {
     ? "Uppdatera Studentprofil"
     : "Skapa Studentprofil";
 
-  // Only show VisitedCompanies if profile exists and has an ID
   const showVisitedCompanies =
     profileData && profileData.profile && profileData.profile._id;
 

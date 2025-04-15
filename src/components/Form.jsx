@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import Button from "./buttons/Button.jsx";
 
-// Create a context for the form
 export const FormContext = createContext({
   formData: {},
   errors: {},
@@ -17,7 +16,6 @@ export const FormContext = createContext({
   handleBlur: () => {},
 });
 
-// Hook to use the form context
 export const useFormContext = () => useContext(FormContext);
 
 export default function Form({
@@ -32,7 +30,6 @@ export default function Form({
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  // Initialize form data with initialValues when provided
   useEffect(() => {
     if (Object.keys(initialValues).length > 0) {
       setFormData(initialValues);
@@ -40,28 +37,22 @@ export default function Form({
   }, [initialValues]);
 
   const handleChange = (e) => {
-    // Return early if event or target is missing
     if (!e || !e.target) return;
 
     const { name, value, type, checked } = e.target;
 
-    // For select fields, we need to keep the entire object for react-select
     let processedValue;
     if (type === "select") {
-      // For react-select, keep the entire object
       processedValue = value;
     } else {
-      // For other field types
       processedValue = value;
     }
 
-    // Update form data with the appropriate value based on input type
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : processedValue,
     });
 
-    // Mark field as touched
     if (!touched[name]) {
       setTouched({
         ...touched,
@@ -69,7 +60,6 @@ export default function Form({
       });
     }
 
-    // Clear error when field is changed
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -81,7 +71,6 @@ export default function Form({
   const handleBlur = (e) => {
     const { name } = e.target;
 
-    // Mark field as touched on blur
     if (!touched[name]) {
       setTouched({
         ...touched,
@@ -89,7 +78,6 @@ export default function Form({
       });
     }
 
-    // Validate field on blur if it's required
     const isRequired = React.Children.toArray(children).some(
       (child) =>
         React.isValidElement(child) &&
@@ -109,7 +97,6 @@ export default function Form({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Collect required field names from children
     const requiredFields = [];
     React.Children.forEach(children, (child) => {
       if (React.isValidElement(child) && child.props && child.props.required) {
@@ -117,7 +104,6 @@ export default function Form({
       }
     });
 
-    // Mark all fields as touched on submit
     const allTouched = requiredFields.reduce(
       (acc, fieldName) => {
         acc[fieldName] = true;
@@ -128,7 +114,6 @@ export default function Form({
 
     setTouched(allTouched);
 
-    // Validate all required fields
     const newErrors = {};
     requiredFields.forEach((fieldName) => {
       if (!formData[fieldName]) {
@@ -136,7 +121,6 @@ export default function Form({
       }
     });
 
-    // Email validation for both regular and nested email fields
     Object.entries(formData).forEach(([key, value]) => {
       if ((key.includes("email") || key.endsWith(".email")) && value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -146,14 +130,12 @@ export default function Form({
       }
     });
 
-    // Password validation
     if (formData.password) {
       if (formData.password.length < 6) {
         newErrors.password = "Lösenord måste vara minst 6 tecken långt.";
       }
     }
 
-    // Password confirmation validation
     if (
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
@@ -169,7 +151,6 @@ export default function Form({
     onSubmit(formData);
   };
 
-  // Provide form state and handlers to all children
   const formContextValue = {
     formData,
     errors,
@@ -181,12 +162,9 @@ export default function Form({
   return (
     <FormContext.Provider value={formContextValue}>
       <form className="form" onSubmit={handleSubmit}>
-        {/* Clone children to inject form props */}
         {Children.map(children, (child) => {
-          // Skip null, undefined, or non-React element children
           if (!child || !React.isValidElement(child)) return child;
 
-          // Add form-related props to field components
           return cloneElement(child, {
             value: formData[child.props.name] || "",
             error: errors[child.props.name],
@@ -200,7 +178,6 @@ export default function Form({
           </div>
         )}
 
-        {/* @todo if variant to be a propery, add it, for now this is good */}
         {bottomButtons && (
           <div className="button-container">
             <Button variant="primary" type="submit">

@@ -4,15 +4,13 @@ import { useEffect } from "react";
 export default function NotificationDisplay() {
   const { notification, clearNotification } = useNotification();
 
-  // Auto-dismiss the notification after animation completes
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
-        // This timeout should match the CSS transition duration
         document
           .getElementById("notification-container")
           .classList.add("fade-out");
-      }, 4500); // Slightly less than the total duration to start fade out
+      }, 4500);
 
       return () => clearTimeout(timer);
     }

@@ -15,7 +15,6 @@ export default function VisitedCompanies({ studentId }) {
   const [activeCardId, setActiveCardId] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
-  // Fetch companies that liked this student
   useEffect(() => {
     const fetchVisitedCompanies = async () => {
       if (!studentId) {
@@ -29,7 +28,6 @@ export default function VisitedCompanies({ studentId }) {
       try {
         setIsLoading(true);
 
-        // Use the specific endpoint to get companies that liked this student
         const response = await fetch(
           `${API_BASE_URL}/api/v1/likes/student/${studentId}`
         );
@@ -40,22 +38,12 @@ export default function VisitedCompanies({ studentId }) {
 
         const responseData = await response.json();
 
-        // Check if the response has the expected structure
         if (!responseData.success || !responseData.data) {
           throw new Error("Invalid response format from server");
         }
 
-        console.log("Companies that liked this student:", responseData.data);
-
-        // Extract company data from each like
         const companyData = responseData.data.map((like) => like.companyId);
-
-        // Filter out any potential null/undefined values
         const validCompanyData = companyData.filter((company) => company);
-
-        console.log(
-          `Found ${validCompanyData.length} companies that liked this student`
-        );
 
         setCompanies(validCompanyData);
       } catch (error) {
@@ -76,12 +64,10 @@ export default function VisitedCompanies({ studentId }) {
     }
   }, [studentId]);
 
-  // Handle card activation/deactivation
   const handleCardActivation = (cardId, isActive, company) => {
     setActiveCardId(isActive ? cardId : null);
     setSelectedCompany(isActive ? company : null);
 
-    // Lock body scrolling when a card is maximized
     if (isActive) {
       document.body.style.overflow = "hidden";
     } else {
@@ -89,21 +75,18 @@ export default function VisitedCompanies({ studentId }) {
     }
   };
 
-  // Handle overlay click
   const handleOverlayClick = () => {
     setActiveCardId(null);
     setSelectedCompany(null);
     document.body.style.overflow = "";
   };
 
-  // Handle click on a mini card
   const handleMiniCardClick = (company) => {
     setSelectedCompany(company);
     setActiveCardId(company._id);
     document.body.style.overflow = "hidden";
   };
 
-  // Handle close card
   const handleCloseCard = () => {
     setActiveCardId(null);
     setSelectedCompany(null);
@@ -160,7 +143,6 @@ export default function VisitedCompanies({ studentId }) {
         </div>
       )}
 
-      {/* Display the selected company card */}
       {selectedCompany && (
         <>
           <div className="company-card-container">
