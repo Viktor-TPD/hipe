@@ -5,7 +5,7 @@ import { useAuthForm } from "../AuthFormContext";
 import { useUserProfile } from "./hooks/useProfile";
 import Button from "./buttons/Button.jsx";
 
-import "./../styles/ac11y.css";
+import "./../styles/a11y.css";
 import "./../styles/styles.css";
 
 function Header() {
@@ -70,40 +70,51 @@ function Header() {
         </div>
 
         {currentUser ? (
-          // User is logged in
           <>
             <div className="nav-links desktop-only">
               <NavLink to="/" onClick={() => setMenuOpen(false)}>
-                <Button variant="linkNavbar">Event</Button>
+                <Button variant="linkNavbar" className="focus-visible-only">
+                  Event
+                </Button>
               </NavLink>
               {currentUser.userType === "student" && (
                 <>
                   <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Sök Företag</Button>
+                    <Button variant="linkNavbar" className="focus-visible-only">
+                      Sök Företag
+                    </Button>
                   </NavLink>
 
                   <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Min Profil</Button>
+                    <Button variant="linkNavbar" className="focus-visible-only">
+                      Min Profil
+                    </Button>
                   </NavLink>
                 </>
               )}
               {currentUser.userType === "company" && (
                 <>
                   <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Sök Kandidater</Button>
+                    <Button variant="linkNavbar" className="focus-visible-only">
+                      Sök Kandidater
+                    </Button>
                   </NavLink>
                   <NavLink to="/favorites" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Sparade Kandidater</Button>
+                    <Button variant="linkNavbar" className="focus-visible-only">
+                      Sparade Kandidater
+                    </Button>
                   </NavLink>
                   <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Min Profil</Button>
+                    <Button variant="linkNavbar" className="focus-visible-only">
+                      Min Profil
+                    </Button>
                   </NavLink>
                 </>
               )}
             </div>
 
             <span
-              className="logout-text desktop-only"
+              className="logout-text desktop-only focus-visible-only"
               onClick={() => {
                 logout();
                 setMenuOpen(false);
@@ -120,7 +131,6 @@ function Header() {
               Logga ut
             </span>
 
-            {/* Only show hamburger menu when logged in */}
             <button
               className={`hamburger-menu ${menuOpen ? "hidden" : ""}`}
               onClick={toggleMenu}
@@ -135,24 +145,24 @@ function Header() {
             </button>
           </>
         ) : (
-          // User is NOT logged in - always show auth buttons regardless of screen size
           <div className="auth-buttons">
             <Button
               variant="linkNavbar"
               onClick={() => handleFormTypeChange("register")}
+              className="focus-visible-only"
             >
               Registrering
             </Button>
             <Button
               variant="primary"
               onClick={() => handleFormTypeChange("login")}
+              className="focus-visible-only"
             >
               Logga In
             </Button>
           </div>
         )}
 
-        {/* Mobile navigation menu - only for logged in users */}
         {currentUser && (
           <nav className={`main-nav ${menuOpen ? "mobile-open" : ""}`}>
             <div className="mobile-menu-header">
@@ -188,9 +198,6 @@ function Header() {
                 <>
                   <NavLink to="/browse" onClick={() => setMenuOpen(false)}>
                     <Button variant="linkNavbar">Sök Företag</Button>
-                  </NavLink>
-                  <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
-                    <Button variant="linkNavbar">Matchningar</Button>
                   </NavLink>
                   <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
                     <Button variant="linkNavbar">Min Profil</Button>

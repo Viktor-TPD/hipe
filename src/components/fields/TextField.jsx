@@ -29,7 +29,9 @@ export default function TextField({
     <div className="form-field">
       <label htmlFor={name}>
         {label}
-        {required && <span className="required-mark"> *</span>}
+        {required && (
+          <span className="required-mark focus-visible-only"> *</span>
+        )}
       </label>
       <input
         type={type}

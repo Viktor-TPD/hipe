@@ -14,7 +14,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`button button-${variant} ${className}`}
+      className={`button button-${variant} ${className} focus-visible-only`}
     >
       {children}
     </button>

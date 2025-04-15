@@ -11,16 +11,14 @@ export default function BrowseStudents() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeCardId, setActiveCardId] = useState(null);
-  const [showFilters, setShowFilters] = useState(false); // Added missing state
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Filter states
   const [courseId, setCourseId] = useState("");
   const [selectedSpecializations, setSelectedSpecializations] = useState([]);
   const [selectedSoftwares, setSelectedSoftwares] = useState([]);
   const [selectedStack, setSelectedStack] = useState(null);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-  // Fetch all students when component loads
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -33,12 +31,10 @@ export default function BrowseStudents() {
 
         const responseData = await response.json();
 
-        // Check if the response has the expected structure
         if (!responseData.success || !responseData.data) {
           throw new Error("Invalid response format from server");
         }
 
-        // Extract student data from the response
         const studentData = responseData.data;
 
         setStudents(studentData);
@@ -54,15 +50,12 @@ export default function BrowseStudents() {
     fetchStudents();
   }, []);
 
-  // Memoized filter function to prevent unnecessary re-renders
   const applyFilters = useCallback(() => {
     const results = students.filter((student) => {
-      // Filter by course if selected
       if (courseId && student.courseId !== courseId) {
         return false;
       }
 
-      // Filter by specialization if selected and course is Digital Design (or no course filter)
       if (
         selectedSpecializations.length > 0 &&
         (courseId === "" || courseId === "dd") &&
@@ -74,7 +67,6 @@ export default function BrowseStudents() {
         return false;
       }
 
-      // Filter by software if selected and course is Digital Design (or no course filter)
       if (
         selectedSoftwares.length > 0 &&
         (courseId === "" || courseId === "dd") &&
@@ -84,7 +76,6 @@ export default function BrowseStudents() {
         return false;
       }
 
-      // Filter by stack if selected and course is Web Development (or no course filter)
       if (
         selectedStack &&
         (courseId === "" || courseId === "wu") &&
@@ -93,7 +84,6 @@ export default function BrowseStudents() {
         return false;
       }
 
-      // Filter by languages if selected and course is Web Development (or no course filter)
       if (
         selectedLanguages.length > 0 &&
         (courseId === "" || courseId === "wu") &&
@@ -116,26 +106,21 @@ export default function BrowseStudents() {
     students,
   ]);
 
-  // Update filtering when filters change
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
 
-  // Handle card activation/deactivation
   const handleCardActivation = (cardId, isActive) => {
     setActiveCardId(isActive ? cardId : null);
 
-    // Lock body scrolling when a card is maximized
     document.body.style.overflow = isActive ? "hidden" : "";
   };
 
-  // Handle overlay click
   const handleOverlayClick = () => {
     setActiveCardId(null);
     document.body.style.overflow = "";
   };
 
-  // Reset all filters
   const resetFilters = () => {
     setCourseId("");
     setSelectedSpecializations([]);
@@ -144,12 +129,9 @@ export default function BrowseStudents() {
     setSelectedLanguages([]);
   };
 
-  // Handle education selection
   const handleCourseChange = (selectedCourse) => {
-    // Toggle course if already selected
     setCourseId(courseId === selectedCourse ? "" : selectedCourse);
 
-    // Reset education-specific filters when education changes
     if (selectedCourse === "dd") {
       setSelectedStack(null);
       setSelectedLanguages([]);
@@ -159,12 +141,10 @@ export default function BrowseStudents() {
     }
   };
 
-  // Toggle filter panel
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
 
-  // Generic toggle handler for filter arrays
   const handleFilterToggle = (setter, current, value) => {
     setter(
       current.includes(value)
@@ -173,7 +153,6 @@ export default function BrowseStudents() {
     );
   };
 
-  // Helper functions for different filter types
   const handleSpecializationToggle = (value) => {
     handleFilterToggle(
       setSelectedSpecializations,
@@ -190,12 +169,10 @@ export default function BrowseStudents() {
     handleFilterToggle(setSelectedLanguages, selectedLanguages, value);
   };
 
-  // Handle stack selection (only one can be selected)
   const handleStackToggle = (value) => {
     setSelectedStack(selectedStack === value ? null : value);
   };
 
-  // Check if a button should be active
   const isButtonActive = (type, value) => {
     switch (type) {
       case "course":
@@ -260,7 +237,6 @@ export default function BrowseStudents() {
               </div>
             </div>
 
-            {/* Digital Design filters */}
             {(courseId === "" || courseId === "dd") && (
               <>
                 <div className="filter-section">
@@ -303,7 +279,6 @@ export default function BrowseStudents() {
               </>
             )}
 
-            {/* Web Development filters */}
             {(courseId === "" || courseId === "wu") && (
               <>
                 <div className="filter-section">
@@ -356,10 +331,6 @@ export default function BrowseStudents() {
         </div>
       )}
 
-      {/* <div className="students-count">
-        Showing {filteredStudents.length} of {students.length} students
-      </div> */}
-
       <div className="students-grid">
         <h1>Sök kandidater</h1>
 
@@ -383,7 +354,6 @@ export default function BrowseStudents() {
         </section>
       </div>
 
-      {/* Single overlay for all cards */}
       {activeCardId && (
         <div className="blur-overlay" onClick={handleOverlayClick}></div>
       )}

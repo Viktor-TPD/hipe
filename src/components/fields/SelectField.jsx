@@ -103,11 +103,15 @@ export default function SelectField({
         onChange={handleSelectChange}
         onBlur={handleSelectBlur}
         placeholder={placeholder}
-        className={hasError ? "select-error" : ""}
+        className={
+          hasError ? "select-error focus-visible-only" : "focus-visible-only"
+        }
         styles={customStyles}
         isClearable={!required}
       />
-      {hasError && <div className="error-text">{fieldError}</div>}
+      {hasError && (
+        <div className="error-text focus-visible-only">{fieldError}</div>
+      )}
     </div>
   );
 }
